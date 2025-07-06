@@ -14,8 +14,8 @@
 # 📝 Feature Branch 네이밍
 
 - feature/이름-기능제목#이슈번호
-- 예: feature/sheepyis-login#1
-- develop merge 전 PR reviewers 팀원 2명 이상 설정 후 approve
+- 예: feature/krong-login#1
+- develop merge 전 PR reviewers 팀원 1명 이상 설정 후 approve
 - PR 후 팀원 공지
 
 # 🎯 Commit Convention

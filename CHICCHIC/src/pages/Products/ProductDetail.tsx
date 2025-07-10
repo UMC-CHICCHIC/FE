@@ -34,21 +34,21 @@ const ProductDetail = (): JSX.Element => {
           <div className="flex flex-col gap-6 mx-20">
             <div className="flex items-center">
               <span className="text-lg font-black text-[#66191F]">용량</span>
-              <span className="ml-8 border-l border-[#66191F] h-5 text-[1]"></span>
+              <span className="ml-8 border-l border-[#66191F] h-5"></span>
               <span className="ml-2 text-[#AB3130] font-extrabold text-lg">
                 용량
               </span>
             </div>
             <div className="flex items-center">
               <span className="text-lg font-bold text-[#66191F]">발향률</span>
-              <span className="ml-4.5 border-l border-[#66191F] h-5 text-[1]"></span>
+              <span className="ml-4.5 border-l border-[#66191F] h-5"></span>
               <span className="ml-2 text-[#AB3130] font-extrabold text-lg">
                 발향률
               </span>
             </div>
             <div className="flex items-center">
               <span className="text-lg font-bold text-[#66191F]">가격</span>
-              <span className="ml-8 border-l border-[#66191F] h-5 text-[1]"></span>
+              <span className="ml-8 border-l border-[#66191F] h-5"></span>
               <span className="ml-2 text-[#AB3130] font-extrabold text-lg">
                 가격
               </span>

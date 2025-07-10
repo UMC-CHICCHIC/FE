@@ -1,5 +1,6 @@
 // import { useState } from 'react';
-import { MdStarHalf, MdStarRate } from "react-icons/md";
+import starFull from "../../assets/icons/starFull.svg";
+import starHalf from "../../assets/icons/starHalf.svg";
 
 const ProductReviews = () => {
   // 커스텀 훅 추가 예정
@@ -20,13 +21,13 @@ const ProductReviews = () => {
           <span className="text-[#AB3130] pb-2 font-[pretendard] font-light text-xl">
             향수에 대한 느낌, 만족도에 대해 작성해주세요.
           </span>
-          <div className="flex items-center justify-start gap-2 pb-4 text-xl">
-            <MdStarRate color="#AB3130" size={23} />
-            <MdStarRate color="#AB3130" size={23} />
-            <MdStarRate color="#AB3130" size={23} />
-            <MdStarRate color="#AB3130" size={23} />
-            <MdStarHalf color="#AB3130" size={23} strokeWidth={0} />
-            <span className="text-[#AB3130]">4.5/5</span>
+          <div className="flex items-center justify-start gap-1 pb-6 text-xl">
+            <img src={starFull} width={22} />
+            <img src={starFull} width={22} />
+            <img src={starFull} width={22} />
+            <img src={starFull} width={22} />
+            <img src={starHalf} width={22} />
+            <span className="ml-2 text-2xl text-[#AB3130]">4.5/5</span>
           </div>
           <div className="flex flex-col items-center justify-center">
             <textarea

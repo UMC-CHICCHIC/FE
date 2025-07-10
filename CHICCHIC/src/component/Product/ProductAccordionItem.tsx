@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { GoChevronDown } from "react-icons/go";
+import ArrowIcon from "../../assets/icons/arrow.svg";
 
 interface AccordionItemProps {
   title: string;
@@ -21,9 +21,11 @@ export function ProductAccordionItem({
         onClick={onClick}
       >
         <span className="text-[#AB3130] font-bold text-lg">{title}</span>
-        <GoChevronDown
-          className={`w-8 h-8 text-[#AB3130] transition-transform duration-300 ${
-            open ? "rotate-180" : ""
+        <img
+          width={44}
+          src={ArrowIcon}
+          className={`transition-transform duration-300 ${
+            open ? "" : "rotate-180"
           }`}
         />
       </div>

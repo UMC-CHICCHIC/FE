@@ -3,10 +3,10 @@ import perfumeImg from "../../assets/images/samplePerfumeImg.png";
 import note1Img from "../../assets/images/sampleNote1.png";
 import note2Img from "../../assets/images/sampleNote2.png";
 import note3Img from "../../assets/images/sampleNote3.png";
-import { Bookmark } from "lucide-react";
 import { ProductAccordion } from "../../component/Product/ProductAccordion";
 import { ProductAccordionItem } from "../../component/Product/ProductAccordionItem";
 import ProductReviews from "../../component/Product/ProductReviews";
+import BookmarkIcon from "../../assets/icons/Bookmark.svg";
 
 const accordionItmes = [
   "노트 상세보기",
@@ -41,7 +41,7 @@ const ProductDetail = (): JSX.Element => {
             </div>
             <div className="flex items-center">
               <span className="text-lg font-bold text-[#66191F]">발향률</span>
-              <span className="ml-4 border-l border-[#66191F] h-5 text-[1]"></span>
+              <span className="ml-4.5 border-l border-[#66191F] h-5 text-[1]"></span>
               <span className="ml-2 text-[#AB3130] font-extrabold text-lg">
                 발향률
               </span>
@@ -84,7 +84,7 @@ const ProductDetail = (): JSX.Element => {
         </div>
         <div className="flex flex-col items-center justify-center w-full max-w-3xl gap-2 py-12 mx-auto md:flex-row">
           <button className="flex flex-1 w-full items-center justify-center gap-2 border border-[#AB3130] text-[#AB3130] rounded-full py-2 px-8 text-xl font-[pretendard] cursor-pointer">
-            <Bookmark size={25} strokeWidth={1} />
+            <img src={BookmarkIcon} width={14} alt="스크랩" />
             스크랩
           </button>
           <button className="flex flex-1 items-center justify-center bg-[#AB3130] text-white rounded-full py-2 px-8 text-xl w-full font-[pretendard] font-light cursor-pointer">

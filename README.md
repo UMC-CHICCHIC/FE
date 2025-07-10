@@ -15,12 +15,12 @@
 
 - feature/이름-기능제목#이슈번호
 - 예: feature/sheepyis-login#1
-- develop merge 전 PR reviewers 팀원 2명 이상 설정 후 approve
+- develop merge 전 PR reviewers 팀원 1명 이상 설정 후 approve
 - PR 후 팀원 공지
 
 # 🎯 Commit Convention
 
-- 커밋 메시지: 깃모지 + 소문자 태그: 메시지
+- 커밋 메시지: #issue 깃모지 + 소문자 태그: 메시지
 
 ## Commit Tags
 

@@ -9,18 +9,18 @@
 - 개인 작업은 꼭 feature 브랜치에서 하기
 - 모든 작업 시작 전 develop에서 pull 받은 후 feature 브랜치에서 작업 시작
 - 작업 완료 후 feature 브랜치에서 PR로 develop에 merge
-- 프로젝트 완료 후 main으로 merge (이즈가 일괄 진행)
+- 프로젝트 완료 후 main으로 merge
 
 # 📝 Feature Branch 네이밍
 
 - feature/이름-기능제목#이슈번호
-- 예: feature/sheepyis-login#1
-- develop merge 전 PR reviewers 팀원 2명 이상 설정 후 approve
+- 예: feature/krong-login#1
+- develop merge 전 PR reviewers 팀원 1명 이상 설정 후 approve
 - PR 후 팀원 공지
 
 # 🎯 Commit Convention
 
-- 커밋 메시지: 깃모지 + 소문자 태그: 메시지
+- 커밋 메시지: #issue number + 깃모지 + 소문자 태그: 메시지
 
 ## Commit Tags
 

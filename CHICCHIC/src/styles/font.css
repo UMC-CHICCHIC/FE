@@ -1,0 +1,24 @@
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/PretendardVariable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Crimson';
+  src: url('/fonts/CrimsonText-SemiBold.ttf') format('truetype');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 개별 폰트 클래스들 */
+.font-pretendard {
+  font-family: "Pretendard", ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-crimson {
+  font-family: "Crimson", serif;
+}

@@ -1,4 +1,4 @@
-const communityHome = () => {
+const CommunityHome = () => {
   return (
     <>
       <div></div>
@@ -6,4 +6,4 @@ const communityHome = () => {
   );
 };
 
-export default communityHome;
+export default CommunityHome;

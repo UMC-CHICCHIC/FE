@@ -22,8 +22,9 @@ const ProductDetail = (): JSX.Element => {
 
   return (
     <div className="flex flex-col items-center justify-center bg-[#F7F4EF] px-[12px]">
-      <div className="flex justify-center md:flex-row w-full gap-[12px] max-w-7xl">
-        <img src={perfumeImg} className="h-100" alt="" />
+      {/* 브랜드 네임, 향수 네임, 용량, 발향률, 가격 UI */}
+      <section className="flex justify-center md:flex-row w-full gap-[12px] max-w-7xl">
+        <img src={perfumeImg} className="h-120" alt="" />
         <div className="flex flex-col justify-center">
           <div className="items-center mx-15">
             <div className="m-5 text-3xl text-[#AB3130]">Brandname</div>
@@ -31,40 +32,41 @@ const ProductDetail = (): JSX.Element => {
               Perfume Name
             </div>
           </div>
-          <div className="flex flex-col gap-6 mx-20">
+          <div className="flex flex-col gap-6 mx-20 ">
             <div className="flex items-center">
               <span className="text-lg font-black text-[#66191F]">용량</span>
-              <span className="ml-8 border-l border-[#66191F] h-5"></span>
+              <span className="ml-8 border-l border-[#66191F] h-5" />
               <span className="ml-2 text-[#AB3130] font-extrabold text-lg">
                 용량
               </span>
             </div>
             <div className="flex items-center">
               <span className="text-lg font-bold text-[#66191F]">발향률</span>
-              <span className="ml-4.5 border-l border-[#66191F] h-5"></span>
+              <span className="ml-4.5 border-l border-[#66191F] h-5" />
               <span className="ml-2 text-[#AB3130] font-extrabold text-lg">
                 발향률
               </span>
             </div>
             <div className="flex items-center">
               <span className="text-lg font-bold text-[#66191F]">가격</span>
-              <span className="ml-8 border-l border-[#66191F] h-5"></span>
+              <span className="ml-8 border-l border-[#66191F] h-5" />
               <span className="ml-2 text-[#AB3130] font-extrabold text-lg">
                 가격
               </span>
             </div>
           </div>
         </div>
-      </div>
+      </section>
       <div className="items-center w-full">
-        <div className="flex pt-6 py-4 justify-center gap-8 bg-[#AB3130] px-[12px] mx-auto max-w-7xl">
+        {/* 노트 이미지 및 정보 UI */}
+        <section className="flex pt-6 py-4 justify-center gap-8 bg-[#AB3130] px-[12px] mx-auto max-w-7xl">
           <div className="flex flex-col px-4 mx-auto max-w-7xl gap-7">
-            <div className="flex items-center justify-center w-full gap-4 mb-2 text-white">
-              <div className="flex-1 h-px bg-white" />
-              <div className="px-6 text-lg font-semibold tracking-wide md:text-xl">
+            <div className="flex items-center justify-center w-full gap-4 mb-2 text-[#F7F4EF]">
+              <div className="flex-1 h-px bg-[#F7F4EF]" />
+              <div className="px-6 text-2xl font-semibold tracking-wide">
                 Notes
               </div>
-              <div className="flex-1 h-px bg-white" />
+              <div className="flex-1 h-px bg-[#F7F4EF]" />
             </div>
             <div className="flex flex-col items-center justify-center w-full gap-8 md:flex-row">
               {[note1Img, note2Img, note3Img].map((img, note) => (
@@ -74,29 +76,31 @@ const ProductDetail = (): JSX.Element => {
                     alt={`note${note + 1}`}
                     className="w-full h-33 object-cover bg-[#F7F4EF] rounded"
                   />
-                  <div className="mt-4 text-base tracking-wide text-white">
+                  <div className="mt-4 text-base tracking-wide text-[#F7F4EF]">
                     NOTE
                   </div>
                 </div>
               ))}
             </div>
           </div>
-        </div>
+        </section>
+        {/* 스크랩 및 홈페이지 라우팅 버튼 */}
         <div className="flex flex-col items-center justify-center w-full max-w-3xl gap-2 py-12 mx-auto md:flex-row">
           <button className="flex flex-1 w-full items-center justify-center gap-2 border border-[#AB3130] text-[#AB3130] rounded-full py-2 px-8 text-xl font-[pretendard] cursor-pointer">
             <img src={BookmarkIcon} width={14} alt="스크랩" />
             스크랩
           </button>
-          <button className="flex flex-1 items-center justify-center bg-[#AB3130] text-white rounded-full py-2 px-8 text-xl w-full font-[pretendard] font-light cursor-pointer">
+          <button className="flex flex-1 items-center justify-center bg-[#AB3130] text-[#F7F4EF] rounded-full py-2 px-8 text-xl w-full font-[pretendard] font-light cursor-pointer">
             공식 홈페이지 바로가기
           </button>
         </div>
       </div>
+      {/* 향수 디테일 및 리뷰 UI */}
       <div className="flex w-full h-12 mt-24">
         <button
           className={`flex-1 flex items-center justify-center border border-[#AB3130] text-lg cursor-pointer ${
             selectTab === "DETAILS"
-              ? "text-white bg-[#AB3130]"
+              ? "text-[#F7F4EF] bg-[#AB3130]"
               : "text-[#AB3130]"
           }`}
           onClick={() => setSelectTab("DETAILS")}
@@ -106,7 +110,7 @@ const ProductDetail = (): JSX.Element => {
         <button
           className={`flex-1 flex items-center justify-center border border-[#AB3130] text-[#AB3130] text-lg cursor-pointer ${
             selectTab === "REVIEW"
-              ? "text-white bg-[#AB3130]"
+              ? "text-[#F7F4EF] bg-[#AB3130]"
               : "text-[#AB3130]"
           }`}
           onClick={() => setSelectTab("REVIEW")}

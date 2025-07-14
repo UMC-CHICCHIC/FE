@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import SearchIcon from "../../assets/icons/search.svg";
 import SamplePerfumeImg from "../../assets/images/samplePerfumeImg.png";
 import LeftArrowIcon from "../../assets/icons/arrowLeft.svg";
@@ -7,6 +7,17 @@ import RightArrowIcon from "../../assets/icons/arrowRight.svg";
 const ShoppingHome = () => {
   // const [filter, setFilter] = useState();
   const [productPage, setProductPage] = useState(1);
+
+  // 프로토타입용
+  const totalPages = 20;
+  const pageNumbers = useMemo(() => {
+    const start = Math.max(1, Math.min(productPage - 2, totalPages - 4));
+    const pages: number[] = [];
+    for (let i = start; i < start + 5; i++) {
+      if (i >= 1 && i <= totalPages) pages.push(i);
+    }
+    return pages;
+  }, [productPage, totalPages]);
 
   return (
     <div className="flex flex-col items-center p-4 space-y-8 bg-[#F7F4EF]">
@@ -67,7 +78,7 @@ const ShoppingHome = () => {
 
       {/* 상품 필터링 */}
       <section className="w-full max-w-5xl">
-        <div className="flex justify-start space-x-6 text-[#AB3130] mb-4 flex-wrap gap-2">
+        <div className="flex justify-start space-x-6 text-[#AB3130] mb-4 flex-wrap gap-2 pt-6">
           <button className="hover:underline">인기도순</button>
           <button className="hover:underline">낮은가격순</button>
           <button className="hover:underline">높은가격순</button>
@@ -89,7 +100,7 @@ const ShoppingHome = () => {
             <div className="text-center text-[#AB3130]">130,000 ₩</div>
           </div>
 
-          {[...Array(17)].map((_, idx) => (
+          {[...Array(20)].map((_, idx) => (
             <div
               key={idx}
               className="flex flex-col items-center justify-center w-40 h-60 bg-gray-300 text-[#333] text-lg"
@@ -99,12 +110,35 @@ const ShoppingHome = () => {
           ))}
         </div>
       </section>
-      {/* Pagination */}
-      <div>
-        <button>
+      {/* 페이지 네이션 */}
+      <div className="flex py-12 space-x-4">
+        <button
+          onClick={(): void => setProductPage((prev): number => prev - 1)}
+          disabled={productPage === 1}
+          className={`p-2 cursor-pointer ${
+            productPage === 1
+          } ? "text-gray-300 cursor-not-allowed" : "text-[#AB3130]"`}
+        >
           <img src={LeftArrowIcon} alt="rightArrow" width={10} />
         </button>
-        <button>
+        {pageNumbers.map((page) => (
+          <button
+            key={page}
+            onClick={() => setProductPage(page)}
+            className={`flex box-border items-center justify-center w-[44px] h-11 text-2xl text-[#AB3130] cursor-pointer py-2 px-3 focus:outline-none ${
+              productPage === page
+                ? "bg-[#AB3130] text-white"
+                : "text-[#AB3130] hover:bg-[#AB3130] hover:text-white"
+            }`}
+          >
+            {page}
+          </button>
+        ))}
+        <button
+          onClick={(): void => setProductPage((prev): number => prev + 1)}
+          className="p-2 cursor-pointer"
+          disabled={productPage === totalPages}
+        >
           <img src={RightArrowIcon} alt="leftArrow" width={10} />
         </button>
       </div>

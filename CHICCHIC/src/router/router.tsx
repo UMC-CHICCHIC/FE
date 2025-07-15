@@ -94,7 +94,7 @@ const protectedRoutes: RouteObject[] = [
         { path: "scrap", element: <ScrapPage /> },
 
         // MyPage
-        { path: "mypage/profile", element: <Profile /> },
+        { path: "mypage", element: <Profile /> },
         { path: "mypage/privacy", element: <Privacy /> },
         { path: "mypage/scraps", element: <MyScraps /> },
         { path: "mypage/diaries", element: <MyDiaries /> },

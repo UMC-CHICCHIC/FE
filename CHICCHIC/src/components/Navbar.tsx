@@ -33,7 +33,7 @@ const Navbar = () => {
   }
 
   const handleProfileClick = () => {
-    navigate('/mypage/profile')
+    navigate('/mypage')
   }
 
   return (

@@ -32,8 +32,8 @@ const Navbar = () => {
     navigate('/scrap')
   }
 
-  const handleMyHomeClick = () => {
-    navigate('/mypage')
+  const handleProfileClick = () => {
+    navigate('/mypage/profile')
   }
 
   return (
@@ -100,7 +100,7 @@ const Navbar = () => {
           </button>
 
           {/* 사용자 아이콘 */}
-          <button onClick={handleMyHomeClick} className="hover:text-red-200 transition-colors cursor-pointer p-2">
+          <button onClick={handleProfileClick} className="hover:text-red-200 transition-colors cursor-pointer p-2">
             <img src={myhomelogo} className="w-[19px] h-[23px]"></img>
           </button>
         </div>

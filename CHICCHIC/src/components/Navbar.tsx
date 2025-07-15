@@ -13,7 +13,7 @@ const Navbar = () => {
   }
 
   const handleShoppingClick = () => {
-    navigate('/popular-products')
+    navigate('/shopping')
   }
 
   const handleCommunityClick = () => {

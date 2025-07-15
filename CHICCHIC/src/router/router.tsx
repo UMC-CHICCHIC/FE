@@ -13,13 +13,10 @@ import RecentCounselingPosts from "../pages/Community/RecentCounselingPosts";
 import ViewPost from "../pages/Community/ViewPost";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
-import EditPrivacy from "../pages/Mypage/EditPrivacy";
 import MyDiaries from "../pages/Mypage/MyDiaries";
-import MyHome from "../pages/Mypage/MyHome";
 import MyScraps from "../pages/Mypage/MyScraps";
 import Privacy from "../pages/Mypage/Privacy";
 import Profile from "../pages/Mypage/Profile";
-import Notify from "../pages/Mypage/Notification";
 import NotFound from "../pages/NotFound";
 import PerfumeStoryDetail from "../pages/PerfumeStory/PerfumeStoryDetail";
 import PerfumeStoryList from "../pages/PerfumeStory/PerfumeStoryList";
@@ -97,11 +94,8 @@ const protectedRoutes: RouteObject[] = [
         { path: "scrap", element: <ScrapPage /> },
 
         // MyPage
-        { path: "mypage", element: <MyHome /> },
         { path: "mypage/profile", element: <Profile /> },
-        { path: "mypage/notifications", element: <Notify /> },
         { path: "mypage/privacy", element: <Privacy /> },
-        { path: "mypage/privacy/edit", element: <EditPrivacy /> },
         { path: "mypage/scraps", element: <MyScraps /> },
         { path: "mypage/diaries", element: <MyDiaries /> },
     ],

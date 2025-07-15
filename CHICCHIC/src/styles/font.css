@@ -7,14 +7,14 @@
 }
 
 @font-face {
-  font-family: 'Crimson';
-  src: url('/fonts/CrimsonText-SemiBold.ttf') format('truetype');
-  font-weight: 400 700;
+  font-family: "Crimson-normal";
+  src: url("/fonts/CrimsonText-Regular.ttf") format("truetype");
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
-/* 개별 폰트 클래스들 */
+/* 개별 폰트 클래스 */
 .font-pretendard {
   font-family: "Pretendard", ui-sans-serif, system-ui, sans-serif;
 }

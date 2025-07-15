@@ -84,11 +84,11 @@ const Navbar = () => {
               placeholder="Search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="border px-4 py-2 rounded-3xl w-73 focus:outline-none text-sm"
+              className="border px-4 py-1 rounded-3xl w-70 focus:outline-none text-sm"
               style={{ borderColor: '#F7F4EF', color: '#F7F4EF', backgroundColor: 'transparent' }}
             />
             <button className="absolute right-3 top-1/2 transform -translate-y-1/2">
-              <svg className="w-4 h-4 cursor-pointer" style={{ color: '#F7F4EF' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-3 cursor-pointer" style={{ color: '#F7F4EF' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </button>

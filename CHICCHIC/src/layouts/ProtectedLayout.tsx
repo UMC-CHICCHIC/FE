@@ -1,9 +1,16 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, Navigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
-const PublicLayout = () => {
+const ProtectedLayout = () => {
+  // 인증 상태 확인 로직 추가
+  const isAuthenticated = true
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />
+  }
+
   return (
     <div className="bg-[#F7F4EF] min-h-screen flex flex-col">
       <Navbar />
@@ -15,4 +22,4 @@ const PublicLayout = () => {
   )
 }
 
-export default PublicLayout
+export default ProtectedLayout

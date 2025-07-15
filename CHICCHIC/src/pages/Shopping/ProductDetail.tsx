@@ -3,9 +3,9 @@ import perfumeImg from "../../assets/images/samplePerfumeImg.png";
 import note1Img from "../../assets/images/sampleNote1.png";
 import note2Img from "../../assets/images/sampleNote2.png";
 import note3Img from "../../assets/images/sampleNote3.png";
-import { ProductAccordion } from "../../component/Product/ProductAccordion";
-import { ProductAccordionItem } from "../../component/Product/ProductAccordionItem";
-import ProductReviews from "../../component/Product/ProductReviews";
+import { ProductAccordion } from "../../components/Product/ProductAccordion";
+import { ProductAccordionItem } from "../../components/Product/ProductAccordionItem";
+import ProductReviews from "../../components/Product/ProductReviews";
 import BookmarkIcon from "../../assets/icons/Bookmark.svg";
 
 const accordionItmes = [

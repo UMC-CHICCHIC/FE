@@ -1,28 +1,18 @@
-/* <<<<<<< HEAD  애기 */
 @import "tailwindcss";
 @import "tailwindcss/utilities";
 
 /* Pretendard 폰트 설정 */
 @font-face {
-  font-family: "Pretendard";
-  src: url("./assets/fonts/Pretendard-Regular.otf") format("opentype");
-  font-weight: 400;
+  font-family: 'Pretendard';
+  src: url('/fonts/PretendardVariable.woff2') format('woff2');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
-@font-face {
-  font-family: "Pretendard";
-  src: url("./assets/fonts/Pretendard-Light.otf") format("opentype");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* CrimsonText 폰트 설정 */
 @font-face {
   font-family: "CrimsonText";
-  src: url("./assets/fonts/CrimsonText-Regular.ttf") format("truetype");
+  src: url("/fonts/CrimsonText-Regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -32,8 +22,11 @@
 body {
   font-family: "CrimsonText", "Pretendard", ui-sans-serif, system-ui, sans-serif;
 }
-/* =======
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
->>>>>>> develop */
+
+.font-pretendard {
+  font-family: "Pretendard", ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-crimson {
+  font-family: "Crimson", serif;
+}

@@ -1,8 +1,22 @@
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+// <<<<<<< HEAD
+module.exports = {
+  content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        crimson: ["CrimsonText", "ui-crimson-serif", "system-ui"],
+        pretendard: ["Pretendard", "sans-serif"],
+      },
+    },
   },
-  plugins: [],
 };
+// =======
+// /** @type {import('tailwindcss').Config} */
+// export default {
+//   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+//   theme: {
+//     extend: {},
+// >>>>>>> develop
+//   },
+//   plugins: [],
+// };

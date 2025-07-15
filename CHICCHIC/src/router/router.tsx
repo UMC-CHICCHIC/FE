@@ -48,7 +48,7 @@ export const router = createBrowserRouter([
       { path: "privacy-policy", element: <PrivacyPolicy /> },
       { path: "terms", element: <Terms />  },
       { path: "contact", element: <Contact />  },
-      
+
     ],
   },
 ]);

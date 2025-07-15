@@ -1,8 +1,7 @@
 import "../index.css";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import DiaryHome from "../pages/Community/PerfumeDiary/DiaryHome";
 import NewDiary from "../pages/Community/PerfumeDiary/NewDiary";
-// import DiaryDetail from "../pages/Community/PerfumeDiary/DiaryDetail";
 import PublicLayout from "../layouts/PublicLayout";
 import ProductDetail from "../pages/Shopping/ProductDetail.tsx";
 import ShoppingHome from "../pages/Shopping/ShoppingHome.tsx";
@@ -13,8 +12,13 @@ import Signup from "../pages/SignUp.tsx";
 import PrivacyPolicy from "../pages/Footer/PrivacyPolicy.tsx";
 import Terms from "../pages/Footer/Terms.tsx";
 import Contact from "../pages/Footer/contact.tsx";
+import ProtectedLayout from "../layouts/ProtectedLayout.tsx";
+import Profile from "../pages/Mypage/Profile.tsx";
+import Privacy from "../pages/Mypage/Privacy.tsx";
+import MyScraps from "../pages/Mypage/MyScraps.tsx";
+import MyDiaries from "../pages/Mypage/MyDiaries.tsx";
 
-export const router = createBrowserRouter([
+const publicRoutes: RouteObject[] = [
   {
     path: "/",
     element: <PublicLayout />,
@@ -51,4 +55,25 @@ export const router = createBrowserRouter([
 
     ],
   },
-]);
+];
+
+const protectedRoutes: RouteObject[] = [
+    {
+      element: <ProtectedLayout />,
+      children: [
+        {
+        path: "mypage",
+        children: [
+          { index: true, element: <Profile /> }, // /mypage
+          { path: "privacy", element: <Privacy /> }, // /mypage/privacy
+          { path: "scraps", element: <MyScraps /> }, // /mypage/scraps
+          { path: "diaries", element: <MyDiaries /> }, // /mypage/diaries
+        ],
+      },
+    ],
+  },
+];
+
+const router = createBrowserRouter([...publicRoutes, ...protectedRoutes]);
+
+export default router;

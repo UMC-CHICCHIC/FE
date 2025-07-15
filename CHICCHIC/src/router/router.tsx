@@ -4,8 +4,8 @@ import DiaryHome from "../pages/Community/PerfumeDiary/DiaryHome";
 import NewDiary from "../pages/Community/PerfumeDiary/NewDiary";
 // import DiaryDetail from "../pages/Community/PerfumeDiary/DiaryDetail";
 import PublicLayout from "../layouts/PublicLayout";
-import ProductDetail from "../pages/Shopping/ProductDetail.tsx";
-import ShoppingHome from "../pages/\bShopping/ShoppingHome.tsx";
+import ProductDetail from "../pages/Shopping/ProductDetail.tsx";
+import ShoppingHome from "../pages/Shopping/ShoppingHome.tsx";
 
 export const router = createBrowserRouter([
   {

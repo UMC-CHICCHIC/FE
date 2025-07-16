@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import mainlogo from'../assets/images/main-logo.png'
-import myhomelogo from'../assets/images/myhome-logo.png'
-import scraplogo from'../assets/images/scrap-logo.png'
+import mainlogo from'../assets/icons/main-logo.svg'
+import myhomelogo from'../assets/icons/myhome-logo.svg'
+import scraplogo from'../assets/icons/scrap-logo.svg'
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState('')

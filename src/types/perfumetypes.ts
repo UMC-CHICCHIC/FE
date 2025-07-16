@@ -1,4 +1,4 @@
-import type { Perfume } from '../types/perfumes';
+import type { Perfume } from './perfumes';
 
 export const perfumes: Perfume[] = [
   {

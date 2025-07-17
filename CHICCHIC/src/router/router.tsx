@@ -16,8 +16,8 @@ import ProtectedLayout from "../layouts/ProtectedLayout.tsx";
 import Profile from "../pages/Mypage/Profile.tsx";
 import Privacy from "../pages/Mypage/Privacy.tsx";
 import MyScraps from "../pages/Mypage/MyScraps.tsx";
-import MyDiaries from "../pages/Mypage/MyDiaries.tsx";
 import Test from "../pages/PersonalPerfume/Test.tsx";
+import CommunityHome from "../pages/Community/CommunityHome.tsx";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -32,6 +32,7 @@ const publicRoutes: RouteObject[] = [
       {
         path: "community",
         children: [
+          { index: true, element: <CommunityHome /> },
           {
             path: "diary",
             children: [
@@ -73,7 +74,6 @@ const protectedRoutes: RouteObject[] = [
           { index: true, element: <Profile /> }, // /mypage
           { path: "privacy", element: <Privacy /> }, // /mypage/privacy
           { path: "scraps", element: <MyScraps /> }, // /mypage/scraps
-          { path: "diaries", element: <MyDiaries /> }, // /mypage/diaries
         ],
       },
     ],

@@ -1,8 +1,8 @@
 const CommunityHome = () => {
   return (
-    <>
-      <div></div>
-    </>
+    <div>
+      <div>CommunityHome</div>
+    </div>
   );
 };
 

@@ -57,10 +57,10 @@ const publicRoutes: RouteObject[] = [
 ];
 
 const protectedRoutes: RouteObject[] = [
-    {
-      element: <ProtectedLayout />,
-      children: [
-        {
+  {
+    element: <ProtectedLayout />,
+    children: [
+      {
         path: "mypage",
         children: [
           { index: true, element: <Profile /> }, // /mypage

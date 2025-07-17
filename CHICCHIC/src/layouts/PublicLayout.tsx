@@ -12,6 +12,7 @@ const PublicLayout = () => {
   return (
     <div className="bg-[#F7F4EF] min-h-screen flex flex-col">
       <Navbar />
+      {isCommunityPage && <CommunityTabBar />}
       <main className="flex-1">
         <Outlet />
       </main>

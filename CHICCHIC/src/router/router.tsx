@@ -18,6 +18,10 @@ import Privacy from "../pages/Mypage/Privacy.tsx";
 import MyScraps from "../pages/Mypage/MyScraps.tsx";
 import Test from "../pages/PersonalPerfume/Test.tsx";
 import CommunityHome from "../pages/Community/CommunityHome.tsx";
+import CounselingHome from "../pages/Community/PerfumeCounseling/CounselingHome.tsx";
+import NewCounseling from "../pages/Community/PerfumeCounseling/NewCounseling.tsx";
+import CounselingList from "../pages/Community/PerfumeCounseling/CounselingList.tsx";
+import CounselingDetail from "../pages/Community/PerfumeCounseling/CounselingDetail.tsx";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -34,6 +38,20 @@ const publicRoutes: RouteObject[] = [
         children: [
           { index: true, element: <CommunityHome /> },
           {
+            path: "recommendation",
+            children: [
+              { index: true, element: <CounselingHome /> },
+              { path: "new", element: <NewCounseling /> },
+              {
+                path: "list",
+                children: [
+                  { index: true, element: <CounselingList /> },
+                  { path: ":postId", element: <CounselingDetail /> },
+                ],
+              },
+            ],
+          },
+          {
             path: "diary",
             children: [
               { index: true, element: <DiaryHome /> }, // /community/diary
@@ -47,7 +65,7 @@ const publicRoutes: RouteObject[] = [
         path: "shopping",
         children: [
           { index: true, element: <ShoppingHome /> }, // /shopping
-          { path: ":productId", element: <ProductDetail /> }, // /shopping/:productId
+          { path: ":perfumeId", element: <ProductDetail /> }, // /shopping/:productId
         ],
       },
       {

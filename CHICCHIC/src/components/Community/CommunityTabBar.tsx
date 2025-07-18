@@ -7,6 +7,7 @@ export default function CommunityTabBar() {
         <li>
           <NavLink
             to="/community"
+            end
             className={({ isActive }) =>
               isActive ? "text-[#66191F] font-medium" : ""
             }
@@ -16,7 +17,7 @@ export default function CommunityTabBar() {
         </li>
         <li>
           <NavLink
-            to="/community/counseling"
+            to="/community/recommendation"
             className={({ isActive }) =>
               isActive ? "text-[#66191F] font-medium" : ""
             }

@@ -1,8 +1,8 @@
 import "../index.css";
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
-import DiaryHome from "../pages/Community/PerfumeDiary/DiaryHome.tsx";
-import NewDiary from "../pages/Community/PerfumeDiary/NewDiary.tsx";
-import PublicLayout from "../layouts/PublicLayout.tsx";
+import DiaryHome from "../pages/Community/PerfumeDiary/DiaryHome";
+import NewDiary from "../pages/Community/PerfumeDiary/NewDiary";
+import PublicLayout from "../layouts/PublicLayout";
 import ProductDetail from "../pages/Shopping/ProductDetail.tsx";
 import ShoppingHome from "../pages/Shopping/ShoppingHome.tsx";
 import NotFound from "../pages/NotFound.tsx";
@@ -68,6 +68,7 @@ const publicRoutes: RouteObject[] = [
           { path: ":perfumeId", element: <ProductDetail /> }, // /shopping/:productId
         ],
       },
+
       {
         path: "personal-perfume",
         children: [

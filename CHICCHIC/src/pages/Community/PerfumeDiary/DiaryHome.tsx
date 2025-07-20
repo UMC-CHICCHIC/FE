@@ -77,7 +77,7 @@ const PerfumePage = () => {
         <main className="w-[95%] max-w-4xl mx-auto p-8 bg-[#F9F5F2]">
           {/* 2-1. 공개 게시글 */}
           <section className="mb-12">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center justify-between mb-4">
               <h2 className="text-[2.5rem] font-bold text-[#AB3130]">
                 공개 게시글
               </h2>
@@ -132,7 +132,7 @@ const PerfumePage = () => {
 
           {/* 2-2. 나의 향수 일기장 */}
           <section>
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex items-center justify-between mb-4">
               <h2 className="text-[2.5rem] font-bold text-[#AB3130]">
                 나의 향수 일기장
               </h2>

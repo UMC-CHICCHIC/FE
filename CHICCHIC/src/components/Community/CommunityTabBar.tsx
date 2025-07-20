@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 
 export default function CommunityTabBar() {
   return (
-    <nav className="bg-white text-sm font-semibold border-b border-b-[#AB3130] sticky top-[88px] z-10">
+    <nav className="bg-white text-sm border-b border-[#AB3130] sticky top-[88px] z-40">
       <ul className="flex justify-around items-center text-[#606472] py-3 space-x-8 font-[pretendard] font-light text-lg ">
         <li>
           <NavLink

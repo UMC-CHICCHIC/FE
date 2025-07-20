@@ -66,7 +66,7 @@ const NewDiary = () => {
 
         {/* 작성 완료 버튼 */}
         <button
-          className="block mx-auto w-[50%] h-[82px] rounded-full bg-[#AB3130] text-[#FFFFFF] text-white text-[28px] font-bold transition-colors border-none hover:bg-[#992a29]"
+          className="block mx-auto w-[50%] h-[82px] rounded-full bg-[#AB3130] text-white text-[28px] font-bold transition-colors border-none hover:bg-[#992a29]"
           onClick={() => alert("작성 완료!")}
         >
           작성 완료하기

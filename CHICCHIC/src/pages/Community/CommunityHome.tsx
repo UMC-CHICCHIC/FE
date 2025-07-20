@@ -1,12 +1,12 @@
-import CommunityMainImage from "../../../public/communityMain.svg";
+import CommunityMainImage from "/communityMain.svg";
 import RightArrow from "../../assets/icons/arrowRight.svg";
 import SamplePerfumeImg2 from "../../assets/images/samplePerfumeImg2.svg";
 
 const CommunityHome = () => {
   return (
     <>
-      <section className="relative w-full h-[60vh] overflow-hidden">
-        {/* 배경 이미지 */}
+      <section className="relative w-full pt-[136px] h-[80vh]">
+        {/* 상단 배너 */}
         <img
           src={CommunityMainImage}
           alt="background"
@@ -35,7 +35,7 @@ const CommunityHome = () => {
           </span>
           <a
             className="flex justify-center gap-3 text-sm sm:text-base text-[#AB3130]"
-            href=""
+            href="/community/recommendation"
           >
             추천 상담소 바로가기
             <img src={RightArrow} width={6} alt="" />
@@ -109,7 +109,7 @@ const CommunityHome = () => {
             향수에 대한 다양한 이야기를 담았어요.
           </span>
           <a
-            href=""
+            href="#"
             className="flex justify-center gap-3 text-sm sm:text-base font-light text-[#AB3130]"
           >
             향수 이야기에서 더 다양한 소식 확인하기

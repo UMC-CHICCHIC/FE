@@ -62,7 +62,7 @@ const PerfumeStory: React.FC = () => {
               }
               onClick={() => handleCardClick(post.id)}
             >
-              <div className="h-120 flex items-center justify-center">
+              <div className="h-[50vh] flex items-center justify-center">
                 <img
                   src={post.imageUrl}
                   alt={post.imageAlt}

@@ -1,69 +1,41 @@
-# React + TypeScript + Vite
+=======
+# 🌐 Git-flow
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- **main**: 프로젝트가 최종적으로 배포되는 브랜치
+- **develop**: 다음 출시 버전을 개발하는 브랜치
+- **feature**: 기능을 개발하는 브랜치
 
-Currently, two official plugins are available:
+# 📌 Git branch 규칙
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 개인 작업은 꼭 feature 브랜치에서 하기
+- 모든 작업 시작 전 develop에서 pull 받은 후 feature 브랜치에서 작업 시작
+- 작업 완료 후 feature 브랜치에서 PR로 develop에 merge
+- 프로젝트 완료 후 main으로 merge
 
-## Expanding the ESLint configuration
+# 📝 Feature Branch 네이밍
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- feature/이름-기능제목#이슈번호
+- 예: feature/krong-login#1
+- develop merge 전 PR reviewers 팀원 1명 이상 설정 후 approve
+- PR 후 팀원 공지
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# 🎯 Commit Convention
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- 커밋 메시지: #issue number + 깃모지 + 소문자 태그: 메시지
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Commit Tags
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+🎉 start: Start New Project [:tada:]  
+✨ feat: 새로운 기능 추가 [:sparkles:]  
+🐛 fix: 버그 수정 [:bug:]  
+🎨 design: CSS/UI 디자인 변경 [:art:]  
+♻️ refactor: 코드 리팩토링 [:recycle:]  
+🔧 settings: 설정 파일 변경 [:wrench:]  
+🗃️ comment: 주석 추가/변경 [:card_file_box:]  
+➕ dependency/plugin: 라이브러리/플러그인 추가 [:heavy_plus_sign:]  
+📝 docs: 문서 수정 [:memo:]  
+🔀 merge: 브랜치 병합 [:twisted_rightwards_arrows:]  
+🚀 deploy: 배포 [:rocket:]  
+🚚 rename: 파일/폴더명 수정/이동 [:truck:]  
+🔥 remove: 파일 삭제 [:fire:]  
+⏪️ revert: 이전 버전으로 롤백 [:rewind:]

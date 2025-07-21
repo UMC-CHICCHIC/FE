@@ -1,20 +1,56 @@
 import "../index.css";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import DiaryHome from "../pages/Community/PerfumeDiary/DiaryHome";
 import NewDiary from "../pages/Community/PerfumeDiary/NewDiary";
-// import DiaryDetail from "../pages/Community/PerfumeDiary/DiaryDetail";
 import PublicLayout from "../layouts/PublicLayout";
-import ProductDetail from "../pages/Shopping/ProductDetail.tsx";
-import ShoppingHome from "../pages/\bShopping/ShoppingHome.tsx";
+import ProductDetail from "../pages/Shopping/ProductDetail.tsx";
+import ShoppingHome from "../pages/Shopping/ShoppingHome.tsx";
+import NotFound from "../pages/NotFound.tsx";
+import Home from "../pages/Home.tsx";
+import Login from "../pages/Login.tsx";
+import Signup from "../pages/SignUp.tsx";
+import PrivacyPolicy from "../pages/Footer/PrivacyPolicy.tsx";
+import Terms from "../pages/Footer/Terms.tsx";
+import Contact from "../pages/Footer/contact.tsx";
+import ProtectedLayout from "../layouts/ProtectedLayout.tsx";
+import Profile from "../pages/Mypage/Profile.tsx";
+import Privacy from "../pages/Mypage/Privacy.tsx";
+import MyScraps from "../pages/Mypage/MyScraps.tsx";
+import Test from "../pages/PersonalPerfume/Test.tsx";
+import CommunityHome from "../pages/Community/CommunityHome.tsx";
+import CounselingHome from "../pages/Community/PerfumeCounseling/CounselingHome.tsx";
+import NewCounseling from "../pages/Community/PerfumeCounseling/NewCounseling.tsx";
+import CounselingList from "../pages/Community/PerfumeCounseling/CounselingList.tsx";
+import CounselingDetail from "../pages/Community/PerfumeCounseling/CounselingDetail.tsx";
 
-export const router = createBrowserRouter([
+const publicRoutes: RouteObject[] = [
   {
     path: "/",
     element: <PublicLayout />,
+    errorElement: <NotFound />,
     children: [
+      { index: true, element: <Home /> },
+      { path: "login", element: <Login /> },
+      { path: "signup", element: <Signup /> },
+
       {
         path: "community",
         children: [
+          { index: true, element: <CommunityHome /> },
+          {
+            path: "recommendation",
+            children: [
+              { index: true, element: <CounselingHome /> },
+              { path: "new", element: <NewCounseling /> },
+              {
+                path: "list",
+                children: [
+                  { index: true, element: <CounselingList /> },
+                  { path: ":postId", element: <CounselingDetail /> },
+                ],
+              },
+            ],
+          },
           {
             path: "diary",
             children: [
@@ -29,9 +65,40 @@ export const router = createBrowserRouter([
         path: "shopping",
         children: [
           { index: true, element: <ShoppingHome /> }, // /shopping
-          { path: ":productId", element: <ProductDetail /> }, // /shopping/:productId
+          { path: ":perfumeId", element: <ProductDetail /> }, // /shopping/:productId
+        ],
+      },
+
+      {
+        path: "personal-perfume",
+        children: [
+          { path: "test", element: <Test /> }, // /personal-perfume/test
+        ],
+      },
+
+      { path: "privacy-policy", element: <PrivacyPolicy /> },
+      { path: "terms", element: <Terms /> },
+      { path: "contact", element: <Contact /> },
+    ],
+  },
+];
+
+const protectedRoutes: RouteObject[] = [
+  {
+    element: <ProtectedLayout />,
+    children: [
+      {
+        path: "mypage",
+        children: [
+          { index: true, element: <Profile /> }, // /mypage
+          { path: "privacy", element: <Privacy /> }, // /mypage/privacy
+          { path: "scraps", element: <MyScraps /> }, // /mypage/scraps
         ],
       },
     ],
   },
-]);
+];
+
+const router = createBrowserRouter([...publicRoutes, ...protectedRoutes]);
+
+export default router;

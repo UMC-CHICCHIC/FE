@@ -9,10 +9,27 @@ interface Post {
   date: string;
 }
 
-const dummyPosts: Post[] = [
+// 데모 포스트 양식
+const recommendPosts: Post[] = [
   {
     imageUrl: "/sample-image.png",
+    title: "추천해요",
+    author: "닉네임",
+    profileImage: "/profile.png",
+    date: "2025.07.01.",
+  },
+  {
     title: "제목제목제목제목",
+    author: "닉네임",
+    date: "2025.07.01.",
+  },
+];
+
+// 데모 포스트 양식
+const recommendedPosts: Post[] = [
+  {
+    imageUrl: "/sample-image.png",
+    title: "추천받아요",
     author: "닉네임",
     profileImage: "/profile.png",
     date: "2025.07.01.",
@@ -26,7 +43,7 @@ const dummyPosts: Post[] = [
 
 const PerfumeCounselingHome = () => {
   return (
-    <div className="bg-[#F9F5F2]">
+    <div className="bg-[#F7F4EF]">
       {/* 상단 배너 */}
       <section className="relative w-full h-[80vh] overflow-hidden">
         <img
@@ -46,54 +63,69 @@ const PerfumeCounselingHome = () => {
       </section>
 
       {/* 콘텐츠 섹션 */}
-      <main className="w-[95%] max-w-5xl mx-auto py-16">
-        {/* 추천 받아요 */}
-        <PostSection title="추천 받아요! 최근 게시글" posts={dummyPosts} />
-
-        {/* 추천해요 */}
-        <PostSection title="추천해요! 최근 게시글" posts={dummyPosts} />
-      </main>
+      <section className="w-[90%] max-w-5xl font-[pretendard] mx-auto py-16">
+        <PostSection
+          title="추천 받아요! 최근 게시글"
+          posts={recommendedPosts}
+          showMore={true}
+        />
+        <PostSection
+          title="추천해요! 최근 게시글"
+          posts={recommendPosts}
+          showMore={false}
+        />
+      </section>
     </div>
   );
 };
 
 export default PerfumeCounselingHome;
 
-// 게시글 섹션 컴포넌트
-const PostSection = ({ title, posts }: { title: string; posts: Post[] }) => {
+// 게시글 섹션 컴포넌트 데모
+const PostSection = ({
+  title,
+  posts,
+  showMore,
+}: {
+  title: string;
+  posts: Post[];
+  showMore: boolean;
+}) => {
   return (
     <section className="mb-14">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-[1.8rem] font-semibold text-[#AB3130]">{title}</h2>
-        <a
-          href="#"
-          className="flex items-center justify-center gap-3 text-[#AB3130] text-sm sm:text-base"
-        >
-          더보기
-          <img src={RightArrow} width={6} alt="" />
-        </a>
+        <h2 className="text-[28px] font-semibold text-[#AB3130]">{title}</h2>
+        {showMore && (
+          <a
+            href="/community/recommendation/list"
+            className="flex items-center justify-center gap-3 text-[#AB3130] text-sm sm:text-base"
+          >
+            더보기
+            <img src={RightArrow} width={6} alt="" />
+          </a>
+        )}
       </div>
       <ul className="space-y-4">
         {posts.map((post, index) => (
           <li
             key={index}
-            className="flex justify-between items-center border-b border-[#AB3130] pt-4"
+            className="flex justify-between items-center border-b border-[#AB3130] py-4"
           >
             <div className="flex items-center gap-4">
               {post.imageUrl ? (
                 <img
                   src={post.imageUrl}
                   alt="post image"
-                  className="object-cover w-24 h-24 rounded-xl"
+                  className="object-cover h-24 w-30 rounded-xl"
                 />
               ) : (
-                <div className="w-24 h-24 bg-gray-300 rounded-xl"></div>
+                <div className="h-24 bg-gray-300 w-30 rounded-xl"></div>
               )}
-              <div>
+              <div className="flex flex-col gap-4">
                 <h3 className="text-[#AB3130] font-semibold text-lg mb-2">
                   {post.title}
                 </h3>
-                <div className="flex items-center text-sm text-gray-700">
+                <div className="flex items-center text-sm text-[#66191F]">
                   <img
                     src={post.profileImage || "/profile.png"}
                     alt="프로필"
@@ -103,7 +135,7 @@ const PostSection = ({ title, posts }: { title: string; posts: Post[] }) => {
                 </div>
               </div>
             </div>
-            <span className="text-sm text-gray-500">{post.date}</span>
+            <span className="text-sm text-[#66191F]">{post.date}</span>
           </li>
         ))}
       </ul>

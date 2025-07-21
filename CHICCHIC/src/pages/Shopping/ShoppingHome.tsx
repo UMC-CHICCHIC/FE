@@ -5,7 +5,6 @@ import LeftArrowIcon from "../../assets/icons/arrowLeft.svg";
 import RightArrowIcon from "../../assets/icons/arrowRight.svg";
 
 const ShoppingHome = () => {
-  // const [filter, setFilter] = useState();
   const [productPage, setProductPage] = useState(1);
 
   // 프로토타입용
@@ -20,7 +19,7 @@ const ShoppingHome = () => {
   }, [productPage, totalPages]);
 
   return (
-    <div className="flex flex-col items-center p-4 space-y-8 bg-[#F7F4EF]">
+    <div className="flex flex-col min-h-screen items-center p-4 space-y-8 bg-[#F7F4EF]">
       {/* 상품 검색창 */}
       <section className="flex items-center w-full max-w-xl border rounded-full border-[#AB3130] px-4 py-2 my-14">
         <input
@@ -103,7 +102,7 @@ const ShoppingHome = () => {
           {[...Array(20)].map((_, idx) => (
             <div
               key={idx}
-              className="flex flex-col items-center justify-center w-40 h-60 bg-gray-300 text-[#333] text-lg"
+              className="flex flex-col items-center justify-center w-40 text-lg bg-gray-300 h-60"
             >
               상품
             </div>
@@ -111,7 +110,7 @@ const ShoppingHome = () => {
         </div>
       </section>
       {/* 페이지 네이션 */}
-      <div className="flex py-12 space-x-4">
+      <footer className="flex py-12 space-x-4">
         <button
           onClick={(): void => setProductPage((prev): number => prev - 1)}
           disabled={productPage === 1}
@@ -141,7 +140,7 @@ const ShoppingHome = () => {
         >
           <img src={RightArrowIcon} alt="leftArrow" width={10} />
         </button>
-      </div>
+      </footer>
     </div>
   );
 };

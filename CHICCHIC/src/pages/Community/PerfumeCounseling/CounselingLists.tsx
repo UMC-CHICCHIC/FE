@@ -67,7 +67,7 @@ const CounselingLists = () => {
       <section className="flex justify-center w-full border-[#AB3130] border-b">
         <div className="text-[#AB3130] flex flex-col items-center justify-center mb-12 w-[320px]">
           <p className="py-12 text-4xl font-semibold">향수 추천 상담소</p>
-          <span className="flex flex-col w-full gap-2 md:flex-row">
+          <div className="flex flex-col w-full gap-2 md:flex-row">
             <button
               className={`${
                 select === "recommended" ? "text-white bg-[#AB3130]" : ""
@@ -88,7 +88,7 @@ const CounselingLists = () => {
             >
               추천해요!
             </button>
-          </span>
+          </div>
         </div>
       </section>
       <section className="w-[90%] max-w-5xl font-[pretendard] mx-auto grow py-8">

@@ -47,6 +47,7 @@ const publicRoutes: RouteObject[] = [
                 children: [
                   { index: true, element: <CounselingLists /> },
                   { path: "detail", element: <CounselingDetail /> },
+                  { path: "new", element: <NewCounseling /> },
                 ],
               },
             ],

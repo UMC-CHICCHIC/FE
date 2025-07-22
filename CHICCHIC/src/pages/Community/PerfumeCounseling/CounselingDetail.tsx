@@ -1,5 +1,9 @@
 const CounselingDetail = () => {
-  return <></>;
+  return (
+    <div>
+      <section></section>
+    </div>
+  );
 };
 
 export default CounselingDetail;

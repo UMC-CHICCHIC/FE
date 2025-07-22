@@ -22,6 +22,7 @@ import CounselingHome from "../pages/Community/PerfumeCounseling/CounselingHome.
 import NewCounseling from "../pages/Community/PerfumeCounseling/NewCounseling.tsx";
 import CounselingList from "../pages/Community/PerfumeCounseling/CounselingList.tsx";
 import CounselingDetail from "../pages/Community/PerfumeCounseling/CounselingDetail.tsx";
+import PerfumeStory from "../pages/Community/PerfumeStory/PerfumeStory.tsx";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -58,6 +59,10 @@ const publicRoutes: RouteObject[] = [
               { path: "new", element: <NewDiary /> }, // /community/diary/new
               // { path: ":diaryId", element: <DiaryDetail /> }, // /community/diary/:diaryId
             ],
+          },
+          {
+            path: "story",
+            element: <PerfumeStory />,
           },
         ],
       },

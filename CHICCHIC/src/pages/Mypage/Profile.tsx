@@ -1,9 +1,13 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 export default function MyHome() {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
+  
+  // 닉네임 상태 관리 (API 연동 준비)
+  const [userNickname, setUserNickname] = useState("(닉네임)");
 
   const handleProfileClick = () => {
     navigate('/mypage');
@@ -62,7 +66,7 @@ export default function MyHome() {
         <div className="w-55 h-55 rounded-full bg-gray-300 flex items-center justify-center mb-6 mt-20">
         </div>
 
-        <div className="text-3xl mt-5 font-semibold mb-2">안녕하세요, (닉네임) 님!</div>
+        <div className="text-3xl mt-5 font-semibold mb-2">안녕하세요, {userNickname} 님!</div>
         <button 
           onClick={handleLogoutClick}
           className="text-base mt-2 underline text-[#AB3130] cursor-pointer bg-transparent border-none"
@@ -71,7 +75,7 @@ export default function MyHome() {
         </button>
 
         <div className="text-xl font-semibold mt-18">페이지 바로가기</div>
-        <div className="flex gap-35 mt-10 mb-45 text-xl font-light">
+        <div className="flex flex-col lg:flex-row gap-6 ml:gap-35 mt-7 mb-45 text-xl font-light">
           <button
             onClick={handleScrapsClick}
             className=" bg-[#AB3130] text-white px-20 py-3 rounded-full cursor-pointer hover:bg-[#8b2a25] transition-colors"

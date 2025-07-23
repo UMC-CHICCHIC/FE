@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
+import { Pencil } from "lucide-react";
 
 const Privacy = () => {
   const location = useLocation();
@@ -117,7 +118,7 @@ const Privacy = () => {
             onClick={handleImageClick}
             className="absolute bottom-2.5 right-0 w-8 h-8 bg-[#AB3130] rounded-full flex items-center justify-center hover:bg-[#8b2a25] transition-colors shadow-lg"
           >
-            <span className="text-white text-sm">✏️</span>
+            <Pencil size={14} className="text-white" />
           </button>
         </div>
         

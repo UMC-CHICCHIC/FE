@@ -29,7 +29,7 @@ const Login = () => {
   const handleSignup = () => {
     // 회원가입 페이지로 이동
     console.log('Navigate to signup');
-    // navigate('/signup'); // 실제 회원가입 페이지가 있을 때 사용
+    navigate('/signup');
   };
 
   const handleSocialLogin = (provider: string) => {

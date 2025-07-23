@@ -66,7 +66,7 @@ const Navbar = () => {
 
         {/* 아이콘들 - 항상 표시 */}
         <div className="flex items-center gap-4 flex-shrink-0">
-          <button onClick={() => go("/scrap")} className="hover:text-red-200 cursor-pointer">
+          <button onClick={() => go('/mypage/scraps')} className="hover:text-red-200 cursor-pointer">
             <img src={scraplogo} className="w-[18px] h-[24px]" alt="scrap" />
           </button>
           <button onClick={() => go("/mypage")} className="hover:text-red-200 cursor-pointer">

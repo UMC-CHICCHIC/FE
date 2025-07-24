@@ -762,7 +762,7 @@ const MyScraps = () => {
             {scraps.map((perfume, index) => (
               <div key={`${perfume.id}-${index}`} className="overflow-hidden cursor-pointer">
                 {/* 이미지 */}
-                <div className="aspect-[3/4] w-full overflow-hidden bg-[#F7F4EF]">
+                <div className="aspect-[4/5] w-full overflow-hidden bg-[#F7F4EF]">
                   <img
                     src={perfume.imageUrl}
                     alt={perfume.name}
@@ -772,7 +772,7 @@ const MyScraps = () => {
                 {/* 텍스트 */}
                 <div className="p-2 pt-4 pb-6 text-left">
                   <div className="text-lg mb-1 font-extralight">{perfume.brand}</div>
-                  <div className="flex justify-between items-end">
+                  <div className="sm:flex sm:justify-between">
                     <div className="text-2xl font-semibold mb-2">{perfume.name}</div>
                     <div className="text-lg font-extralight">{perfume.volume}</div>
                   </div>

@@ -31,7 +31,7 @@ const NewCounseling = () => {
             <button
               className={`${
                 select === "recommend" ? "text-white bg-[#AB3130]" : ""
-              } flex flex-1 justify-center items-center border rounded-full px-8 py-4 cursor-pointer border-[#AB3130]`}
+              } flex flex-1 justify-center items-center border rounded-full px-8 py-4 cursor-pointer border-[#AB3130] `}
               onClick={() => {
                 setSelect("recommend");
               }}
@@ -50,7 +50,7 @@ const NewCounseling = () => {
             placeholder="제목을 작성해주세요."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="items-center w-full py-6 px-8 bg-transparent text-[28px] border border-[#AB3130] rounded-[15px] placeholder:text-[#AB3130] placeholder:text-xl focus:outline-none "
+            className="items-center w-full py-6 px-8 bg-transparent text-xl border border-[#AB3130] rounded-[15px] placeholder:text-[#AB3130] placeholder:text-xl focus:outline-none "
           />
         </section>
 
@@ -64,9 +64,9 @@ const NewCounseling = () => {
             rows={20}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="resize-none w-full py-6 px-8 bg-transparent border-none text-md placeholder:text-[#AB3130] placeholder:text-xl focus:outline-none"
+            className="resize-none w-full py-6 px-8 bg-transparent border-none text-xl placeholder:text-[#AB3130] placeholder:text-xl focus:outline-none"
           />
-          <div className="w-full py-[12px] px-8 border-t border-[#AB3130]">
+          <div className="w-full py-[12px] border-t border-[#AB3130]">
             <button
               onClick={() => alert("이미지 첨부 기능")}
               className="flex items-center gap-[16px] px-[40px] font-semibold bg-transparent border-none"

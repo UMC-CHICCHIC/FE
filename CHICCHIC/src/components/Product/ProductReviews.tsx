@@ -33,6 +33,7 @@ const ProductReviews = () => {
             <textarea
               placeholder="리뷰 작성하기"
               className="resize-none placeholder-[#AB3130] border border-[#AB3130] rounded-xl font-[pretendard] text-md w-full min-h-60 font-light px-6 py-4 mb-6"
+              onChange={(e) => e.target.value}
             />
             <div className="flex justify-end flex-1 w-full">
               <button

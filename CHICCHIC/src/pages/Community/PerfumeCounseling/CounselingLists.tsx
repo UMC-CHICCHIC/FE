@@ -1,52 +1,48 @@
 import { useMemo, useState } from "react";
 import LeftArrowIcon from "../../../assets/icons/arrowLeft.svg";
 import RightArrowIcon from "../../../assets/icons/arrowRight.svg";
-
-interface Post {
-  imageUrl?: string;
-  profileImage?: string;
-  title: string;
-  author: string;
-  date: string;
-}
+import PostSection from "../../../components/Community/CounselingPostSection";
+import type { PostData } from "../../../types/post";
 
 // 데모 포스트 양식
-const recommendPosts: Post[] = [
+const recommendPosts: PostData[] = [
   {
-    imageUrl: "/sample-image.png",
+    postId: 101,
     title: "추천해요",
-    author: "닉네임",
-    profileImage: "/profile.png",
-    date: "2025.07.01.",
+    writer: "닉네임",
+    createdAt: "2025.07.01.",
+    image: "/sample-image.png",
   },
   {
+    postId: 102,
     title: "제목제목제목제목",
-    author: "닉네임",
-    date: "2025.07.01.",
+    writer: "닉네임",
+    createdAt: "2025.07.01.",
   },
 ];
 
 // 데모 포스트 양식
-const recommendedPosts: Post[] = [
+const recommendedPosts: PostData[] = [
   {
-    imageUrl: "/sample-image.png",
-    title: "추천받아요",
-    author: "닉네임",
-    profileImage: "/profile.png",
-    date: "2025.07.01.",
+    postId: 103,
+    title: "추천 받아요",
+    writer: "닉네임",
+    createdAt: "2025.07.01.",
+    image: "/sample-image.png",
   },
   {
+    postId: 104,
     title: "제목제목제목제목",
-    author: "닉네임",
-    date: "2025.07.01.",
+    writer: "닉네임",
+    createdAt: "2025.07.01.",
   },
 ];
 
 const CounselingLists = () => {
-  const [select, setSelect] = useState<"recommended" | "recommend">(
-    "recommended"
+  const [select, setSelect] = useState<"RECOMMENDED" | "RECOMMEND">(
+    "RECOMMENDED"
   );
-  const post = select === "recommended" ? recommendedPosts : recommendPosts;
+  const post = select === "RECOMMENDED" ? recommendedPosts : recommendPosts;
 
   const [productPage, setProductPage] = useState(1);
 
@@ -65,25 +61,25 @@ const CounselingLists = () => {
     // 추천 상담소 카테고리 섹션
     <div className="flex flex-col items-center bg-[#F7F4EF] font-[pretendard]">
       <section className="flex justify-center w-full border-[#AB3130] border-b">
-        <div className="text-[#AB3130] flex flex-col items-center justify-center mb-12 w-[320px]">
+        <div className="text-[#AB3130] flex flex-col items-center justify-center mb-12 mt-2 w-[320px]">
           <p className="py-12 text-4xl font-semibold">향수 추천 상담소</p>
           <div className="flex flex-col w-full gap-2 md:flex-row">
             <button
               className={`${
-                select === "recommended" ? "text-white bg-[#AB3130]" : ""
+                select === "RECOMMENDED" ? "text-white bg-[#AB3130]" : ""
               } flex flex-1 w-full justify-center items-center border rounded-full px-6 py-3 cursor-pointer border-[#AB3130]`}
               onClick={() => {
-                setSelect("recommended");
+                setSelect("RECOMMENDED");
               }}
             >
               추천 받아요!
             </button>
             <button
               className={`${
-                select === "recommend" ? "text-white bg-[#AB3130]" : ""
+                select === "RECOMMEND" ? "text-white bg-[#AB3130]" : ""
               } flex flex-1 w-full justify-center items-center border rounded-full px-6 py-3 cursor-pointer border-[#AB3130]`}
               onClick={() => {
-                setSelect("recommend");
+                setSelect("RECOMMEND");
               }}
             >
               추천해요!
@@ -92,7 +88,7 @@ const CounselingLists = () => {
         </div>
       </section>
       <section className="w-[90%] max-w-5xl font-[pretendard] mx-auto grow py-8">
-        <PostSection posts={post} />
+        <PostSection posts={post} category={select} />
       </section>
       {/* 페이지 네이션 */}
       <footer className="flex justify-center py-12 space-x-4 font-[crimsonText]">
@@ -131,45 +127,3 @@ const CounselingLists = () => {
 };
 
 export default CounselingLists;
-
-// 게시글 섹션 컴포넌트 데모
-const PostSection = ({ posts }: { posts: Post[] }) => {
-  return (
-    <section className="mb-14 text-[#66191F]">
-      <ul className="space-y-4">
-        {posts.map((post, index) => (
-          <li
-            key={index}
-            className="flex justify-between items-center border-b border-[#AB3130] py-4"
-          >
-            <div className="flex items-center gap-4">
-              {post.imageUrl ? (
-                <img
-                  src={post.imageUrl}
-                  alt="post image"
-                  className="object-cover h-24 w-30 rounded-xl"
-                />
-              ) : (
-                <div className="h-24 bg-gray-300 w-30 rounded-xl"></div>
-              )}
-              <div className="flex flex-col gap-4">
-                <h3 className="text-[#AB3130] font-semibold text-lg mb-2">
-                  {post.title}
-                </h3>
-                <div className="flex items-center text-sm">
-                  <img
-                    src={post.profileImage || "/profile.png"}
-                    alt="프로필"
-                    className="object-cover w-6 h-6 rounded-full"
-                  />
-                  <span className="ml-2">{post.author}</span>
-                </div>
-              </div>
-            </div>
-            <span className="text-sm">{post.date}</span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-};

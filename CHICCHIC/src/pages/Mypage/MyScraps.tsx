@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
+import SamplePerfumeImg from "../../assets/images/samplePerfumeImg.png";
 
 interface Perfume {
   id: number;
@@ -18,7 +19,7 @@ const MOCK_SCRAPS: Perfume[] = [
     brand: "딥디크",
     price: "138,000 ₩",
     volume: "75ml",
-    imageUrl: "https://dummyimage.com/300x300/ccc/fff&text=탐다오",
+    imageUrl: SamplePerfumeImg,
   },
   {
     id: 2,
@@ -761,11 +762,11 @@ const MyScraps = () => {
             {scraps.map((perfume, index) => (
               <div key={`${perfume.id}-${index}`} className="overflow-hidden cursor-pointer">
                 {/* 이미지 */}
-                <div className="aspect-[3/4] w-full overflow-hidden">
+                <div className="aspect-[3/4] w-full overflow-hidden bg-[#F7F4EF]">
                   <img
                     src={perfume.imageUrl}
                     alt={perfume.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain transition-transform duration-300 hover:scale-110 active:scale-105"
                   />
                 </div>
                 {/* 텍스트 */}

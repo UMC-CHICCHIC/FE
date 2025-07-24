@@ -65,15 +65,15 @@ const Privacy = () => {
   return (
     <div className="font-pretendard flex min-h-[calc(100vh-64px)] bg-transparent text-[#a8342f]">
       {/* 사이드 탭 */}
-      <div className="w-97 border-r border-[#AB3130] pt-20 flex flex-col">
+      <div className="w-91 border-r border-[#AB3130] pt-20 flex flex-col">
         <ul className="space-y-13 text-2xl text-[#AB3130] w-full">
           <li>
             <button 
               onClick={handleProfileClick}
               className={`block w-full text-center relative pr-5 py-2 cursor-pointer ${
                 currentPath === '/mypage' 
-                  ? 'font-bold border-r-4 border-[#AB3130] opacity-100' 
-                  : 'opacity-50 hover:opacity-75'
+                  ? 'font-semibold border-r-4 border-[#AB3130] opacity-100' 
+                  : 'font-semibold opacity-50 hover:opacity-75'
               }`}
             >
               프로필
@@ -84,8 +84,8 @@ const Privacy = () => {
               onClick={handlePrivacyClick}
               className={`block w-full text-center cursor-pointer ${
                 currentPath === '/mypage/privacy' 
-                  ? 'font-bold border-r-4 border-[#AB3130] opacity-100 py-2 ' 
-                  : 'opacity-50 hover:opacity-75'
+                  ? 'font-semibold border-r-4 border-[#AB3130] opacity-100 py-2 ' 
+                  : 'font-semibold opacity-50 hover:opacity-75'
               }`}
             >
               개인정보

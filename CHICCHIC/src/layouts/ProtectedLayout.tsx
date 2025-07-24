@@ -3,6 +3,7 @@ import { Outlet, Navigate, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CommunityTabBar from "../components/Community/CommunityTabBar";
+import ScrollTop from "../components/ScrollTop";
 
 const ProtectedLayout = () => {
   const location = useLocation();
@@ -18,6 +19,7 @@ const ProtectedLayout = () => {
 
   return (
     <div className="bg-[#F7F4EF] min-h-screen flex flex-col">
+      <ScrollTop />
       <Navbar />
       {isCommunityPage && <CommunityTabBar />}
       <main className="flex-1">

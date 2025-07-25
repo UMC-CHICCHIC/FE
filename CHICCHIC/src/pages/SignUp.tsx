@@ -15,8 +15,8 @@ export default function Signup() {
     // 로그인 페이지로 이동하거나 다른 처리
   };
   return (
-    <div className="flex justify-center items-start min-h-screen bg-gradient-to-br from-[#F7F4EF] to-[#BF7990] pt-24 pb-10">
-      <div className="bg-[#F7F4EF] w-full max-w-[800px] p-10 rounded-2xl" style={{boxShadow: '12px 12px 30px #893B3A'}}>
+    <div className="flex justify-center min-h-screen bg-gradient-to-br from-[#F7F4EF] to-[#BF7990] py-10">
+      <div className="bg-[#F7F4EF] w-full max-w-[800px] min-h-[600px] p-10 rounded-2xl" style={{boxShadow: '12px 12px 30px #893B3A'}}>
         <h1 className="text-[#AB3130] text-2xl font-bold mb-3">회원가입</h1>
         <p className="text-base text-[#66191F] mb-12">
           CHICCHIC 회원가입 후 다양한 서비스를 경험해보세요.

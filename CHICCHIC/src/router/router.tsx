@@ -22,6 +22,11 @@ import CounselingHome from "../pages/Community/PerfumeCounseling/CounselingHome.
 import NewCounseling from "../pages/Community/PerfumeCounseling/NewCounseling.tsx";
 import CounselingDetail from "../pages/Community/PerfumeCounseling/CounselingDetail.tsx";
 import CounselingLists from "../pages/Community/PerfumeCounseling/CounselingLists.tsx";
+import PerfumeStory from "../pages/Community/PerfumeStory/PerfumeStory.tsx";
+import PerfumeStoryEgypt from "../pages/Community/PerfumeStory/PerfumeStoryEgypt.tsx";
+import PerfumeStoryVase from "../pages/Community/PerfumeStory/PerfumeStoryVase.tsx";
+import PerfumeStoryLongevity from "../pages/Community/PerfumeStory/PerfumeStoryLongevity.tsx";
+import PerfumeStoryNote from "../pages/Community/PerfumeStory/PerfumeStoryNote.tsx";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -58,6 +63,16 @@ const publicRoutes: RouteObject[] = [
               { index: true, element: <DiaryHome /> }, // /community/diary
               { path: "new", element: <NewDiary /> }, // /community/diary/new
               // { path: ":diaryId", element: <DiaryDetail /> }, // /community/diary/:diaryId
+            ],
+          },
+          {
+            path: "story",
+            children: [
+              { index: true, element: <PerfumeStory /> },
+              { path: "ancient-egypt", element: <PerfumeStoryEgypt /> },
+              { path: "perfume-vs-eau", element: <PerfumeStoryVase /> },
+              { path: "perfume-longevity", element: <PerfumeStoryLongevity /> },
+              { path: "perfume-notes", element: <PerfumeStoryNote /> },
             ],
           },
         ],

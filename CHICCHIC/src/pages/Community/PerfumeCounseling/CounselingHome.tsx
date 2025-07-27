@@ -1,43 +1,39 @@
 import counselingMainImage from "/counselingHome.svg";
 import RightArrow from "../../../assets/icons/arrowRight.svg";
-
-interface Post {
-  imageUrl?: string;
-  profileImage?: string;
-  title: string;
-  author: string;
-  date: string;
-}
+import type { PostData } from "../../../types/post";
+import PostSection from "../../../components/Community/CounselingPostSection";
 
 // 데모 포스트 양식
-const recommendPosts: Post[] = [
+const recommendPosts: PostData[] = [
   {
-    imageUrl: "/sample-image.png",
+    postId: 101,
     title: "추천해요",
-    author: "닉네임",
-    profileImage: "/profile.png",
-    date: "2025.07.01.",
+    writer: "닉네임",
+    createdAt: "2025.07.01.",
+    image: "/sample-image.png",
   },
   {
+    postId: 102,
     title: "제목제목제목제목",
-    author: "닉네임",
-    date: "2025.07.01.",
+    writer: "닉네임",
+    createdAt: "2025.07.01.",
   },
 ];
 
 // 데모 포스트 양식
-const recommendedPosts: Post[] = [
+const recommendedPosts: PostData[] = [
   {
-    imageUrl: "/sample-image.png",
-    title: "추천받아요",
-    author: "닉네임",
-    profileImage: "/profile.png",
-    date: "2025.07.01.",
+    postId: 103,
+    title: "추천 받아요",
+    writer: "닉네임",
+    createdAt: "2025.07.01.",
+    image: "/sample-image.png",
   },
   {
+    postId: 104,
     title: "제목제목제목제목",
-    author: "닉네임",
-    date: "2025.07.01.",
+    writer: "닉네임",
+    createdAt: "2025.07.01.",
   },
 ];
 
@@ -64,81 +60,27 @@ const PerfumeCounselingHome = () => {
 
       {/* 콘텐츠 섹션 */}
       <section className="w-[90%] max-w-5xl font-[pretendard] mx-auto py-16">
-        <PostSection
-          title="추천 받아요! 최근 게시글"
-          posts={recommendedPosts}
-          showMore={true}
-        />
-        <PostSection
-          title="추천해요! 최근 게시글"
-          posts={recommendPosts}
-          showMore={false}
-        />
+        <div className="flex items-center justify-between">
+          <span className="text-[#AB3130] font-semibold text-2xl mb-2">
+            추천받아요! 최근 게시글
+          </span>
+          <a
+            href="/community/recommendation/list"
+            className="flex items-center justify-center gap-3 text-[#AB3130] text-sm sm:text-base"
+          >
+            더보기
+            <img src={RightArrow} width={6} alt="rightArrow" />
+          </a>
+        </div>
+        <PostSection posts={recommendedPosts} category="RECOMMENDED" />
+        <span className="text-[#AB3130] font-semibold text-2xl mb-2">
+          추천받아요! 최근 게시글
+        </span>
+
+        <PostSection posts={recommendPosts} category="RECOMMEND" />
       </section>
     </div>
   );
 };
 
 export default PerfumeCounselingHome;
-
-// 게시글 섹션 컴포넌트 데모
-const PostSection = ({
-  title,
-  posts,
-  showMore,
-}: {
-  title: string;
-  posts: Post[];
-  showMore: boolean;
-}) => {
-  return (
-    <section className="mb-14">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-[28px] font-semibold text-[#AB3130]">{title}</h2>
-        {showMore && (
-          <a
-            href="/community/recommendation/list"
-            className="flex items-center justify-center gap-3 text-[#AB3130] text-sm sm:text-base"
-          >
-            더보기
-            <img src={RightArrow} width={6} alt="" />
-          </a>
-        )}
-      </div>
-      <ul className="space-y-4">
-        {posts.map((post, index) => (
-          <li
-            key={index}
-            className="flex justify-between items-center border-b border-[#AB3130] py-4"
-          >
-            <div className="flex items-center gap-4">
-              {post.imageUrl ? (
-                <img
-                  src={post.imageUrl}
-                  alt="post image"
-                  className="object-cover h-24 w-30 rounded-xl"
-                />
-              ) : (
-                <div className="h-24 bg-gray-300 w-30 rounded-xl"></div>
-              )}
-              <div className="flex flex-col gap-4">
-                <h3 className="text-[#AB3130] font-semibold text-lg mb-2">
-                  {post.title}
-                </h3>
-                <div className="flex items-center text-sm text-[#66191F]">
-                  <img
-                    src={post.profileImage || "/profile.png"}
-                    alt="프로필"
-                    className="object-cover w-6 h-6 rounded-full"
-                  />
-                  <span className="ml-2">{post.author}</span>
-                </div>
-              </div>
-            </div>
-            <span className="text-sm text-[#66191F]">{post.date}</span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-};

@@ -1,31 +1,7 @@
 import CommunityMainImage from "/communityMain.svg";
 import RightArrow from "../../assets/icons/arrowRight.svg";
 import SamplePerfumeImg2 from "../../assets/images/samplePerfumeImg2.svg";
-
-// interface mockPost {
-//   postId: number;
-//   title: string;
-//   writer: string;
-//   createdAt: string;
-//   commentCount: number;
-// }
-
-// const CouselingData: mockPost[] = [
-//   {
-//     postId: 101,
-//     title: "여름에 어울리는 향 추천해주세요!",
-//     writer: "향잘알99",
-//     createdAt: "2025-07-05T14:32:00",
-//     commentCount: 4,
-//   },
-//   {
-//     postId: 101,
-//     title: "여름에 어울리는 향 추천해주세요!",
-//     writer: "향잘알99",
-//     createdAt: "2025-07-05T14:32:00",
-//     commentCount: 4,
-//   },
-// ];
+import { Link } from "react-router-dom";
 
 const CommunityHome = () => {
   return (
@@ -101,7 +77,9 @@ const CommunityHome = () => {
                 type="button"
                 className="border rounded-full p-2 w-[200px] bg-[#AB3130] text-[#F7F4EF] cursor-pointer"
               >
-                View Post
+                <Link to="/community/recommendation/list/:postId">
+                  View Post
+                </Link>
               </button>
             </div>
           </div>
@@ -120,7 +98,9 @@ const CommunityHome = () => {
             </div>
             <div className="flex justify-center">
               <button className="border rounded-full p-2 w-[200px] cursor-pointer bg-[#AB3130] text-[#F7F4EF]">
-                View Post
+                <Link to="/community/recommendation/list/:postId">
+                  View Post
+                </Link>
               </button>
             </div>
           </div>

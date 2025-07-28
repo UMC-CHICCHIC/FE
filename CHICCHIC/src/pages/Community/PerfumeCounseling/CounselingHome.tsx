@@ -1,32 +1,45 @@
 import counselingMainImage from "/counselingHome.svg";
 import RightArrow from "../../../assets/icons/arrowRight.svg";
+import type { PostData } from "../../../types/post";
+import PostSection from "../../../components/Community/CounselingPostSection";
 
-interface Post {
-  imageUrl?: string;
-  profileImage?: string;
-  title: string;
-  author: string;
-  date: string;
-}
-
-const dummyPosts: Post[] = [
+// 데모 포스트 양식
+const recommendPosts: PostData[] = [
   {
-    imageUrl: "/sample-image.png",
-    title: "제목제목제목제목",
-    author: "닉네임",
-    profileImage: "/profile.png",
-    date: "2025.07.01.",
+    postId: 101,
+    title: "추천해요",
+    writer: "닉네임",
+    createdAt: "2025.07.01.",
+    image: "/sample-image.png",
   },
   {
+    postId: 102,
     title: "제목제목제목제목",
-    author: "닉네임",
-    date: "2025.07.01.",
+    writer: "닉네임",
+    createdAt: "2025.07.01.",
+  },
+];
+
+// 데모 포스트 양식
+const recommendedPosts: PostData[] = [
+  {
+    postId: 103,
+    title: "추천 받아요",
+    writer: "닉네임",
+    createdAt: "2025.07.01.",
+    image: "/sample-image.png",
+  },
+  {
+    postId: 104,
+    title: "제목제목제목제목",
+    writer: "닉네임",
+    createdAt: "2025.07.01.",
   },
 ];
 
 const PerfumeCounselingHome = () => {
   return (
-    <div className="bg-[#F9F5F2]">
+    <div className="bg-[#F7F4EF]">
       {/* 상단 배너 */}
       <section className="relative w-full h-[80vh] overflow-hidden">
         <img
@@ -46,67 +59,28 @@ const PerfumeCounselingHome = () => {
       </section>
 
       {/* 콘텐츠 섹션 */}
-      <main className="w-[95%] max-w-5xl mx-auto py-16">
-        {/* 추천 받아요 */}
-        <PostSection title="추천 받아요! 최근 게시글" posts={dummyPosts} />
+      <section className="w-[90%] max-w-5xl font-[pretendard] mx-auto py-16">
+        <div className="flex items-center justify-between">
+          <span className="text-[#AB3130] font-semibold text-2xl mb-2">
+            추천받아요! 최근 게시글
+          </span>
+          <a
+            href="/community/recommendation/list"
+            className="flex items-center justify-center gap-3 text-[#AB3130] text-sm sm:text-base"
+          >
+            더보기
+            <img src={RightArrow} width={6} alt="rightArrow" />
+          </a>
+        </div>
+        <PostSection posts={recommendedPosts} category="RECOMMENDED" />
+        <span className="text-[#AB3130] font-semibold text-2xl mb-2">
+          추천받아요! 최근 게시글
+        </span>
 
-        {/* 추천해요 */}
-        <PostSection title="추천해요! 최근 게시글" posts={dummyPosts} />
-      </main>
+        <PostSection posts={recommendPosts} category="RECOMMEND" />
+      </section>
     </div>
   );
 };
 
 export default PerfumeCounselingHome;
-
-// 게시글 섹션 컴포넌트
-const PostSection = ({ title, posts }: { title: string; posts: Post[] }) => {
-  return (
-    <section className="mb-14">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-[1.8rem] font-semibold text-[#AB3130]">{title}</h2>
-        <a
-          href="#"
-          className="flex items-center justify-center gap-3 text-[#AB3130] text-sm sm:text-base"
-        >
-          더보기
-          <img src={RightArrow} width={6} alt="" />
-        </a>
-      </div>
-      <ul className="space-y-4">
-        {posts.map((post, index) => (
-          <li
-            key={index}
-            className="flex justify-between items-center border-b border-[#AB3130] pt-4"
-          >
-            <div className="flex items-center gap-4">
-              {post.imageUrl ? (
-                <img
-                  src={post.imageUrl}
-                  alt="post image"
-                  className="object-cover w-24 h-24 rounded-xl"
-                />
-              ) : (
-                <div className="w-24 h-24 bg-gray-300 rounded-xl"></div>
-              )}
-              <div>
-                <h3 className="text-[#AB3130] font-semibold text-lg mb-2">
-                  {post.title}
-                </h3>
-                <div className="flex items-center text-sm text-gray-700">
-                  <img
-                    src={post.profileImage || "/profile.png"}
-                    alt="프로필"
-                    className="object-cover w-6 h-6 rounded-full"
-                  />
-                  <span className="ml-2">{post.author}</span>
-                </div>
-              </div>
-            </div>
-            <span className="text-sm text-gray-500">{post.date}</span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-};

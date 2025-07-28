@@ -20,8 +20,8 @@ import Test from "../pages/PersonalPerfume/Test.tsx";
 import CommunityHome from "../pages/Community/CommunityHome.tsx";
 import CounselingHome from "../pages/Community/PerfumeCounseling/CounselingHome.tsx";
 import NewCounseling from "../pages/Community/PerfumeCounseling/NewCounseling.tsx";
-import CounselingList from "../pages/Community/PerfumeCounseling/CounselingList.tsx";
 import CounselingDetail from "../pages/Community/PerfumeCounseling/CounselingDetail.tsx";
+import CounselingLists from "../pages/Community/PerfumeCounseling/CounselingLists.tsx";
 import PerfumeStory from "../pages/Community/PerfumeStory/PerfumeStory.tsx";
 import PerfumeStoryEgypt from "../pages/Community/PerfumeStory/PerfumeStoryEgypt.tsx";
 import PerfumeStoryVase from "../pages/Community/PerfumeStory/PerfumeStoryVase.tsx";
@@ -52,8 +52,9 @@ const publicRoutes: RouteObject[] = [
               {
                 path: "list",
                 children: [
-                  { index: true, element: <CounselingList /> },
+                  { index: true, element: <CounselingLists /> },
                   { path: ":postId", element: <CounselingDetail /> },
+                  { path: "new", element: <NewCounseling /> },
                 ],
               },
             ],

@@ -1,6 +1,7 @@
 import CommunityMainImage from "/communityMain.svg";
 import RightArrow from "../../assets/icons/arrowRight.svg";
 import SamplePerfumeImg2 from "../../assets/images/samplePerfumeImg2.svg";
+import { Link } from "react-router-dom";
 
 const CommunityHome = () => {
   return (
@@ -72,8 +73,13 @@ const CommunityHome = () => {
               </div>
             </div>
             <div className="flex justify-center">
-              <button className="border rounded-full p-2 w-[200px] bg-[#AB3130] text-[#F7F4EF]">
-                View Post
+              <button
+                type="button"
+                className="border rounded-full p-2 w-[200px] bg-[#AB3130] text-[#F7F4EF] cursor-pointer"
+              >
+                <Link to="/community/recommendation/list/:postId">
+                  View Post
+                </Link>
               </button>
             </div>
           </div>
@@ -91,8 +97,10 @@ const CommunityHome = () => {
               </div>
             </div>
             <div className="flex justify-center">
-              <button className="border rounded-full p-2 w-[200px] bg-[#AB3130] text-[#F7F4EF]">
-                View Post
+              <button className="border rounded-full p-2 w-[200px] cursor-pointer bg-[#AB3130] text-[#F7F4EF]">
+                <Link to="/community/recommendation/list/:postId">
+                  View Post
+                </Link>
               </button>
             </div>
           </div>

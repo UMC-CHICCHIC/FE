@@ -32,13 +32,13 @@ export default function Home() {
           />
 
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-30">
-            <div className="flex md:translate-x-8 md:-translate-y-10">
+            <div className="flex md:-translate-x-20 md:-translate-y-10">
               {/* 왼쪽 텍스트 영역 */}
-              <div className="w-full md:w-1/2 text-center md:text-left py-16">
+              <div className="w-full md:w-1/2 text-left py-16">
                 <img
                   src={mainlogo2}
                   alt="CHICCHIC Brand Logo"
-                  className="w-30 h-30 md:w-60 md:h-60 object-contain mx-auto md:mx-0 md:-ml-20 mb-[-20px]"
+                  className="w-30 h-30 md:w-60 md:h-60 object-contain md:-ml-20 mb-[-20px]"
                   style={{ filter: 'brightness(0) saturate(100%) invert(29%) sepia(72%) saturate(1347%) hue-rotate(330deg) brightness(91%) contrast(94%)' }}
                 />
 
@@ -62,7 +62,7 @@ export default function Home() {
                   CHICCHIC에서 시작하세요.
                 </p>
                 
-                <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4 pt-8">
+                <div className="flex flex-col sm:flex-row items-start gap-4 pt-8">
                   {!isAuthenticated ? (
                     // 비로그인 상태 버튼
                     <>
@@ -116,7 +116,7 @@ export default function Home() {
                 </h2>
                 <p className="text-muted-foreground">현재 가장 인기 있는 향수들을 둘러보세요.</p>
               </div>
-              <Link to="/shopping" className="text-[#AB3130] font-semibold flex items-center gap-1">
+              <Link to="/PopularProductsList" className="text-[#AB3130] font-semibold flex items-center gap-1">
                 <span>인기 향수 더보기</span>
                 <ArrowRight className="h-4 w-4" />
               </Link>

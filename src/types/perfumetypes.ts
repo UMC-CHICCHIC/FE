@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import type { Perfume } from './perfumes';
+=======
+import type { Perfume } from '../types/perfumes';
+>>>>>>> f70d5f7054b94b007c50cdda529c29c6a8cc5366
 
 export const perfumes: Perfume[] = [
   {

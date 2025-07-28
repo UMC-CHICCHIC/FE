@@ -1,14 +1,8 @@
 import "../index.css";
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
-<<<<<<< HEAD
 import DiaryHome from "../pages/Community/PerfumeDiary/DiaryHome.tsx";
 import NewDiary from "../pages/Community/PerfumeDiary/NewDiary.tsx";
 import PublicLayout from "../layouts/PublicLayout.tsx";
-=======
-import DiaryHome from "../pages/Community/PerfumeDiary/DiaryHome";
-import NewDiary from "../pages/Community/PerfumeDiary/NewDiary";
-import PublicLayout from "../layouts/PublicLayout";
->>>>>>> f70d5f7054b94b007c50cdda529c29c6a8cc5366
 import ProductDetail from "../pages/Shopping/ProductDetail.tsx";
 import ShoppingHome from "../pages/Shopping/ShoppingHome.tsx";
 import NotFound from "../pages/NotFound.tsx";
@@ -23,12 +17,8 @@ import Profile from "../pages/Mypage/Profile.tsx";
 import Privacy from "../pages/Mypage/Privacy.tsx";
 import MyScraps from "../pages/Mypage/MyScraps.tsx";
 import MyDiaries from "../pages/Mypage/MyDiaries.tsx";
-<<<<<<< HEAD
 import Test from "../pages/PersonalPerfume/Test.tsx";
 import PopularProductsList from "../pages/PopularProducts/PopularProductsList.tsx";
-=======
-import Test from "../pages/PersonalPerfume/Test";
->>>>>>> f70d5f7054b94b007c50cdda529c29c6a8cc5366
 
 const publicRoutes: RouteObject[] = [
   {
@@ -66,13 +56,10 @@ const publicRoutes: RouteObject[] = [
           { path: "test", element: <Test /> }, // /personal-perfume/test
         ],
       },
-<<<<<<< HEAD
       {
         path: "PopularProductsList",
         element: <PopularProductsList />,
       },
-=======
->>>>>>> f70d5f7054b94b007c50cdda529c29c6a8cc5366
 
       { path: "privacy-policy", element: <PrivacyPolicy /> },
       { path: "terms", element: <Terms /> },

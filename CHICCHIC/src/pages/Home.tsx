@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, ChevronRight } from "lucide-react";
-import { PerfumeGrid } from "./PersonalPerfume/perfume-grid";
-import mainlogo from '../assets/icons/main-logo.svg';
+import { PerfumeGrid } from '../components/PersonalPerfumeTest/perfume-grid';
+import mainlogo from'../assets/icons/main-logo.svg'
 
 export default function Home() {
   return (

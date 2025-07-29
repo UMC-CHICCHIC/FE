@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { usePostFilter } from "../../store/usePostFilter";
-import type { PostCategory, PostData } from "../../types/post";
+import type { PostCategory, PostPrev } from "../../types/post";
 
 type CouselingCategoryProps = {
-  posts: PostData[];
+  posts: PostPrev[];
   category: PostCategory;
 };
 
@@ -13,7 +13,7 @@ const PostSection = ({ posts, category }: CouselingCategoryProps) => {
   const navigate = useNavigate();
 
   return (
-    <section className="mb-14 text-[#66191F]">
+    <section className="mb-4 text-[#66191F]">
       <ul className="space-y-4">
         {posts.map((post) => (
           <li

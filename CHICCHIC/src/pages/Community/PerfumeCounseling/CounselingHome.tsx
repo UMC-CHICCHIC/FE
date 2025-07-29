@@ -1,10 +1,10 @@
 import counselingMainImage from "/counselingHome.svg";
 import RightArrow from "../../../assets/icons/arrowRight.svg";
-import type { PostData } from "../../../types/post";
+import type { PostPrev } from "../../../types/post";
 import PostSection from "../../../components/Community/CounselingPostSection";
 
 // 데모 포스트 양식
-const recommendPosts: PostData[] = [
+const recommendPosts: PostPrev[] = [
   {
     postId: 101,
     title: "추천해요",
@@ -21,7 +21,7 @@ const recommendPosts: PostData[] = [
 ];
 
 // 데모 포스트 양식
-const recommendedPosts: PostData[] = [
+const recommendedPosts: PostPrev[] = [
   {
     postId: 103,
     title: "추천 받아요",

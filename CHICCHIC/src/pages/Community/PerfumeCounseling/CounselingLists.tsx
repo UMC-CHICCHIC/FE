@@ -3,6 +3,7 @@ import LeftArrowIcon from "../../../assets/icons/arrowLeft.svg";
 import RightArrowIcon from "../../../assets/icons/arrowRight.svg";
 import PostSection from "../../../components/Community/CounselingPostSection";
 import type { PostData } from "../../../types/post";
+import { useNavigate } from "react-router-dom";
 
 // 데모 포스트 양식
 const recommendPosts: PostData[] = [
@@ -39,6 +40,7 @@ const recommendedPosts: PostData[] = [
 ];
 
 const CounselingLists = () => {
+  const navigate = useNavigate();
   const [select, setSelect] = useState<"RECOMMENDED" | "RECOMMEND">(
     "RECOMMENDED"
   );
@@ -89,6 +91,14 @@ const CounselingLists = () => {
       </section>
       <section className="w-[90%] max-w-5xl font-[pretendard] mx-auto grow py-8">
         <PostSection posts={post} category={select} />
+        <div className="flex items-start justify-end mb-4">
+          <button
+            className="text-sm px-12 py-2 bg-[#AB3130] text-white rounded-full cursor-pointer"
+            onClick={() => navigate("/community/recommendation/new")}
+          >
+            글쓰기
+          </button>
+        </div>
       </section>
       {/* 페이지 네이션 */}
       <footer className="flex justify-center py-12 space-x-4 font-[crimsonText]">

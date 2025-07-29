@@ -1,5 +1,5 @@
 // 게시글 정보
-export type PostData = {
+export type PostPrev = {
   postId: number;
   title: string;
   writer: string;

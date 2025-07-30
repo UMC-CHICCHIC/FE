@@ -100,7 +100,7 @@ export default function Test() {
       return (
         <div className="w-full text-center">
           <h2 className="text-2xl font-bold text-[#AB3130] mb-6">
-            테스트 결과 CHICCHIC이 추천하는 향수들이에요.
+            테스트 결과 CHICCHIC이 추천하는 향수들이에요!
           </h2>
           
           {/* 5개의 향수 세로 나열 */}

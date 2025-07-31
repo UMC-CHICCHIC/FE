@@ -41,10 +41,8 @@ const recommendedPosts: PostPrev[] = [
 
 const CounselingLists = () => {
   const navigate = useNavigate();
-  const [select, setSelect] = useState<"RECOMMENDED" | "RECOMMEND">(
-    "RECOMMENDED"
-  );
-  const post = select === "RECOMMENDED" ? recommendedPosts : recommendPosts;
+  const [select, setSelect] = useState<"RECEIVE" | "GIVE">("RECEIVE");
+  const post = select === "RECEIVE" ? recommendedPosts : recommendPosts;
 
   const [productPage, setProductPage] = useState(1);
 
@@ -68,20 +66,20 @@ const CounselingLists = () => {
           <div className="flex flex-col w-full gap-2 md:flex-row">
             <button
               className={`${
-                select === "RECOMMENDED" ? "text-white bg-[#AB3130]" : ""
+                select === "RECEIVE" ? "text-white bg-[#AB3130]" : ""
               } flex flex-1 w-full justify-center items-center border rounded-full px-6 py-3 cursor-pointer border-[#AB3130]`}
               onClick={() => {
-                setSelect("RECOMMENDED");
+                setSelect("RECEIVE");
               }}
             >
               추천 받아요!
             </button>
             <button
               className={`${
-                select === "RECOMMEND" ? "text-white bg-[#AB3130]" : ""
+                select === "GIVE" ? "text-white bg-[#AB3130]" : ""
               } flex flex-1 w-full justify-center items-center border rounded-full px-6 py-3 cursor-pointer border-[#AB3130]`}
               onClick={() => {
-                setSelect("RECOMMEND");
+                setSelect("GIVE");
               }}
             >
               추천해요!

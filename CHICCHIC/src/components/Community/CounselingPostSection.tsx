@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { usePostFilter } from "../../store/usePostFilter";
-import type { PostCategory, PostPrev } from "../../types/post";
+import type { PostPrev } from "../../types/post";
+import type { PostCategory } from "../../types/enums/postCategory";
 
 type CouselingCategoryProps = {
   posts: PostPrev[];
@@ -13,7 +14,7 @@ const PostSection = ({ posts, category }: CouselingCategoryProps) => {
   const navigate = useNavigate();
 
   return (
-    <section className="mb-4 text-[#66191F]">
+    <section className="mb-20 text-[#66191F]">
       <ul className="space-y-4">
         {posts.map((post) => (
           <li
@@ -33,9 +34,7 @@ const PostSection = ({ posts, category }: CouselingCategoryProps) => {
               <div className="flex flex-col gap-4">
                 <button
                   onClick={() => {
-                    setCategory(
-                      category === "RECOMMEND" ? "RECOMMEND" : "RECOMMENDED"
-                    );
+                    setCategory(category === "GIVE" ? "GIVE" : "RECEIVE");
                     navigate("/community/recommendation/list/detail");
                   }}
                   className="text-[#AB3130] font-semibold text-lg mb-2 hover:underline cursor-pointer"

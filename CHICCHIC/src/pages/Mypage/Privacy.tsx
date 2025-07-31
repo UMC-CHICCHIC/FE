@@ -63,30 +63,31 @@ const Privacy = () => {
   };
 
   return (
-    <div className="font-pretendard flex min-h-[calc(100vh-64px)] bg-transparent text-[#a8342f]">
+    <div className="font-pretendard min-h-[calc(100vh-64px)] bg-transparent text-[#a8342f] flex flex-col sm:flex-row">
       {/* 사이드 탭 */}
-      <div className="w-91 border-r border-[#AB3130] pt-20 flex flex-col">
-        <ul className="space-y-13 text-2xl text-[#AB3130] w-full">
-          <li>
+      <div className="w-full sm:w-80 border-b sm:border-r sm:border-b-0 border-[#AB3130] pt-5 sm:pt-20 flex flex-row sm:flex-col justify-center items-center sm:items-stretch sm:justify-stretch sm:h-full sm:min-h-[calc(100vh-64px)]">
+        <ul className="flex flex-row sm:flex-col w-full sm:w-auto gap-0 sm:gap-13 text-2xl text-[#AB3130] items-center justify-between sm:items-stretch sm:justify-stretch">
+          <li className="flex-1 sm:flex-none">
             <button 
               onClick={handleProfileClick}
-              className={`block w-full text-center relative pr-5 py-2 cursor-pointer ${
+              className={`flex items-center justify-center w-full h-16 text-center cursor-pointer ${
                 currentPath === '/mypage' 
-                  ? 'font-semibold border-r-4 border-[#AB3130] opacity-100' 
+                  ? 'font-semibold border-b-4 sm:border-b-0 sm:border-r-4 border-[#AB3130] opacity-100' 
                   : 'font-semibold opacity-50 hover:opacity-75'
               }`}
             >
               프로필
             </button>
           </li>
-          <li>
+          <li className="flex-1 sm:flex-none">
             <button 
               onClick={handlePrivacyClick}
-              className={`block w-full text-center cursor-pointer ${
+              className={`flex items-center justify-center w-full h-16 text-center cursor-pointer ${
                 currentPath === '/mypage/privacy' 
-                  ? 'font-semibold border-r-4 border-[#AB3130] opacity-100 py-2 ' 
+                  ? 'font-semibold border-b-4 sm:border-b-0 sm:border-r-4 border-[#AB3130] opacity-100' 
                   : 'font-semibold opacity-50 hover:opacity-75'
               }`}
+              style={{ borderRight: currentPath === '/mypage/privacy' && window.innerWidth >= 640 ? '4px solid #AB3130' : undefined }}
             >
               개인정보
             </button>
@@ -94,9 +95,9 @@ const Privacy = () => {
         </ul>
       </div>
 
-      <main className="flex-1 flex flex-col items-start justify-start pt-16 px-8 ml-20">
-
-        <div className="text-2xl font-semibold text-[#AB3130] mb-8">프로필 이미지</div>
+      {/* 내용 영역 */}
+      <main className="flex-1 flex flex-col items-center justify-start pt-16 px-8 sm:items-start sm:ml-20">
+        <div className="text-2xl font-semibold text-[#AB3130] mb-8 text-center sm:text-left">프로필 이미지</div>
         
         <div className="relative w-32 h-32 mb-20">
           <div 

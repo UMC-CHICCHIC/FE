@@ -4,6 +4,9 @@ import login from '../assets/images/login-image.png'
 import google from '../assets/images/google-logo.png'
 import kakao from '../assets/images/kakao-logo.png'
 import naver from '../assets/images/naver-logo.png'
+import { postLogin } from "../apis/postApi"
+import axios from 'axios';
+import { setAccessToken, setRefreshToken } from "../utils/authStorage";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,11 +23,30 @@ const Login = () => {
     }));
   };
 
-  const handleLogin = () => {
-    // 로그인 로직 (현재는 버튼 역할만)
-    console.log('Login attempt:', formData);
-    // navigate('/mypage'); // 실제 로그인 성공 시 페이지 이동
-  };
+  const handleLogin = async () => {
+  try {
+    const response = await postLogin({
+      username: formData.id,
+      password: formData.password,
+    });
+
+    const { accessToken, refreshToken } = response.data;
+
+    setAccessToken(accessToken);
+    setRefreshToken(refreshToken);
+
+    alert("로그인 성공!");
+    navigate("/home");
+  } catch (error: any) {
+    if (error.response?.status === 401) {
+      alert("아이디 또는 비밀번호가 올바르지 않습니다.");
+    } else {
+      alert("로그인 중 오류가 발생했습니다.");
+    }
+    console.error("로그인 에러:", error);
+  }
+};
+
 
   const handleSignup = () => {
     // 회원가입 페이지로 이동

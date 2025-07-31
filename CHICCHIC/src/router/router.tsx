@@ -1,4 +1,4 @@
-import "../index.css";
+import "../styles/index.css";
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import DiaryHome from "../pages/Community/PerfumeDiary/DiaryHome";
 import NewDiary from "../pages/Community/PerfumeDiary/NewDiary";

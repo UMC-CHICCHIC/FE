@@ -1,1 +1,1 @@
-export type PostCategory = "RECOMMEND" | "RECOMMENDED";
+export type PostCategory = "GIVE" | "RECEIVE";

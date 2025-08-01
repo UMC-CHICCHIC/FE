@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { ImgUploader } from "../../../components/Community/ImgUploader";
+import { useImgUploadStore } from "../../../store/useImgUploadStore";
+import { X } from "lucide-react";
 
 const NewCounseling = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [select, setSelect] = useState<"recommended" | "recommend" | "">("");
+  const { url, reset } = useImgUploadStore();
 
   return (
     <div className="mx-auto bg-[#F7F4EF] text-[#AB3130] flex justify-center py-16">
@@ -59,6 +62,22 @@ const NewCounseling = () => {
           Content
         </label>
         <div className="border border-[#AB3130] rounded-[15px] overflow-hidden">
+          {/* 이미지 미리보기 */}
+          {url && (
+            <div className="flex justify-start mt-4">
+              <img
+                src={url}
+                alt="업로드된 이미지"
+                className="mx-8 max-h-[300px] rounded-lg border border-[#AB3130]"
+              />
+              <button
+                onClick={reset}
+                className="bg-white text-[#AB3130] border border-[#AB3130] rounded-full w-8 h-8 flex items-center justify-center hover:bg-[#AB3130] hover:text-white transition"
+              >
+                <X />
+              </button>
+            </div>
+          )}
           <textarea
             placeholder="내용을 작성해주세요."
             rows={20}

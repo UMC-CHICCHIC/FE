@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { Pencil } from "lucide-react";
+import { getUserInfo } from "../../apis/auth";
 
 const Privacy = () => {
   const location = useLocation();
@@ -9,14 +10,40 @@ const Privacy = () => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    name: '성명',
-    nickname: '닉네임',
-    phone: '010-1234-5678',
-    email: 'asdfgh@gmail.com',
-    id: 'asdfgh',
-    password: '••••••' //비밀번호 *로 표시 -> 수정할 때 보이기
+    name: '',
+    nickname: '',
+    phone: '',
+    email: '',
+    id: '',
+    password: '••••••'
   });
   const [profileImage, setProfileImage] = useState<string | null>(null);
+
+  // 유저 정보 API 연동
+  useEffect(() => {
+    getUserInfo()
+      .then((res) => {
+        const user = res.data.result;
+        setFormData({
+          name: user.username || '',
+          nickname: user.nickname || '',
+          phone: user.phoneNumber || '',
+          email: user.email || '',
+          id: user.username || '',
+          password: '••••••'
+        });
+      })
+      .catch(() => {
+        setFormData({
+          name: '',
+          nickname: '',
+          phone: '',
+          email: '',
+          id: '',
+          password: '••••••'
+        });
+      });
+  }, []);
 
   const handleProfileClick = () => {
     navigate('/mypage');
@@ -65,7 +92,7 @@ const Privacy = () => {
   return (
     <div className="font-pretendard min-h-[calc(100vh-64px)] bg-transparent text-[#a8342f] flex flex-col sm:flex-row">
       {/* 사이드 탭 */}
-      <div className="w-full sm:w-80 border-b sm:border-r sm:border-b-0 border-[#AB3130] pt-5 sm:pt-20 flex flex-row sm:flex-col justify-center items-center sm:items-stretch sm:justify-stretch sm:h-full sm:min-h-[calc(100vh-64px)]">
+      <div className="w-full sm:w-80 border-b sm:border-b-0 sm:border-r border-[#AB3130] pt-5 sm:pt-20 flex flex-row sm:flex-col justify-center items-center sm:items-stretch sm:justify-stretch sm:min-h-[calc(100vh-64px)]">
         <ul className="flex flex-row sm:flex-col w-full sm:w-auto gap-0 sm:gap-13 text-2xl text-[#AB3130] items-center justify-between sm:items-stretch sm:justify-stretch">
           <li className="flex-1 sm:flex-none">
             <button 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { postSignup } from '../apis/postApi';
+import { postSignup } from '../apis/auth';
 import { z } from 'zod';
+import { InputField } from "../components/SignUp/InputField";
 
 const signupSchema = z.object({
   username: z.string().min(6, "아이디는 6자 이상").max(12, "아이디는 12자 이하"),
@@ -65,104 +66,71 @@ export default function Signup() {
         <hr className="border-t border-[#AB3130] mb-12" />
 
         <form className="space-y-4" onSubmit={handleSubmit}>
-          <div>
-            <label className="text-sm font-semibold text-[#AB3130]">
-              아이디 *
-            </label>
-            <div className="flex gap-2 mt-1 text-[#AB3130]">
-              <input
-                type="text"
-                name="username"
-                value={form.username}
-                onChange={handleChange}
-                placeholder="6~12자 이내 입력"
-                className="text-sm flex-1 px-4 py-1 border-1 border-[#AB3130] text-[#AB3130] rounded-full focus:outline-none placeholder-[#AB3130] placeholder-opacity-60"
-                required
-              />
-              <button
-                type="button"
-                className="px-8 py-1 text-sm font-bold border-1 border-[#AB3130] text-[#AB3130] rounded-full hover:bg-[#a8342f] hover:text-white transition"
-              >
-                중복확인
-              </button>
-            </div>
-          </div>
+          <InputField
+            label="아이디 *"
+            name="username"
+            value={form.username}
+            onChange={handleChange}
+            placeholder="6~12자 이내 입력"
+            required
+          >
+            <button
+              type="button"
+              className="px-8 py-1 text-sm font-bold border-1 border-[#AB3130] text-[#AB3130] rounded-full hover:bg-[#a8342f] hover:text-white transition"
+            >
+              중복확인
+            </button>
+          </InputField>
 
-          <div>
-            <label className="text-sm font-semibold text-[#AB3130]">
-              비밀번호 *
-            </label>
-            <input
-              type="password"
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-              placeholder="영문, 숫자, 특수문자 중 2가지 이상 조합 / 8~20자 이내 입력"
-              className="w-full text-sm px-4 py-1 border-1 border-[#AB3130] text-[#AB3130] rounded-full mt-1 focus:outline-none placeholder-[#AB3130] placeholder-opacity-60"
-              required
-            />
-          </div>
+          <InputField
+            label="비밀번호 *"
+            name="password"
+            type="password"
+            value={form.password}
+            onChange={handleChange}
+            placeholder="영문, 숫자, 특수문자 중 2가지 이상 조합 / 8~20자 이내 입력"
+            required
+          />
 
-          <div>
-            <label className="text-sm font-semibold text-[#AB3130]">
-              비밀번호 확인 *
-            </label>
-            <input
-              type="password"
-              name="passwordConfirm"
-              value={form.passwordConfirm}
-              onChange={handleChange}
-              placeholder="비밀번호 확인 입력"
-              className="w-full px-4 py-1 text-sm border-1 border-[#AB3130] rounded-full mt-1 focus:outline-none placeholder-[#AB3130] placeholder-opacity-60"
-              required
-            />
-          </div>
+          <InputField
+            label="비밀번호 확인 *"
+            name="passwordConfirm"
+            type="password"
+            value={form.passwordConfirm}
+            onChange={handleChange}
+            placeholder="비밀번호 확인 입력"
+            required
+          />
 
-          <div>
-            <label className="text-sm font-semibold text-[#AB3130]">
-              이메일 *
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              placeholder="이메일 주소 입력"
-              className="w-full px-4 py-1 text-sm border-1 border-[#AB3130] text-[#AB3130] rounded-full mt-1 focus:outline-none placeholder-[#AB3130] placeholder-opacity-60"
-              required
-            />
-          </div>
+          <InputField
+            label="이메일 *"
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="이메일 주소 입력"
+            required
+          />
 
-          <div>
-            <label className="text-sm font-semibold text-[#AB3130]">
-              휴대폰 번호 *
-            </label>
-            <input
-              type="tel"
-              name="phoneNumber"
-              value={form.phoneNumber}
-              onChange={handleChange}
-              placeholder="휴대폰 번호 입력"
-              className="w-full px-4 py-1 text-sm border-1 border-[#AB3130] text-[#AB3130] rounded-full mt-1 focus:outline-none placeholder-[#AB3130] placeholder-opacity-60"
-              required
-            />
-          </div>
+          <InputField
+            label="휴대폰 번호 *"
+            name="phoneNumber"
+            type="tel"
+            value={form.phoneNumber}
+            onChange={handleChange}
+            placeholder="휴대폰 번호 입력"
+            required
+          />
 
-          <div>
-            <label className="text-sm font-semibold text-[#AB3130]">
-              닉네임 *
-            </label>
-            <input
-              type="text"
-              name="nickname"
-              value={form.nickname}
-              onChange={handleChange}
-              placeholder="닉네임 입력"
-              className="w-full px-4 py-1 text-sm border-1 border-[#AB3130] text-[#AB3130] rounded-full mt-1 focus:outline-none placeholder-[#AB3130] placeholder-opacity-60"
-              required
-            />
-          </div>
-          
+          <InputField
+            label="닉네임 *"
+            name="nickname"
+            value={form.nickname}
+            onChange={handleChange}
+            placeholder="닉네임 입력"
+            required
+          />
+
           {error && (
             <div className="text-red-500 text-sm mt-2">{error}</div>
           )}

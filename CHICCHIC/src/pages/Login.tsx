@@ -4,7 +4,7 @@ import login from '../assets/images/login-image.png'
 import google from '../assets/images/google-logo.png'
 import kakao from '../assets/images/kakao-logo.png'
 import naver from '../assets/images/naver-logo.png'
-import { postLogin } from "../apis/postApi"
+import { postLogin } from "../apis/auth"
 import axios from 'axios';
 import { setAccessToken, setRefreshToken } from "../utils/authStorage";
 

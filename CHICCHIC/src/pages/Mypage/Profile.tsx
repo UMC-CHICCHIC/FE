@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type SetStateAction } from "react";
 import { useLogout } from "../../utils/useLogout";
+import { getUserInfo } from "../../apis/auth";
 
 export default function MyHome() {
   const location = useLocation();
@@ -8,8 +9,21 @@ export default function MyHome() {
   const currentPath = location.pathname;
   const logout = useLogout();
 
-  // 닉네임 상태 관리 (API 연동 준비)
+  // 닉네임 상태 관리
   const [userNickname, setUserNickname] = useState("(닉네임)");
+
+  useEffect(() => {
+    // 유저 정보 조회 API 호출
+    getUserInfo()
+      .then((res) => {
+        if (res.data?.result?.nickname) {
+          setUserNickname(res.data.result.nickname);
+        }
+      })
+      .catch(() => {
+        setUserNickname("(닉네임)");
+      });
+  }, []);
 
   const handleProfileClick = () => {
     navigate('/mypage');
@@ -30,7 +44,7 @@ export default function MyHome() {
   return (
     <div className="font-pretendard min-h-[calc(100vh-64px)] bg-transparent text-[#a8342f] flex flex-col sm:flex-row">
       {/* 사이드 탭 */}
-      <div className="w-full sm:w-80 border-b sm:border-b-0 sm:border-r border-[#AB3130] pt-5 sm:pt-20 flex flex-row sm:flex-col justify-center items-center sm:items-stretch sm:justify-stretch sm:h-full sm:min-h-[calc(100vh-64px)]">
+      <div className="w-full sm:w-80 border-b sm:border-b-0 sm:border-r border-[#AB3130] pt-5 sm:pt-20 flex flex-row sm:flex-col justify-center items-center sm:items-stretch sm:justify-stretch sm:min-h-[calc(100vh-64px)]">
         <ul className="flex flex-row sm:flex-col w-full sm:w-auto gap-0 sm:gap-13 text-2xl text-[#AB3130] items-center justify-between sm:items-stretch sm:justify-stretch">
           <li className="flex-1 sm:flex-none">
             <button 

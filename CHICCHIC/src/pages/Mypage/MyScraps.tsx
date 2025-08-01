@@ -11,7 +11,7 @@ interface Perfume {
   volume: string;
 }
 
-// 임시
+// 임시(api 연동 전)
 const MOCK_SCRAPS: Perfume[] = [
     {
     id: 1,

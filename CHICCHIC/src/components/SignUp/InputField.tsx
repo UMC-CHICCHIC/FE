@@ -1,16 +1,5 @@
 import React from "react";
-
-interface InputFieldProps {
-  label: string;
-  name: string;
-  type?: string;
-  placeholder?: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  required?: boolean;
-  className?: string;
-  children?: React.ReactNode; // 버튼 등 추가 요소
-}
+import type { InputFieldProps } from "../../types/inputfieldtypes"
 
 export const InputField = ({
   label,

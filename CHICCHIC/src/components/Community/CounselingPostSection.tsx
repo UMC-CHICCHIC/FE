@@ -25,7 +25,7 @@ const PostSection = ({ posts, category }: CouselingCategoryProps) => {
               {post.imageUrl ? (
                 <img
                   src={post.imageUrl}
-                  alt="post image"
+                  alt="postImage"
                   className="object-cover h-24 w-30 rounded-xl"
                 />
               ) : (

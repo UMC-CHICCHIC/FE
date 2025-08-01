@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { ImgUploader } from "../../../components/Community/ImgUploader";
 
 const NewCounseling = () => {
   const [title, setTitle] = useState("");
@@ -65,6 +66,9 @@ const NewCounseling = () => {
             onChange={(e) => setContent(e.target.value)}
             className="resize-none w-full py-6 px-8 bg-transparent border-none text-xl placeholder:text-[#AB3130] placeholder:text-xl focus:outline-none"
           />
+          <div className="w-full py-[12px] border-t border-[#AB3130] ">
+            <ImgUploader />
+          </div>
         </div>
 
         {/* 작성 완료 버튼 */}

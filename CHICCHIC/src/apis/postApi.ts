@@ -22,7 +22,11 @@ export const getPostList = async (
 export const uploadImg = async (
   file: RequestImgDto
 ): Promise<ResponseUploadImg> => {
-  const { data } = await axiosInstance.post("/images/upload", file);
-
-  return data;
+  try {
+    const { data } = await axiosInstance.post("/images/upload", file);
+    return data;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
 };

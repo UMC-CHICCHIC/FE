@@ -8,7 +8,7 @@ interface ImgUploadState {
   reset: () => void;
 }
 
-export const useImgUpload = create<ImgUploadState>((set) => ({
+export const useImgUploadStore = create<ImgUploadState>((set) => ({
   url: null,
   key: null,
   setImg: (url, key) => set({ url, key }),

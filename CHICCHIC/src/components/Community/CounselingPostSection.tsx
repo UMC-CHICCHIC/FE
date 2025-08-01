@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { usePostFilter } from "../../store/usePostFilter";
-import type { PostPrev } from "../../types/post";
+import type { Post } from "../../types/post";
 import type { PostCategory } from "../../types/enums/postCategory";
 
 type CouselingCategoryProps = {
-  posts: PostPrev[];
+  posts: Post[];
   category: PostCategory;
 };
 
@@ -18,13 +18,13 @@ const PostSection = ({ posts, category }: CouselingCategoryProps) => {
       <ul className="space-y-4">
         {posts.map((post) => (
           <li
-            key={post.postId}
+            key={post.consultId}
             className="flex justify-between items-center border-b border-[#AB3130] py-4"
           >
             <div className="flex items-center gap-4">
-              {post.image ? (
+              {post.imageUrl ? (
                 <img
-                  src={post.image}
+                  src={post.imageUrl}
                   alt="post image"
                   className="object-cover h-24 w-30 rounded-xl"
                 />
@@ -47,11 +47,11 @@ const PostSection = ({ posts, category }: CouselingCategoryProps) => {
                     alt="프로필"
                     className="object-cover w-6 h-6 rounded-full"
                   />
-                  <span className="ml-2">{post.writer}</span>
+                  <span className="ml-2">{post.nickname}</span>
                 </div>
               </div>
             </div>
-            <span className="text-sm">{post.createdAt}</span>
+            <span className="text-sm">{post.dateTime}</span>
           </li>
         ))}
       </ul>

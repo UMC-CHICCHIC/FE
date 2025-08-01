@@ -13,12 +13,7 @@ export const ImgUploader = () => {
 
       console.log("파일 이름: ", file.name);
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64 = reader.result as string;
-        mutate({ file: base64 });
-      };
-      reader.readAsDataURL(file);
+      mutate(file);
     },
     [mutate]
   );

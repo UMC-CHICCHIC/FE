@@ -5,6 +5,7 @@ import type { ResponseUploadImg } from "../../types/img";
 
 function useUploadImg() {
   const setImg = useImgUploadStore((s) => s.setImg);
+
   return useMutation({
     mutationFn: uploadImg,
     onSuccess: (res: ResponseUploadImg) => {

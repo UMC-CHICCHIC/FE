@@ -16,7 +16,7 @@ export type PostPrev = {
   consultId: number;
   postType: PostCategory;
   title: string;
-  content: number;
+  content: string;
   imageUrl?: string;
 };
 
@@ -44,8 +44,8 @@ export type ResponsePostListDto = PaginatedResponse<Post[]>;
 
 // /consult-posts/home에 대한 ResponseDto
 export type ResponsePostPrevDto = CommonResponse<{
-  recievePost: Post;
-  givePost: Post;
+  recievePost: PostPrev;
+  givePost: PostPrev;
 }>;
 
 // export type ResponseDetailPostDto =

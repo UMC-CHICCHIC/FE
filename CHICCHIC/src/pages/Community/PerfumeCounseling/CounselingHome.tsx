@@ -1,33 +1,39 @@
 import counselingMainImage from "/counselingHome.svg";
 import RightArrow from "../../../assets/icons/arrowRight.svg";
-import type { PostPrev } from "../../../types/post";
+import { type Post } from "../../../types/post";
 import PostSection from "../../../components/Community/CounselingPostSection";
 
 // 데모 포스트 양식
-const recommendPosts: PostPrev[] = [
+const recommendPosts: Post[] = [
   {
-    postId: 101,
+    memberId: 1,
+    nickname: "칙칙",
+    consultId: 101,
+    postType: "RECEIVE",
     title: "추천해요",
-    writer: "닉네임",
-    createdAt: "2025.07.01.",
-    image: "/sample-image.png",
+    imageUrl: "/sample-image.png",
+    dateTime: "2025.07.01.",
   },
   {
-    postId: 102,
+    memberId: 2,
+    nickname: "닉네임",
+    consultId: 102,
+    postType: "RECEIVE",
     title: "제목제목제목제목",
-    writer: "닉네임",
-    createdAt: "2025.07.01.",
+    dateTime: "/sample-image.png",
   },
 ];
 
 // 데모 포스트 양식
-const recommendedPosts: PostPrev[] = [
+const recommendedPosts: Post[] = [
   {
-    postId: 103,
-    title: "추천 받아요",
-    writer: "닉네임",
-    createdAt: "2025.07.01.",
-    image: "/sample-image.png",
+    memberId: 1,
+    nickname: "칙칙",
+    consultId: 101,
+    postType: "RECEIVE",
+    title: "추천해요",
+    imageUrl: "/sample-image.png",
+    dateTime: "2025.07.01.",
   },
   {
     postId: 104,
@@ -72,12 +78,12 @@ const PerfumeCounselingHome = () => {
             <img src={RightArrow} width={6} alt="rightArrow" />
           </a>
         </div>
-        <PostSection posts={recommendedPosts} category="RECOMMENDED" />
+        <PostSection posts={recommendedPosts} category="RECEIVE" />
         <span className="text-[#AB3130] font-semibold text-2xl mb-2">
-          추천받아요! 최근 게시글
+          추천해요! 최근 게시글
         </span>
 
-        <PostSection posts={recommendPosts} category="RECOMMEND" />
+        <PostSection posts={recommendPosts} category="GIVE" />
       </section>
     </div>
   );

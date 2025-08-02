@@ -1,19 +1,61 @@
-import React from 'react'
+import React, { useState } from 'react';
+import { postSignup } from '../apis/auth';
+import { z } from 'zod';
+import { InputField } from "../components/SignUp/InputField";
 
-import { useState } from 'react';
+const signupSchema = z.object({
+  username: z.string().min(6, "아이디는 6자 이상").max(12, "아이디는 12자 이하"),
+  password: z.string().min(8, "비밀번호는 8자 이상").max(20, "비밀번호는 18자 이하"),
+  passwordConfirm: z.string(),
+  email: z.string().email("이메일 형식이 올바르지 않습니다."),
+  phoneNumber: z.string().regex(/^01[0-9]{8,9}$/, "휴대폰 번호 형식이 올바르지 않습니다."),
+  nickname: z.string().min(1, "닉네임을 입력해주세요."),
+}).refine((data) => data.password === data.passwordConfirm, {
+  message: "비밀번호가 일치하지 않습니다.",
+  path: ["passwordConfirm"],
+});
 
 export default function Signup() {
   const [showModal, setShowModal] = useState(false);
+  const [form, setForm] = useState({
+    username: '',
+    password: '',
+    passwordConfirm: '',
+    email: '',
+    phoneNumber: '',
+    nickname: '',
+  });
+  const [error, setError] = useState<string | null>(null);
 
- const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault(); // 회원가입 로직 추가
-  setShowModal(true);
-};
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+
+    const result = signupSchema.safeParse(form);
+    if (!result.success) {
+      setError(result.error.issues[0].message);
+      return;
+    }
+
+    try {
+      await postSignup(form);
+      setShowModal(true);
+    } catch (err: any) {
+      setError('회원가입에 실패했습니다.');
+    }
+  };
 
   const handleModalClose = () => {
     setShowModal(false);
-    // 로그인 페이지로 이동하거나 다른 처리
   };
+
   return (
     <div className="flex justify-center min-h-screen bg-gradient-to-br from-[#F7F4EF] to-[#BF7990] py-10">
       <div className="bg-[#F7F4EF] w-full max-w-[800px] min-h-[600px] p-10 rounded-2xl" style={{boxShadow: '12px 12px 30px #893B3A'}}>
@@ -24,81 +66,75 @@ export default function Signup() {
         <hr className="border-t border-[#AB3130] mb-12" />
 
         <form className="space-y-4" onSubmit={handleSubmit}>
+          <InputField
+            label="아이디 *"
+            name="username"
+            value={form.username}
+            onChange={handleChange}
+            placeholder="6~12자 이내 입력"
+            required
+          >
+            <button
+              type="button"
+              className="px-8 py-1 text-sm font-bold border-1 border-[#AB3130] text-[#AB3130] rounded-full hover:bg-[#a8342f] hover:text-white transition"
+            >
+              중복확인
+            </button>
+          </InputField>
 
-          <div>
-            <label className="text-sm font-semibold text-[#AB3130]">
-              아이디 *
-            </label>
-            <div className="flex gap-2 mt-1 text-[#AB3130]">
-              <input
-                type="text"
-                placeholder="6~12자 이내 입력"
-                className="text-sm flex-1 px-4 py-1 border-1 border-[#AB3130] text-[#AB3130] rounded-full focus:outline-none placeholder-[#AB3130] placeholder-opacity-60"
-              />
-              <button
-                type="button"
-                className="px-8 py-1 text-sm font-bold border-1 border-[#AB3130] text-[#AB3130] rounded-full hover:bg-[#a8342f] hover:text-white transition"
-              >
-                중복확인
-              </button>
-            </div>
-          </div>
+          <InputField
+            label="비밀번호 *"
+            name="password"
+            type="password"
+            value={form.password}
+            onChange={handleChange}
+            placeholder="영문, 숫자, 특수문자 중 2가지 이상 조합 / 8~20자 이내 입력"
+            required
+          />
 
-          <div>
-            <label className="text-sm font-semibold text-[#AB3130]">
-              비밀번호 *
-            </label>
-            <input
-              type="password"
-              placeholder="영문, 숫자, 특수문자 중 2가지 이상 조합 / 8~20자 이내 입력"
-              className="w-full text-sm px-4 py-1 border-1 border-[#AB3130] text-[#AB3130] rounded-full mt-1 focus:outline-none placeholder-[#AB3130] placeholder-opacity-60"
-            />
-          </div>
+          <InputField
+            label="비밀번호 확인 *"
+            name="passwordConfirm"
+            type="password"
+            value={form.passwordConfirm}
+            onChange={handleChange}
+            placeholder="비밀번호 확인 입력"
+            required
+          />
 
-          <div>
-            <label className="text-sm font-semibold text-[#AB3130]">
-              비밀번호 확인 *
-            </label>
-            <input
-              type="password"
-              placeholder="비밀번호 확인 입력"
-              className="w-full px-4 py-1 text-sm border-1 border-[#AB3130] rounded-full mt-1 focus:outline-none placeholder-[#AB3130] placeholder-opacity-60"
-            />
-          </div>
+          <InputField
+            label="이메일 *"
+            name="email"
+            type="email"
+            value={form.email}
+            onChange={handleChange}
+            placeholder="이메일 주소 입력"
+            required
+          />
 
-          <div>
-            <label className="text-sm font-semibold text-[#AB3130]">
-              이메일 *
-            </label>
-            <input
-              type="email"
-              placeholder="이메일 주소 입력"
-              className="w-full px-4 py-1 text-sm border-1 border-[#AB3130] text-[#AB3130] rounded-full mt-1 focus:outline-none placeholder-[#AB3130] placeholder-opacity-60"
-            />
-          </div>
+          <InputField
+            label="휴대폰 번호 *"
+            name="phoneNumber"
+            type="tel"
+            value={form.phoneNumber}
+            onChange={handleChange}
+            placeholder="휴대폰 번호 입력"
+            required
+          />
 
-          <div>
-            <label className="text-sm font-semibold text-[#AB3130]">
-              휴대폰 번호 *
-            </label>
-            <input
-              type="tel"
-              placeholder="휴대폰 번호 입력"
-              className="w-full px-4 py-1 text-sm border-1 border-[#AB3130] text-[#AB3130] rounded-full mt-1 focus:outline-none placeholder-[#AB3130] placeholder-opacity-60"
-            />
-          </div>
+          <InputField
+            label="닉네임 *"
+            name="nickname"
+            value={form.nickname}
+            onChange={handleChange}
+            placeholder="닉네임 입력"
+            required
+          />
 
-          <div>
-            <label className="text-sm font-semibold text-[#AB3130]">
-              닉네임 *
-            </label>
-            <input
-              type="text"
-              placeholder="닉네임 입력"
-              className="w-full px-4 py-1 text-sm border-1 border-[#AB3130] text-[#AB3130] rounded-full mt-1 focus:outline-none placeholder-[#AB3130] placeholder-opacity-60"
-            />
-          </div>
-          
+          {error && (
+            <div className="text-red-500 text-sm mt-2">{error}</div>
+          )}
+
           <div className="flex justify-center mt-6">
             <button
               type="submit"
@@ -108,6 +144,20 @@ export default function Signup() {
             </button>
           </div>
         </form>
+
+        {showModal && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+            <div className="bg-white p-8 rounded-xl shadow-lg text-center">
+              <div className="text-lg mb-4 text-[#AB3130]">회원가입이 완료되었습니다!</div>
+              <button
+                onClick={handleModalClose}
+                className="bg-[#AB3130] text-white px-6 py-2 rounded-full hover:bg-[#922e2a] transition"
+              >
+                확인
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

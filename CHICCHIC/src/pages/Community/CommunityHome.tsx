@@ -117,7 +117,7 @@ const CommunityHome = () => {
             향수에 대한 다양한 이야기를 담았어요.
           </span>
           <a
-            href="#"
+            href="/community/story"
             className="flex justify-center gap-3 text-sm sm:text-base font-light text-[#AB3130]"
           >
             향수 이야기에서 더 다양한 소식 확인하기

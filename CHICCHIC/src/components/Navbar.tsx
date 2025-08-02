@@ -4,13 +4,15 @@ import { Menu, X } from "lucide-react";
 import mainlogo from "../assets/icons/main-logo.svg";
 import myhomelogo from "../assets/icons/myhome-logo.svg";
 import scraplogo from "../assets/icons/scrap-logo.svg";
+import { navbarMenu } from "../mocks/navbarMenu"
 
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  const go = (path: string) => {
+  // 공통 네비게이트 핸들러
+  const handleNavigate = (path: string) => {
     navigate(path);
     setMenuOpen(false);
   };
@@ -24,16 +26,22 @@ const Navbar = () => {
             src={mainlogo}
             className="w-auto h-10 sm:h-16 cursor-pointer"
             alt="CHICCHIC Logo"
-            onClick={() => go("/")}
+            onClick={() => handleNavigate("/")}
           />
         </div>
 
         {/* 데스크탑 메뉴 */}
         <ul className="hidden lg:flex items-center ml-8 xl:ml-16 space-x-4 xl:space-x-6 text-sm xl:text-base font-light flex-shrink-0">
-          <li><button onClick={() => go("/shopping")} className="hover:text-red-200  cursor-pointer">SHOPPING</button></li>
-          <li><button onClick={() => go("/community")} className="hover:text-red-200 cursor-pointer">COMMUNITY</button></li>
-          <li><button onClick={() => go("/personal-perfume/test")} className="whitespace-nowrap hover:text-red-200 cursor-pointer">PERSONAL PERFUME TEST</button></li>
-          <li><button onClick={() => go("/brand")} className="hover:text-red-200 cursor-pointer">BRAND</button></li>
+          {navbarMenu.map((item) => (
+            <li key={item.path}>
+              <button
+                onClick={() => handleNavigate(item.path)}
+                className="hover:text-red-200 cursor-pointer"
+              >
+                {item.label}
+              </button>
+            </li>
+          ))}
         </ul>
 
         <div className="flex-grow"></div>
@@ -66,10 +74,10 @@ const Navbar = () => {
 
         {/* 아이콘들 - 항상 표시 */}
         <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
-          <button onClick={() => go('/mypage/scraps')} className="hover:text-red-200 cursor-pointer">
+          <button onClick={() => handleNavigate('/mypage/scraps')} className="hover:text-red-200 cursor-pointer">
             <img src={scraplogo} className="w-[14px] sm:w-[18px] h-[18px] sm:h-[24px]" alt="scrap" />
           </button>
-          <button onClick={() => go("/mypage")} className="hover:text-red-200 cursor-pointer">
+          <button onClick={() => handleNavigate("/mypage")} className="hover:text-red-200 cursor-pointer">
             <img src={myhomelogo} className="w-[15px] sm:w-[19px] h-[18px] sm:h-[23px]" alt="mypage" />
           </button>
 
@@ -85,10 +93,15 @@ const Navbar = () => {
         menuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
       }`}>
         <div className="px-2 sm:px-4 py-3 sm:py-4 space-y-3 sm:space-y-4">
-          <button onClick={() => go("/shopping")} className="block w-full text-left text-sm sm:text-base font-light hover:text-red-200 py-2 transition-colors cursor-pointer">SHOPPING</button>
-          <button onClick={() => go("/community")} className="block w-full text-left text-sm sm:text-base font-light hover:text-red-200 py-2 transition-colors cursor-pointer">COMMUNITY</button>
-          <button onClick={() => go("/personal-perfume/test")} className="block w-full text-left font-light text-sm sm:text-base hover:text-red-200 py-2 transition-colors cursor-pointer">PERSONAL PERFUME TEST</button>
-          <button onClick={() => go("/brand")} className="block w-full text-left text-sm sm:text-base font-light hover:text-red-200 py-2 transition-colors cursor-pointer">BRAND</button>
+          {navbarMenu.map((item) => (
+            <button
+              key={item.path}
+              onClick={() => handleNavigate(item.path)}
+              className="block w-full text-left text-sm sm:text-base font-light hover:text-red-200 py-2 transition-colors cursor-pointer"
+            >
+              {item.label}
+            </button>
+          ))}
         </div>
       </div>
     </nav>

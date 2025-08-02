@@ -27,6 +27,8 @@ import PerfumeStoryEgypt from "../pages/Community/PerfumeStory/PerfumeStoryEgypt
 import PerfumeStoryVase from "../pages/Community/PerfumeStory/PerfumeStoryVase.tsx";
 import PerfumeStoryLongevity from "../pages/Community/PerfumeStory/PerfumeStoryLongevity.tsx";
 import PerfumeStoryNote from "../pages/Community/PerfumeStory/PerfumeStoryNote.tsx";
+import MyDiaryList from "../pages/Community/PerfumeDiary/MyDiaryList.tsx";
+import PublicDiaryList from "../pages/Community/PerfumeDiary/PublicDiaryList.tsx";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -62,7 +64,8 @@ const publicRoutes: RouteObject[] = [
             children: [
               { index: true, element: <DiaryHome /> }, // /community/diary
               { path: "new", element: <NewDiary /> }, // /community/diary/new
-              // { path: ":diaryId", element: <DiaryDetail /> }, // /community/diary/:diaryId
+              { path: "my-diary", element: <MyDiaryList /> }, // /community/diary/my-diary
+              { path: "public-diary", element: <PublicDiaryList /> }, // /community/diary/public-diary
             ],
           },
           {

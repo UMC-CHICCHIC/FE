@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 interface Post {
   imageUrl?: string;
   profileImage?: string;
@@ -7,6 +9,8 @@ interface Post {
 }
 
 const PerfumePage = () => {
+  const navigate = useNavigate();
+
   // 샘플 데이터
   const publicPosts: Post[] = [
     {
@@ -56,6 +60,14 @@ const PerfumePage = () => {
     },
   ];
 
+  const handlePublicDiaryClick = () => {
+    navigate("/community/diary/public-diary");
+  };
+
+  const handleMyDiaryClick = () => {
+    navigate("/community/diary/my-diary");
+  };
+
   return (
     <div>
       {/* 1. 상단 배너 섹션 */}
@@ -81,9 +93,12 @@ const PerfumePage = () => {
               <h2 className="text-[2.5rem] font-bold text-[#AB3130]">
                 공개 게시글
               </h2>
-              <a href="#" className="text-[1.5rem] text-[#AB3130] no-underline">
+              <button
+                onClick={handlePublicDiaryClick}
+                className="text-[1.5rem] text-[#AB3130] bg-transparent border-none cursor-pointer hover:underline"
+              >
                 더보기 &gt;
-              </a>
+              </button>
             </div>
             <ul>
               {publicPosts.map((post, index) => (
@@ -136,9 +151,12 @@ const PerfumePage = () => {
               <h2 className="text-[2.5rem] font-bold text-[#AB3130]">
                 나의 향수 일기장
               </h2>
-              <a href="#" className="text-[1.5rem] text-[#AB3130] no-underline">
+              <button
+                onClick={handleMyDiaryClick}
+                className="text-[1.5rem] text-[#AB3130] bg-transparent border-none cursor-pointer hover:underline"
+              >
                 더보기 &gt;
-              </a>
+              </button>
             </div>
             <ul>
               {myDiaryPosts.map((post, index) => (

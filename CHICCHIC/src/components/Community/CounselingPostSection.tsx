@@ -8,6 +8,7 @@ type CouselingCategoryProps = {
   posts: Post[];
   category: PostCategory;
   isLoading: boolean;
+  isError: boolean;
 };
 
 // List에서 게시글 미리보기
@@ -15,6 +16,7 @@ const PostSection = ({
   posts,
   category,
   isLoading,
+  isError,
 }: CouselingCategoryProps) => {
   const { setCategory } = usePostFilter();
   const navigate = useNavigate();
@@ -22,7 +24,8 @@ const PostSection = ({
   return (
     <section className="mb-20 text-[#66191F]">
       <ul className="space-y-4">
-        {isLoading
+        {/* 게시글 스켈레톤 UI */}
+        {isLoading || isError
           ? Array.from({ length: 3 }).map((_, i) => (
               <SkeletonPostCard key={i} />
             ))

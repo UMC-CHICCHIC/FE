@@ -1,57 +1,56 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import login from '../assets/images/login-image.png'
-import google from '../assets/images/google-logo.png'
-import kakao from '../assets/images/kakao-logo.png'
-import naver from '../assets/images/naver-logo.png'
-import { postLogin } from "../apis/auth"
-import axios from 'axios';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import login from "../assets/images/login-image.png";
+import google from "../assets/images/google-logo.png";
+import kakao from "../assets/images/kakao-logo.png";
+import naver from "../assets/images/naver-logo.png";
+import { postLogin } from "../apis/auth";
+import axios from "axios";
 import { setAccessToken, setRefreshToken } from "../utils/authStorage";
 
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    id: '',
-    password: ''
+    id: "",
+    password: "",
   });
   const [rememberMe, setRememberMe] = useState(false);
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [field]: value
+      [field]: value,
     }));
   };
 
   const handleLogin = async () => {
-  try {
-    const response = await postLogin({
-      username: formData.id,
-      password: formData.password,
-    });
+    try {
+      const response = await postLogin({
+        username: formData.id,
+        password: formData.password,
+      });
 
-    const { accessToken, refreshToken } = response.data;
+      const { accessToken, refreshToken } = response.data;
 
-    setAccessToken(accessToken);
-    setRefreshToken(refreshToken);
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
 
-    alert("로그인 성공!");
-    navigate("/home");
-  } catch (error: any) {
-    if (error.response?.status === 401) {
-      alert("아이디 또는 비밀번호가 올바르지 않습니다.");
-    } else {
-      alert("로그인 중 오류가 발생했습니다.");
+      alert("로그인 성공!");
+      navigate("/");
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        alert("아이디 또는 비밀번호가 올바르지 않습니다.");
+      } else {
+        alert("로그인 중 오류가 발생했습니다.");
+      }
+      console.error("로그인 에러:", error);
     }
-    console.error("로그인 에러:", error);
-  }
-};
-
+  };
 
   const handleSignup = () => {
     // 회원가입 페이지로 이동
-    console.log('Navigate to signup');
-    navigate('/signup');
+    console.log("Navigate to signup");
+    navigate("/signup");
   };
 
   const handleSocialLogin = (provider: string) => {
@@ -61,17 +60,17 @@ const Login = () => {
 
   const handleFindId = () => {
     // 아이디 찾기 로직
-    console.log('Find ID');
+    console.log("Find ID");
   };
 
   const handleResetPassword = () => {
     // 비밀번호 재설정 로직
-    console.log('Reset password');
+    console.log("Reset password");
   };
 
   return (
     <div className="font-pretendard flex min-h-screen bg-transparent text-[#AB3130] mb-30">
-      <div className="flex-2 sm:flex-1 flex mt-30 justify-center px-4 sm:px-8">
+      <div className="flex justify-center px-4 flex-2 sm:flex-1 mt-30 sm:px-8">
         <div className="w-full max-w-md">
           <div className="mb-8 sm:mb-12">
             <h1 className="text-[#AB3130] text-2xl sm:text-3xl font-normal mb-2">
@@ -85,19 +84,19 @@ const Login = () => {
             </h2>
           </div>
 
-          <div className="space-y-2 sm:space-y-4 mb-4 sm:mb-6">
+          <div className="mb-4 space-y-2 sm:space-y-4 sm:mb-6">
             <input
               type="text"
               placeholder="ID"
               value={formData.id}
-              onChange={(e) => handleInputChange('id', e.target.value)}
+              onChange={(e) => handleInputChange("id", e.target.value)}
               className="font-crimson w-full px-2 sm:px-4 py-2 sm:py-4 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] placeholder-[#AB3130] placeholder-opacity-60 focus:outline-none focus:ring-2 focus:ring-[#AB3130] text-sm sm:text-lg"
             />
             <input
               type="password"
               placeholder="Password"
               value={formData.password}
-              onChange={(e) => handleInputChange('password', e.target.value)}
+              onChange={(e) => handleInputChange("password", e.target.value)}
               className="font-crimson font-light w-full px-2 sm:px-4 py-2 sm:py-4 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] placeholder-[#AB3130] placeholder-opacity-60 focus:outline-none focus:ring-2 focus:ring-[#AB3130] text-sm sm:text-lg"
             />
           </div>
@@ -129,7 +128,7 @@ const Login = () => {
             </div>
           </div>
 
-          <div className="space-y-2 sm:space-y-3 mb-8 sm:mb-12">
+          <div className="mb-8 space-y-2 sm:space-y-3 sm:mb-12">
             <button
               onClick={handleLogin}
               className="font-crimson w-full bg-[#AB3130] text-white py-2 sm:py-4 rounded-full hover:bg-[#8b2a25] transition-colors font-normal cursor-pointer text-sm sm:text-lg"
@@ -147,40 +146,54 @@ const Login = () => {
           <div>
             <div className="flex items-center mb-4 sm:mb-6">
               <div className="flex-1 border-t border-[#AB3130]"></div>
-              <span className="px-2 sm:px-4 text-[#AB3130] text-xs sm:text-sm">SNS 계정으로 로그인</span>
+              <span className="px-2 sm:px-4 text-[#AB3130] text-xs sm:text-sm">
+                SNS 계정으로 로그인
+              </span>
               <div className="flex-1 border-t border-[#AB3130]"></div>
             </div>
-            
+
             <div className="flex justify-center space-x-2 sm:space-x-4">
               <button
-                onClick={() => handleSocialLogin('naver')}
-                className="w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity cursor-pointer"
+                onClick={() => handleSocialLogin("naver")}
+                className="flex items-center justify-center w-8 h-8 transition-opacity rounded-full cursor-pointer sm:w-12 sm:h-12 hover:opacity-80"
               >
-                <img src={naver} alt="Naver Login" className="w-full h-full rounded-full" />
+                <img
+                  src={naver}
+                  alt="Naver Login"
+                  className="w-full h-full rounded-full"
+                />
               </button>
               <button
-                onClick={() => handleSocialLogin('kakao')}
-                className="w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity cursor-pointer"
+                onClick={() => handleSocialLogin("kakao")}
+                className="flex items-center justify-center w-8 h-8 transition-opacity rounded-full cursor-pointer sm:w-12 sm:h-12 hover:opacity-80"
               >
-                <img src={kakao} alt="Kakao Login" className="w-full h-full rounded-full" />
+                <img
+                  src={kakao}
+                  alt="Kakao Login"
+                  className="w-full h-full rounded-full"
+                />
               </button>
               <button
-                onClick={() => handleSocialLogin('google')}
-                className="w-8 h-8 sm:w-12 sm:h-12 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity cursor-pointer"
+                onClick={() => handleSocialLogin("google")}
+                className="flex items-center justify-center w-8 h-8 transition-opacity rounded-full cursor-pointer sm:w-12 sm:h-12 hover:opacity-80"
               >
-                <img src={google} alt="Google Login" className="w-full h-full rounded-full" />
+                <img
+                  src={google}
+                  alt="Google Login"
+                  className="w-full h-full rounded-full"
+                />
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex-1 bg-gradient-to-br from-pink-50 to-purple-50 flex items-center justify-center">
-        <div className="w-full h-full relative overflow-hidden">
-          <img 
-            src={login} 
-            alt="Login background" 
-            className="w-full h-full object-cover"
+      <div className="flex items-center justify-center flex-1 bg-gradient-to-br from-pink-50 to-purple-50">
+        <div className="relative w-full h-full overflow-hidden">
+          <img
+            src={login}
+            alt="Login background"
+            className="object-cover w-full h-full"
           />
         </div>
       </div>

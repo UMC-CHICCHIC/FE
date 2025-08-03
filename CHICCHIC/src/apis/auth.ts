@@ -10,7 +10,10 @@ export const postSignup = (data: SignupPayload) => {
 };
 
 export const getUserInfo = () => {
-  return axiosInstance.get<{ isSuccess: boolean; code: string; message: string; result: UserInfo }>(
-    "/api/v1/auth/info"
-  );
+  return axiosInstance.get<{
+    isSuccess: boolean;
+    code: string;
+    message: string;
+    result: UserInfo;
+  }>("/api/v1/auth/info");
 };

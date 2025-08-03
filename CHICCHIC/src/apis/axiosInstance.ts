@@ -18,11 +18,14 @@ export const axiosInstance = axios.create({
 // 모든 요청 전에 accessToken을 Authorization 헤더에 추가
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = getAccessToken();
+    const accessToken = getAccessToken();
 
     // accessToken이 존재하면 Authorization 헤더에 Bearer 토큰 형식으로 추가
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (accessToken) {
+      config.headers = config.headers || {};
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    } else {
+      console.warn("acceessToken이 없습니다.");
     }
     return config;
   },

@@ -2,47 +2,22 @@ import { useMemo, useState } from "react";
 import LeftArrowIcon from "../../../assets/icons/arrowLeft.svg";
 import RightArrowIcon from "../../../assets/icons/arrowRight.svg";
 import PostSection from "../../../components/Community/CounselingPostSection";
-import type { PostPrev } from "../../../types/post";
 import { useNavigate } from "react-router-dom";
-
-// 데모 포스트 양식
-const recommendPosts: PostPrev[] = [
-  {
-    postId: 101,
-    title: "추천해요",
-    writer: "닉네임",
-    createdAt: "2025.07.01.",
-    image: "/sample-image.png",
-  },
-  {
-    postId: 102,
-    title: "제목제목제목제목",
-    writer: "닉네임",
-    createdAt: "2025.07.01.",
-  },
-];
-
-// 데모 포스트 양식
-const recommendedPosts: PostPrev[] = [
-  {
-    postId: 103,
-    title: "추천 받아요",
-    writer: "닉네임",
-    createdAt: "2025.07.01.",
-    image: "/sample-image.png",
-  },
-  {
-    postId: 104,
-    title: "제목제목제목제목",
-    writer: "닉네임",
-    createdAt: "2025.07.01.",
-  },
-];
+import { recommendedPosts, recommendPosts } from "../../../mocks/PostPrev";
+import { usePostFilter } from "../../../store/usePostFilter";
+import { usePostList } from "../../../hooks/queries/usePostList";
 
 const CounselingLists = () => {
   const navigate = useNavigate();
-  const [select, setSelect] = useState<"RECEIVE" | "GIVE">("RECEIVE");
-  const post = select === "RECEIVE" ? recommendedPosts : recommendPosts;
+  // 카테고리 상태 가져오기
+  const { category, setCategory } = usePostFilter();
+  // 목데이터 필터링
+  const filteredPosts = useMemo(() => {
+    const allPosts = [...recommendedPosts, ...recommendPosts];
+    return allPosts.filter((post) => post.postType === category);
+  }, [category]);
+  // 엔드포인트: /consult-post 게시글 정보 훅
+  const { isLoading, data, isError } = usePostList(category);
 
   const [productPage, setProductPage] = useState(1);
 
@@ -66,20 +41,20 @@ const CounselingLists = () => {
           <div className="flex flex-col w-full gap-2 md:flex-row">
             <button
               className={`${
-                select === "RECEIVE" ? "text-white bg-[#AB3130]" : ""
+                category === "RECEIVE" ? "text-white bg-[#AB3130]" : ""
               } flex flex-1 w-full justify-center items-center border rounded-full px-6 py-3 cursor-pointer border-[#AB3130]`}
               onClick={() => {
-                setSelect("RECEIVE");
+                setCategory("RECEIVE");
               }}
             >
               추천 받아요!
             </button>
             <button
               className={`${
-                select === "GIVE" ? "text-white bg-[#AB3130]" : ""
+                category === "GIVE" ? "text-white bg-[#AB3130]" : ""
               } flex flex-1 w-full justify-center items-center border rounded-full px-6 py-3 cursor-pointer border-[#AB3130]`}
               onClick={() => {
-                setSelect("GIVE");
+                setCategory("GIVE");
               }}
             >
               추천해요!
@@ -87,8 +62,14 @@ const CounselingLists = () => {
           </div>
         </div>
       </section>
+      {/* 게시된 글 정보 */}
       <section className="w-[90%] max-w-5xl font-[pretendard] mx-auto grow py-8">
-        <PostSection posts={post} category={select} />
+        <PostSection
+          posts={filteredPosts}
+          category={category}
+          isLoading={isLoading}
+          isError={isError}
+        />
         <div className="flex items-start justify-end mb-4">
           <button
             className="text-sm px-12 py-2 bg-[#AB3130] text-white rounded-full cursor-pointer"

@@ -40,7 +40,7 @@ const Login = () => {
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
 
-      window.location.replace("/");
+      navigate("/");
     } catch (error: any) {
       setLoginError("아이디 또는 비밀번호가 올바르지 않습니다.");
       console.error("로그인 에러:", error);
@@ -100,7 +100,7 @@ const Login = () => {
               className="font-crimson font-light w-full px-2 sm:px-4 py-2 sm:py-3 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] placeholder-[#AB3130] placeholder-opacity-60 focus:outline-none focus:ring-[#AB3130] text-sm sm:text-lg"
             />
             {loginError && (
-              <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{loginError}</div>
+              <div className="sm:-mt-3 text-xs pl-2 mb-3 sm:text-sm text-red-500">{loginError}</div>
             )}
           </div>
 

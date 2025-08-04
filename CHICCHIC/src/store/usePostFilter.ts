@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { PostCategory } from "../types/post";
+import type { PostCategory } from "../types/enums/postCategory";
 
 // 상담소 카테고리 필터링 구현
 interface PostFilterState {
@@ -8,6 +8,6 @@ interface PostFilterState {
 }
 
 export const usePostFilter = create<PostFilterState>((set) => ({
-  category: "RECOMMEND",
+  category: "GIVE",
   setCategory: (c) => set({ category: c }),
 }));

@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { usePostFilter } from "../../store/usePostFilter";
-import type { PostCategory, PostPrev } from "../../types/post";
+import type { Post } from "../../types/post";
+import type { PostCategory } from "../../types/enums/postCategory";
 
 type CouselingCategoryProps = {
-  posts: PostPrev[];
+  posts: Post[];
   category: PostCategory;
 };
 
@@ -13,18 +14,18 @@ const PostSection = ({ posts, category }: CouselingCategoryProps) => {
   const navigate = useNavigate();
 
   return (
-    <section className="mb-4 text-[#66191F]">
+    <section className="mb-20 text-[#66191F]">
       <ul className="space-y-4">
         {posts.map((post) => (
           <li
-            key={post.postId}
+            key={post.consultId}
             className="flex justify-between items-center border-b border-[#AB3130] py-4"
           >
             <div className="flex items-center gap-4">
-              {post.image ? (
+              {post.imageUrl ? (
                 <img
-                  src={post.image}
-                  alt="post image"
+                  src={post.imageUrl}
+                  alt="postImage"
                   className="object-cover h-24 w-30 rounded-xl"
                 />
               ) : (
@@ -33,9 +34,7 @@ const PostSection = ({ posts, category }: CouselingCategoryProps) => {
               <div className="flex flex-col gap-4">
                 <button
                   onClick={() => {
-                    setCategory(
-                      category === "RECOMMEND" ? "RECOMMEND" : "RECOMMENDED"
-                    );
+                    setCategory(category === "GIVE" ? "GIVE" : "RECEIVE");
                     navigate("/community/recommendation/list/detail");
                   }}
                   className="text-[#AB3130] font-semibold text-lg mb-2 hover:underline cursor-pointer"
@@ -48,11 +47,11 @@ const PostSection = ({ posts, category }: CouselingCategoryProps) => {
                     alt="프로필"
                     className="object-cover w-6 h-6 rounded-full"
                   />
-                  <span className="ml-2">{post.writer}</span>
+                  <span className="ml-2">{post.nickname}</span>
                 </div>
               </div>
             </div>
-            <span className="text-sm">{post.createdAt}</span>
+            <span className="text-sm">{post.dateTime}</span>
           </li>
         ))}
       </ul>

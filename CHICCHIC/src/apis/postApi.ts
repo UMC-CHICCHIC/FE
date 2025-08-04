@@ -1,11 +1,7 @@
 import { axiosInstance } from "./axios";
 import type { PostCategory } from "../types/enums/postCategory";
-<<<<<<< HEAD
 import type { ResponsePostListDto, RequestCreatePostDto } from "../types/post";
-=======
-import type { ResponsePostListDto } from "../types/post";
 import type { ResponseUploadImg } from "../types/img";
->>>>>>> fix/krong-UIfix-#11
 
 // 향수 추천 상담소 게시글 리스트 조회
 export const getPostList = async (
@@ -18,11 +14,9 @@ export const getPostList = async (
   return data.data;
 };
 
-<<<<<<< HEAD
 // export const getPostDetail = async ({
 //   consultId,
 // }): Promise<Re>
-=======
 // 향수 디테일
 // export const getPostDetail = async ({
 //   consultId,
@@ -55,4 +49,3 @@ export const uploadProfileImg = async (
     throw e;
   }
 };
->>>>>>> fix/krong-UIfix-#11

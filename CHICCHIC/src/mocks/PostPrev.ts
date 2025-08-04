@@ -1,7 +1,7 @@
-import { type Post, type PostPrev } from "../types/post";
+import { type ConsultPost, type ConsultPostPrev } from "../types/post";
 
 // 추천함 포스트 데모
-export const recommendPosts: Post[] = [
+export const recommendPosts: ConsultPost[] = [
   {
     memberId: 123,
     nickname: "칙칙",
@@ -22,7 +22,7 @@ export const recommendPosts: Post[] = [
 ];
 
 // 추천받음 포스트 데모
-export const recommendedPosts: Post[] = [
+export const recommendedPosts: ConsultPost[] = [
   {
     memberId: 123,
     nickname: "칙칙",
@@ -43,7 +43,7 @@ export const recommendedPosts: Post[] = [
 ];
 
 // 추천함 prev 데모
-export const recommendPostsPrev: PostPrev[] = [
+export const recommendPostsPrev: ConsultPostPrev[] = [
   {
     consultId: 123,
     postType: "GIVE",
@@ -61,7 +61,7 @@ export const recommendPostsPrev: PostPrev[] = [
 ];
 
 // 추천받음 prev 데모
-export const recommendedPostsPrev: PostPrev[] = [
+export const recommendedPostsPrev: ConsultPostPrev[] = [
   {
     consultId: 123,
     postType: "RECEIVE",

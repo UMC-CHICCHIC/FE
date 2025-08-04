@@ -86,7 +86,7 @@ const NewCounseling = () => {
             className="resize-none w-full py-6 px-8 bg-transparent border-none text-xl placeholder:text-[#AB3130] placeholder:text-xl focus:outline-none"
           />
           <div className="w-full py-[12px] border-t border-[#AB3130] ">
-            <ImgUploader />
+            <ImgUploader type="post" />
           </div>
         </div>
 

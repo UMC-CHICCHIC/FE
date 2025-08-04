@@ -1,47 +1,7 @@
 import counselingMainImage from "/counselingHome.svg";
 import RightArrow from "../../../assets/icons/arrowRight.svg";
-import { type Post } from "../../../types/post";
 import PostSection from "../../../components/Community/CounselingPostSection";
-
-// 데모 포스트 양식
-const recommendPosts: Post[] = [
-  {
-    memberId: 1,
-    nickname: "칙칙",
-    consultId: 101,
-    postType: "RECEIVE",
-    title: "추천해요",
-    imageUrl: "/sample-image.png",
-    dateTime: "2025.07.01.",
-  },
-  {
-    memberId: 2,
-    nickname: "닉네임",
-    consultId: 102,
-    postType: "RECEIVE",
-    title: "제목제목제목제목",
-    dateTime: "/sample-image.png",
-  },
-];
-
-// 데모 포스트 양식
-const recommendedPosts: Post[] = [
-  {
-    memberId: 1,
-    nickname: "칙칙",
-    consultId: 101,
-    postType: "RECEIVE",
-    title: "추천해요",
-    imageUrl: "/sample-image.png",
-    dateTime: "2025.07.01.",
-  },
-  {
-    postId: 104,
-    title: "제목제목제목제목",
-    writer: "닉네임",
-    createdAt: "2025.07.01.",
-  },
-];
+import { recommendedPosts, recommendPosts } from "../../../mocks/PostPrev";
 
 const PerfumeCounselingHome = () => {
   return (

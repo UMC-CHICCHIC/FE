@@ -8,4 +8,5 @@ export const QUERY_KEY = {
   uploadImage: "uploadImage",
   comments: "comments",
   myInfo: "myInfo",
+  post: "post",
 };

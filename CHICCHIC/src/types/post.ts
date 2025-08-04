@@ -34,18 +34,11 @@ export type RequestCreatePostDto = {
   imageUrl: string;
 };
 
-// export type CategoryPost = {
-//   recievePost: PostPrev;
-//   givePost: PostPrev;
-// };
-
 // /consult-posts에 대한 ResponseDto
 export type ResponsePostListDto = PaginatedResponse<Post[]>;
 
 // /consult-posts/home에 대한 ResponseDto
 export type ResponsePostPrevDto = CommonResponse<{
-  recievePost: PostPrev;
+  receivePost: PostPrev;
   givePost: PostPrev;
 }>;
-
-// export type ResponseDetailPostDto =

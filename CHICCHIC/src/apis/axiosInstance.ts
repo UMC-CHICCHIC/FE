@@ -1,10 +1,11 @@
-import axios from "axios";
+import axios, { type InternalAxiosRequestConfig } from "axios";
 import { getAccessToken } from "../utils/authStorage";
 //import axios { type InternalAxiosRequestConfig } from "axios";
 
-/* interface CustomInternalAxiosRequestConfig extends InternalAxiosRequestConfig {
+// retry 플래그
+interface RetryableAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
-} */
+}
 
 // 전역 변수로 refresh 요청의 Promise를 저장해서 중복 요청을 방지
 //let refreshPromise: Promise<string> | null = null;

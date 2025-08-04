@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect, type SetStateAction } from "react";
+import { useState, useEffect } from "react";
 import { useLogout } from "../../utils/useLogout";
 import { getUserInfo } from "../../apis/auth";
 
@@ -9,11 +9,10 @@ export default function MyHome() {
   const currentPath = location.pathname;
   const logout = useLogout();
 
-  // 닉네임 상태 관리
   const [userNickname, setUserNickname] = useState("(닉네임)");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // 유저 정보 조회 API 호출
     getUserInfo()
       .then((res) => {
         if (res.data?.result?.nickname) {
@@ -22,24 +21,16 @@ export default function MyHome() {
       })
       .catch(() => {
         setUserNickname("(닉네임)");
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
-  const handleProfileClick = () => {
-    navigate('/mypage');
-  };
-
-  const handlePrivacyClick = () => {
-    navigate('/mypage/privacy');
-  };
-
-  const handleScrapsClick = () => {
-    navigate('/mypage/scraps');
-  };
-
-  const handleDiariesClick = () => {
-    navigate('/mypage/diaries');
-  };
+  const handleProfileClick = () => navigate("/mypage");
+  const handlePrivacyClick = () => navigate("/mypage/privacy");
+  const handleScrapsClick = () => navigate("/mypage/scraps");
+  const handleDiariesClick = () => navigate("/community/diary/my-diary");
 
   return (
     <div className="font-pretendard min-h-[calc(100vh-64px)] bg-transparent text-[#a8342f] flex flex-col sm:flex-row">
@@ -72,13 +63,21 @@ export default function MyHome() {
           </li>
         </ul>
       </div>
-      
+
       {/* 내용 영역 */}
       <main className="flex-1 flex flex-col items-center justify-start pt-16 px-8 sm:items-start sm:ml-20">
-        <div className="w-55 h-55 rounded-full bg-gray-300 flex items-center justify-center mb-6 mt-20">
+        {/* 프로필 이미지 (더미 원형 박스) */}
+        <div className="w-55 h-55 rounded-full bg-gray-300 flex items-center justify-center mb-6 mt-20" />
+
+        {/* 닉네임 영역 + Skeleton UI */}
+        <div className="text-3xl mt-5 font-semibold mb-2 text-center sm:text-left">
+          {isLoading ? (
+            <div className="w-60 h-10 bg-gray-200 animate-pulse rounded-md" />
+          ) : (
+            `안녕하세요, ${userNickname} 님!`
+          )}
         </div>
 
-        <div className="text-3xl mt-5 font-semibold mb-2">안녕하세요, {userNickname} 님!</div>
         <button 
           onClick={logout}
           className="text-base mt-2 underline text-[#AB3130] cursor-pointer bg-transparent border-none"
@@ -87,16 +86,17 @@ export default function MyHome() {
         </button>
 
         <div className="text-xl font-semibold mt-18">페이지 바로가기</div>
-        <div className="flex flex-col lg:flex-row gap-6 xl:gap-38 mt-10 mb-45 text-lg font-light">
+
+        <div className="flex flex-col lg:flex-row gap-6 xl:gap-25 mt-10 mb-25 text-lg font-light">
           <button
             onClick={handleScrapsClick}
-            className=" bg-[#AB3130] text-[#FFFFFF] px-18 py-2 rounded-full cursor-pointer hover:bg-[#8b2a25] transition-colors"
+            className="bg-[#AB3130] text-[#FFFFFF] px-18 py-2 rounded-full cursor-pointer hover:bg-[#8b2a25] transition-colors"
           >
             나의 스크랩
           </button>
           <button
             onClick={handleDiariesClick}
-            className=" bg-[#AB3130] text-[#FFFFFF] px-16 py-2 rounded-full cursor-pointer hover:bg-[#8b2a25] transition-colors"
+            className="bg-[#AB3130] text-[#FFFFFF] px-16 py-2 rounded-full cursor-pointer hover:bg-[#8b2a25] transition-colors"
           >
             작성한 일기장
           </button>

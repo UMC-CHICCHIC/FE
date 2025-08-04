@@ -16,33 +16,33 @@ const Login = () => {
   });
   const [rememberMe, setRememberMe] = useState(false);
 
+  // 에러 상태 추가
+  const [loginError, setLoginError] = useState<string | null>(null);
+
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
+    setLoginError(null); // 입력 시 에러 초기화
   };
 
   const handleLogin = async () => {
+    setLoginError(null);
     try {
       const response = await postLogin({
         username: formData.id,
         password: formData.password,
       });
 
-      const { accessToken, refreshToken } = response.data;
+      const { accessToken, refreshToken } = response.data.result;
 
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
 
-      alert("로그인 성공!");
-      navigate("/");
+      window.location.replace("/");
     } catch (error: any) {
-      if (error.response?.status === 401) {
-        alert("아이디 또는 비밀번호가 올바르지 않습니다.");
-      } else {
-        alert("로그인 중 오류가 발생했습니다.");
-      }
+      setLoginError("아이디 또는 비밀번호가 올바르지 않습니다.");
       console.error("로그인 에러:", error);
     }
   };
@@ -54,7 +54,7 @@ const Login = () => {
   };
 
   const handleSocialLogin = (provider: string) => {
-    // SNS 로그인 로직 (현재는 버튼 역할만)
+    // 간편로그인 로직 (현재는 버튼 역할만)
     console.log(`${provider} login`);
   };
 
@@ -90,15 +90,18 @@ const Login = () => {
               placeholder="ID"
               value={formData.id}
               onChange={(e) => handleInputChange("id", e.target.value)}
-              className="font-crimson w-full px-2 sm:px-4 py-2 sm:py-4 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] placeholder-[#AB3130] placeholder-opacity-60 focus:outline-none focus:ring-2 focus:ring-[#AB3130] text-sm sm:text-lg"
+              className="font-crimson w-full px-2 sm:px-4 py-2 sm:py-3 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] placeholder-[#AB3130] placeholder-opacity-60 focus:outline-none focus:ring-[#AB3130] text-sm sm:text-lg"
             />
             <input
               type="password"
               placeholder="Password"
               value={formData.password}
               onChange={(e) => handleInputChange("password", e.target.value)}
-              className="font-crimson font-light w-full px-2 sm:px-4 py-2 sm:py-4 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] placeholder-[#AB3130] placeholder-opacity-60 focus:outline-none focus:ring-2 focus:ring-[#AB3130] text-sm sm:text-lg"
+              className="font-crimson font-light w-full px-2 sm:px-4 py-2 sm:py-3 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] placeholder-[#AB3130] placeholder-opacity-60 focus:outline-none focus:ring-[#AB3130] text-sm sm:text-lg"
             />
+            {loginError && (
+              <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{loginError}</div>
+            )}
           </div>
 
           <div className="flex items-center justify-between mb-4 sm:mb-8">
@@ -131,13 +134,13 @@ const Login = () => {
           <div className="mb-8 space-y-2 sm:space-y-3 sm:mb-12">
             <button
               onClick={handleLogin}
-              className="font-crimson w-full bg-[#AB3130] text-white py-2 sm:py-4 rounded-full hover:bg-[#8b2a25] transition-colors font-normal cursor-pointer text-sm sm:text-lg"
+              className="font-crimson w-full bg-[#AB3130] text-white py-2 sm:py-3 rounded-full hover:bg-[#8b2a25] transition-colors font-normal cursor-pointer text-sm sm:text-lg"
             >
               Log-in
             </button>
             <button
               onClick={handleSignup}
-              className="font-crimson w-full bg-transparent font-normal text-[#AB3130] border border-[#AB3130] py-2 sm:py-4 rounded-full hover:bg-[#E4E1DA] transition-colors cursor-pointer text-sm sm:text-lg"
+              className="font-crimson w-full bg-transparent font-normal text-[#AB3130] border border-[#AB3130] py-2 sm:py-3 rounded-full hover:bg-[#EFE8DC] transition-colors cursor-pointer text-sm sm:text-lg"
             >
               Sign-up
             </button>

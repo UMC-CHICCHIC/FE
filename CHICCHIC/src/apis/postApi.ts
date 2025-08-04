@@ -11,7 +11,7 @@ export const getConsultPostList = async (
     params: { category },
   });
   console.log("요청보냄");
-  return data.data;
+  return data;
 };
 
 // export const getPostDetail = async ({

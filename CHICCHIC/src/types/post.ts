@@ -1,7 +1,8 @@
 import type { CommonResponse, PaginatedResponse } from "./common";
 import type { PostCategory } from "./enums/postCategory";
 
-export type Post = {
+// 추천 게시글 정보
+export type ConsultPost = {
   memberId: number;
   nickname: string;
   consultId: number;
@@ -11,8 +12,8 @@ export type Post = {
   dateTime: string;
 };
 
-// 게시글 미리보기 정보
-export type PostPrev = {
+// 추천 게시글 미리보기 정보
+export type ConsultPostPrev = {
   consultId: number;
   postType: PostCategory;
   title: string;
@@ -20,13 +21,13 @@ export type PostPrev = {
   imageUrl?: string;
 };
 
-// 게시글 카테고리 enum 타입
+// 추천 게시글 카테고리 enum 타입
 export const POST_CATEGORY: Record<PostCategory, string> = {
   GIVE: "추천해요!",
   RECEIVE: "추천 받아요!",
 };
 
-// 향수 추천 게시글 작성 요청
+// 추천 게시글 작성 요청
 export type RequestCreatePostDto = {
   postType: PostCategory;
   title: string;
@@ -34,18 +35,11 @@ export type RequestCreatePostDto = {
   imageUrl: string;
 };
 
-// export type CategoryPost = {
-//   recievePost: PostPrev;
-//   givePost: PostPrev;
-// };
-
 // /consult-posts에 대한 ResponseDto
-export type ResponsePostListDto = PaginatedResponse<Post[]>;
+export type ResponseConsultPostistDto = PaginatedResponse<ConsultPost[]>;
 
 // /consult-posts/home에 대한 ResponseDto
-export type ResponsePostPrevDto = CommonResponse<{
-  recievePost: PostPrev;
-  givePost: PostPrev;
+export type ResponseConsultPostPrevDto = CommonResponse<{
+  receivePost: ConsultPostPrev;
+  givePost: ConsultPostPrev;
 }>;
-
-// export type ResponseDetailPostDto =

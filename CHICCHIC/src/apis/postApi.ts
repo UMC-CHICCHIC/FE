@@ -1,7 +1,7 @@
 import { axiosInstance } from "./axiosInstance";
 import type { PostCategory } from "../types/enums/postCategory";
 import type {
-  ResponseConsultLPostistDto,
+  ResponseConsultPostistDto,
   RequestCreatePostDto,
 } from "../types/post";
 import type { ResponseUploadImg } from "../types/img";
@@ -9,7 +9,7 @@ import type { ResponseUploadImg } from "../types/img";
 // 향수 추천 상담소 게시글 리스트 조회
 export const getConsultPostList = async (
   category: PostCategory
-): Promise<ResponseConsultLPostistDto> => {
+): Promise<ResponseConsultPostistDto> => {
   const { data } = await axiosInstance.get("/consult-posts", {
     params: { category },
   });
@@ -22,7 +22,7 @@ export const createConsultPostDetail = async (
   body: RequestCreatePostDto
 ): Promise<void> => {
   try {
-    await axiosInstance.post("consult-posts", body);
+    await axiosInstance.post("/consult-posts", body);
   } catch (e) {
     console.error("게시글 작성 에러", e);
     throw e;

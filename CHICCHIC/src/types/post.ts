@@ -36,7 +36,7 @@ export type RequestCreatePostDto = {
 };
 
 // /consult-posts에 대한 ResponseDto
-export type ResponseConsultLPostistDto = PaginatedResponse<ConsultPost[]>;
+export type ResponseConsultPostistDto = PaginatedResponse<ConsultPost[]>;
 
 // /consult-posts/home에 대한 ResponseDto
 export type ResponseConsultPostPrevDto = CommonResponse<{

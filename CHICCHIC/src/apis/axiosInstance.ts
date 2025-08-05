@@ -1,4 +1,4 @@
-import axios, { type InternalAxiosRequestConfig } from "axios";
+import axios from "axios";
 import { getAccessToken } from "../utils/authStorage";
 //import axios { type InternalAxiosRequestConfig } from "axios";
 

@@ -47,9 +47,9 @@ const upLoadImg = async (
 
 // 게시글 포스트에 대한 이미지 업로드
 export const uploadPostImg = (file: File) => {
-  upLoadImg(file, "/images/upload");
+  return upLoadImg(file, "/images/upload");
 };
 // 프로필 아바타 설정에 대한 이미지 업로드
 export const uploadProfileImg = (file: File) => {
-  upLoadImg(file, "/users/me");
+  return upLoadImg(file, "/users/me");
 };

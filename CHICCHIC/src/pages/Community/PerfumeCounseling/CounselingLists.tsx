@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
 import LeftArrowIcon from "../../../assets/icons/arrowLeft.svg";
 import RightArrowIcon from "../../../assets/icons/arrowRight.svg";
-import PostSection from "../../../components/Community/CounselingPostSection";
+import PostSection from "../../../components/Counseling/CounselingPostSection";
 import { useNavigate } from "react-router-dom";
 import { recommendedPosts, recommendPosts } from "../../../mocks/PostPrev";
 import { usePostFilter } from "../../../store/usePostFilter";
-import { usePostList } from "../../../hooks/queries/usePostList";
+import { useGetConsultPost } from "../../../hooks/queries/useGetConsultPost";
 
 const CounselingLists = () => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const CounselingLists = () => {
     return allPosts.filter((post) => post.postType === category);
   }, [category]);
   // 엔드포인트: /consult-post 게시글 정보 훅
-  const { isLoading, data, isError } = usePostList(category);
+  const { isLoading, isError } = useGetConsultPost(category);
 
   const [productPage, setProductPage] = useState(1);
 

@@ -1,28 +1,36 @@
 import { axiosInstance } from "./axiosInstance";
 import type { PostCategory } from "../types/enums/postCategory";
 import type {
-  ResponseConsultPostistDto,
+  ResponseConsultListDto,
   RequestCreatePostDto,
+  ResponseConsultCreateDto,
 } from "../types/post";
 import type { ResponseUploadImg } from "../types/img";
 
 // 향수 추천 상담소 게시글 리스트 조회
 export const getConsultPostList = async (
   category: PostCategory
-): Promise<ResponseConsultPostistDto> => {
-  const { data } = await axiosInstance.get("/consult-posts", {
-    params: { category },
-  });
-  console.log("요청보냄");
-  return data;
+): Promise<ResponseConsultListDto> => {
+  try {
+    console.log("요청 카테고리", category);
+    const { data } = await axiosInstance.get("/consult-posts", {
+      params: { type: category, page: 0, size: 5 },
+    });
+    console.log("요청보냄");
+    return data;
+  } catch (e) {
+    console.error("요청 실패", e);
+    throw e;
+  }
 };
 
 // 향수 추천 상담소 게시글 포스트
-export const createConsultPostDetail = async (
+export const createConsultPost = async (
   body: RequestCreatePostDto
-): Promise<void> => {
+): Promise<ResponseConsultCreateDto> => {
   try {
-    await axiosInstance.post("/consult-posts", body);
+    const { data } = await axiosInstance.post("/consult-posts", body);
+    return data;
   } catch (e) {
     console.error("게시글 작성 에러", e);
     throw e;

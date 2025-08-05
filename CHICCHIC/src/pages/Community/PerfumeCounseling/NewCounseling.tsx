@@ -2,12 +2,45 @@ import { useState } from "react";
 import { ImgUploader } from "../../../components/Community/ImgUploader";
 import { useImgUploadStore } from "../../../store/useImgUploadStore";
 import { X } from "lucide-react";
+import { useCreateConsultPost } from "../../../hooks/mutations/useCreatePost";
+import type { PostCategory } from "../../../types/enums/postCategory";
+import { useNavigate } from "react-router-dom";
 
 const NewCounseling = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [select, setSelect] = useState<"recommended" | "recommend" | "">("");
+  const [select, setSelect] = useState<"GIVE" | "RECEIVE" | "">("");
   const { url, reset } = useImgUploadStore();
+  const navigate = useNavigate();
+  const { mutate } = useCreateConsultPost();
+
+  const handlePost = () => {
+    if (select === "") {
+      alert("글 유형을 선택해주세요");
+      return;
+    }
+
+    const postType: PostCategory = select === "GIVE" ? "GIVE" : "RECEIVE";
+
+    const payLoad = {
+      postType,
+      title: title.trim(),
+      content: content.trim(),
+      imageUrl: url ?? "",
+    };
+    mutate(payLoad, {
+      onSuccess: (res) => {
+        alert("작성 완료!");
+        const consultId = res.result.consultPostId;
+        navigate(`/community/recommendation/list/${consultId}`);
+        reset();
+        setTitle("");
+        setContent("");
+        setSelect("");
+      },
+      onError: () => alert("작성에 실패. 다시 시도해주세요."),
+    });
+  };
 
   return (
     <div className="mx-auto bg-[#F7F4EF] text-[#AB3130] flex justify-center py-16">
@@ -23,20 +56,20 @@ const NewCounseling = () => {
           <div className="flex mt-6 text-[18px] font-medium space-x-2 max-w-100">
             <button
               className={`${
-                select === "recommended" ? "text-white bg-[#AB3130]" : ""
+                select === "RECEIVE" ? "text-white bg-[#AB3130]" : ""
               } flex flex-1 justify-center items-center border rounded-full px-8 py-4 cursor-pointer border-[#AB3130]`}
               onClick={() => {
-                setSelect("recommended");
+                setSelect("RECEIVE");
               }}
             >
               추천 받아요!
             </button>
             <button
               className={`${
-                select === "recommend" ? "text-white bg-[#AB3130]" : ""
+                select === "GIVE" ? "text-white bg-[#AB3130]" : ""
               } flex flex-1 justify-center items-center border rounded-full px-8 py-4 cursor-pointer border-[#AB3130] `}
               onClick={() => {
-                setSelect("recommend");
+                setSelect("GIVE");
               }}
             >
               추천해요!
@@ -93,7 +126,7 @@ const NewCounseling = () => {
         {/* 작성 완료 버튼 */}
         <button
           className="mt-18 block mx-auto w-full h-[70px] rounded-full bg-[#AB3130] text-white text-2xl transition-colors border-none hover:bg-[#992a29]"
-          onClick={() => alert("작성 완료!")}
+          onClick={handlePost}
         >
           작성 완료하기
         </button>

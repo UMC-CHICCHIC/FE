@@ -1,12 +1,12 @@
 import counselingMainImage from "/counselingHome.svg";
 import RightArrow from "../../../assets/icons/arrowRight.svg";
-import PostSection from "../../../components/Community/CounselingPostSection";
+import PostSection from "../../../components/Counseling/CounselingPostSection";
 import { recommendedPosts, recommendPosts } from "../../../mocks/PostPrev";
-import { usePostList } from "../../../hooks/queries/usePostList";
+import { useGetConsultPost } from "../../../hooks/queries/useGetConsultPost";
 
 const PerfumeCounselingHome = () => {
-  const { isLoading: isGiveLoading } = usePostList("GIVE");
-  const { isLoading: isReceiveLoading } = usePostList("RECEIVE");
+  const { isLoading: isGiveLoading } = useGetConsultPost("GIVE");
+  const { isLoading: isReceiveLoading } = useGetConsultPost("RECEIVE");
   return (
     <div className="bg-[#F7F4EF]">
       {/* 상단 배너 */}

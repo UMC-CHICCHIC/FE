@@ -5,7 +5,7 @@ import type { PostCategory } from "./enums/postCategory";
 export type ConsultPost = {
   memberId: number;
   nickname: string;
-  consultId: number;
+  consultPostId: number;
   postType: PostCategory;
   title: string;
   imageUrl?: string;
@@ -35,8 +35,11 @@ export type RequestCreatePostDto = {
   imageUrl: string;
 };
 
-// /consult-posts에 대한 ResponseDto
-export type ResponseConsultPostistDto = PaginatedResponse<ConsultPost[]>;
+// /consult-posts에 대한 GetResponseDto
+export type ResponseConsultListDto = PaginatedResponse<ConsultPost[]>;
+
+// /consult-posts에 대한 PostResponseDto
+export type ResponseConsultCreateDto = CommonResponse<ConsultPost>;
 
 // /consult-posts/home에 대한 ResponseDto
 export type ResponseConsultPostPrevDto = CommonResponse<{

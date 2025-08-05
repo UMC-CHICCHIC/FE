@@ -1,18 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { postSignup } from "../apis/auth";
 import { z } from "zod";
 import { InputField } from "../components/SignUp/InputField";
+import signupmodal from "../assets/icons/signup-modal.svg";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const signupSchema = z
   .object({
-    username: z
-      .string()
-      .min(6, "아이디는 6자 이상")
-      .max(12, "아이디는 12자 이하"),
     password: z
-      .string()
-      .min(8, "비밀번호는 8자 이상")
-      .max(20, "비밀번호는 18자 이하"),
+      .string(),
     passwordConfirm: z.string(),
     email: z.string().email("이메일 형식이 올바르지 않습니다."),
     phoneNumber: z
@@ -23,9 +20,10 @@ const signupSchema = z
   .refine((data) => data.password === data.passwordConfirm, {
     message: "비밀번호가 일치하지 않습니다.",
     path: ["passwordConfirm"],
-  });
+  }); //프론트에서 유효성 검사
 
 export default function Signup() {
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({
     username: "",
@@ -37,6 +35,37 @@ export default function Signup() {
   });
   const [error, setError] = useState<string | null>(null);
 
+  const [pwError, setPwError] = useState<string | null>(null); // 비밀번호 불일치 에러 디바운싱(바로)
+  const debounceTimer = useRef<number | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({}); // 전체적으로 input 밑에 에러 띄우기
+  
+  const [debouncedError, setDebouncedError] = useState<string | null>(null);
+  const errorDebounceTimer = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (form.password && form.passwordConfirm && form.password !== form.passwordConfirm) {
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+      debounceTimer.current = setTimeout(() => {
+        setPwError("비밀번호가 일치하지 않습니다.");
+      }, 400);
+    } else {
+      setPwError(null);
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    }
+  }, [form.password, form.passwordConfirm]);
+
+  useEffect(() => {
+    if (error) {
+      if (errorDebounceTimer.current) clearTimeout(errorDebounceTimer.current);
+      errorDebounceTimer.current = setTimeout(() => {
+        setDebouncedError(error);
+      }, 400);
+    } else {
+      setDebouncedError(null);
+      if (errorDebounceTimer.current) clearTimeout(errorDebounceTimer.current);
+    }
+  }, [error]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
@@ -47,38 +76,60 @@ export default function Signup() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
+    setFieldErrors({});
 
     const result = signupSchema.safeParse(form);
     if (!result.success) {
-      setError(result.error.issues[0].message);
+      // zod 에러 띄우기
+      const errors: Record<string, string> = {};
+      result.error.issues.forEach((issue) => {
+        if (issue.path && issue.path.length > 0) {
+          errors[issue.path[0] as string] = issue.message;
+        }
+      });
+      setFieldErrors(errors);
       return;
     }
 
     try {
       await postSignup(form);
       setShowModal(true);
-    } catch (err) {
-      console.error("회원가입에 실패했습니다.", err);
+    } catch (err: any) {
+      console.error("회원가입 실패", err);
+
+      if (axios.isAxiosError(err)) {
+        const resData = err.response?.data;
+
+        // 공통 에러 메시지
+        setError(resData?.message || "회원가입에 실패했습니다.");
+
+        // 필드별 에러 세팅
+        if (resData?.result) {
+          const errors = resData.result;
+          setFieldErrors(errors);
+        }
+      }
     }
   };
 
   const handleModalClose = () => {
     setShowModal(false);
+    navigate("/");
   };
 
   return (
-    <div className="flex justify-center min-h-screen bg-gradient-to-br from-[#F7F4EF] to-[#BF7990] py-10">
+    <div className="px-2 sm:px-0 flex justify-center min-h-screen bg-gradient-to-br from-[#F7F4EF] to-[#BF7990] py-10">
       <div
         className="bg-[#F7F4EF] w-full max-w-[800px] min-h-[600px] p-10 rounded-2xl"
         style={{ boxShadow: "12px 12px 30px #893B3A" }}
       >
-        <h1 className="text-[#AB3130] text-2xl font-bold mb-3">회원가입</h1>
-        <p className="text-base text-[#66191F] mb-12">
+        <h1 className="text-[#AB3130] text-3xl font-bold mb-3 mt-8">회원가입</h1>
+        <p className="text-lg text-[#66191F] mb-8">
           CHICCHIC 회원가입 후 다양한 서비스를 경험해보세요.
         </p>
         <hr className="border-t border-[#AB3130] mb-12" />
 
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form className="space-y-5" onSubmit={handleSubmit}>
           <InputField
             label="아이디 *"
             name="username"
@@ -89,11 +140,18 @@ export default function Signup() {
           >
             <button
               type="button"
-              className="px-8 py-1 text-sm font-bold border-1 border-[#AB3130] text-[#AB3130] rounded-full hover:bg-[#a8342f] hover:text-white transition"
+              className="px-4 sm:px-10 py-1 text-base font-bold border-1 border-[#AB3130] text-[#AB3130] rounded-full hover:bg-[#a8342f] hover:text-white transition"
             >
               중복확인
             </button>
           </InputField>
+        {fieldErrors.username && (
+          <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors.username}</div>
+        )}
+        {typeof fieldErrors === "string" && fieldErrors.includes("아이디") && (
+          <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors}</div>
+        )}
+        {/* 아이디 중복(따로 버튼으로 처리하려면 api 필요), 아이디 6자 이상 */}
 
           <InputField
             label="비밀번호 *"
@@ -104,6 +162,10 @@ export default function Signup() {
             placeholder="영문, 숫자, 특수문자 중 2가지 이상 조합 / 8~20자 이내 입력"
             required
           />
+          {/* 비밀번호 에러 */}
+          {fieldErrors.password && (
+            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors.password}</div>
+          )}
 
           <InputField
             label="비밀번호 확인 *"
@@ -114,6 +176,9 @@ export default function Signup() {
             placeholder="비밀번호 확인 입력"
             required
           />
+          {pwError && (
+            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{pwError}</div>
+          )}
 
           <InputField
             label="이메일 *"
@@ -124,6 +189,13 @@ export default function Signup() {
             placeholder="이메일 주소 입력"
             required
           />
+          {/* 이메일 중복 */}
+          {fieldErrors.email && (
+            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors.email}</div>
+          )}
+          {typeof fieldErrors === "string" && fieldErrors.includes("이메일") && (
+            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors}</div>
+          )}
 
           <InputField
             label="휴대폰 번호 *"
@@ -134,6 +206,12 @@ export default function Signup() {
             placeholder="휴대폰 번호 입력"
             required
           />
+          {fieldErrors.phoneNumber && (
+            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors.phoneNumber}</div>
+          )}
+          {typeof fieldErrors === "string" && fieldErrors.includes("휴대폰") && (
+            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors}</div>
+          )}
 
           <InputField
             label="닉네임 *"
@@ -143,13 +221,14 @@ export default function Signup() {
             placeholder="닉네임 입력"
             required
           />
-
-          {error && <div className="mt-2 text-sm text-red-500">{error}</div>}
+          {fieldErrors.nickname && (
+            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors.nickname}</div>
+          )}
 
           <div className="flex justify-center mt-6">
             <button
               type="submit"
-              className="bg-[#AB3130] text-[#F7F4EF] text-sm px-30 py-2 mt-10 rounded-full hover:bg-[#922e2a] transition mb-5 cursor-pointer"
+              className="bg-[#AB3130] text-[#F7F4EF] text-base px-18 py-2 mt-10 rounded-full hover:bg-[#922e2a] transition mb-5 cursor-pointer"
             >
               가입하기
             </button>
@@ -157,16 +236,25 @@ export default function Signup() {
         </form>
 
         {showModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
-            <div className="p-8 text-center bg-white shadow-lg rounded-xl">
-              <div className="text-lg mb-4 text-[#AB3130]">
-                회원가입이 완료되었습니다!
+          <div className="p-6 fixed inset-0 z-50 flex items-center justify-center"
+               style={{ background: "rgba(0, 0, 0, 0.5)" }}>
+            <div className="pl-8 pr-8 pb-8 pt-2 text-center shadow-lg rounded-xl flex-col items-center justify-center bg-[#F7F4EF]">
+              <img
+                  src={signupmodal}
+                  alt="signup modal"
+                  className="w-20 m-auto"
+                />
+              <div className="text-2xl mt-1 text-[#66191F] font-semibold">
+                회원가입이 완료되었습니다.
+              </div>
+              <div className="text-lg mt-2 mb-10 text-[#66191F]">
+                CHICCHIC에서 더 많은 서비스를 경험하세요!
               </div>
               <button
                 onClick={handleModalClose}
-                className="bg-[#AB3130] text-white px-6 py-2 rounded-full hover:bg-[#922e2a] transition"
+                className="bg-[#AB3130] text-white font-light cursor-pointer px-20 py-2 rounded-full hover:bg-[#922e2a] transition"
               >
-                확인
+                홈으로 이동
               </button>
             </div>
           </div>

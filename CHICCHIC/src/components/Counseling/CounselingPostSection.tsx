@@ -1,25 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import { usePostFilter } from "../../store/usePostFilter";
-import type { ConsultPost } from "../../types/post";
-import type { PostCategory } from "../../types/enums/postCategory";
 import SkeletonPostCard from "../skeletons/SkeletonPostCard";
+import { useGetConsultPost } from "../../hooks/queries/useGetConsultPost";
+import type { PostCategory } from "../../types/enums/postCategory";
 
-type CouselingCategoryProps = {
-  posts: ConsultPost[];
+type PostSectionProps = {
   category: PostCategory;
-  isLoading: boolean;
-  isError: boolean;
 };
 
 // List에서 게시글 미리보기
-const PostSection = ({
-  posts,
-  category,
-  isLoading,
-}: CouselingCategoryProps) => {
+const PostSection = ({ category }: PostSectionProps) => {
   const { setCategory } = usePostFilter();
   const navigate = useNavigate();
 
+  const { data, isLoading } = useGetConsultPost(category);
+
+  data?.result.content.map((post) => console.log(post));
   return (
     <section className="mb-20 text-[#66191F]">
       <ul className="space-y-4">
@@ -28,9 +24,9 @@ const PostSection = ({
           ? Array.from({ length: 3 }).map((_, i) => (
               <SkeletonPostCard key={i} />
             ))
-          : posts.map((post) => (
+          : data?.result.content.map((post) => (
               <li
-                key={post.consultId}
+                key={post.consultPostId}
                 className="flex justify-between items-center border-b border-[#AB3130] py-4"
               >
                 <div className="flex items-center gap-4">
@@ -46,8 +42,10 @@ const PostSection = ({
                   <div className="flex flex-col gap-4">
                     <button
                       onClick={() => {
-                        setCategory(category === "GIVE" ? "GIVE" : "RECEIVE");
-                        navigate("/community/recommendation/list/detail");
+                        setCategory(category);
+                        navigate(
+                          `/community/recommendation/list/${post.consultPostId}`
+                        );
                       }}
                       className="text-[#AB3130] font-semibold text-lg mb-2 hover:underline cursor-pointer"
                     >

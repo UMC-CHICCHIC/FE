@@ -1,6 +1,5 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
 import { LOCAL_STORAGE_KEY } from "../constants/key";
-import { useLocalStorage } from "../hooks/useLocalStorage";
 
 // retry 플래그
 interface RetryableAxiosRequestConfig extends InternalAxiosRequestConfig {

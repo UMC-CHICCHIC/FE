@@ -3,22 +3,12 @@ import LeftArrowIcon from "../../../assets/icons/arrowLeft.svg";
 import RightArrowIcon from "../../../assets/icons/arrowRight.svg";
 import PostSection from "../../../components/Counseling/CounselingPostSection";
 import { useNavigate } from "react-router-dom";
-import { recommendedPosts, recommendPosts } from "../../../mocks/PostPrev";
 import { usePostFilter } from "../../../store/usePostFilter";
-import { useGetConsultPost } from "../../../hooks/queries/useGetConsultPost";
 
 const CounselingLists = () => {
   const navigate = useNavigate();
   // 카테고리 상태 가져오기
   const { category, setCategory } = usePostFilter();
-  // 목데이터 필터링
-  const filteredPosts = useMemo(() => {
-    const allPosts = [...recommendedPosts, ...recommendPosts];
-    return allPosts.filter((post) => post.postType === category);
-  }, [category]);
-  // 엔드포인트: /consult-post 게시글 정보 훅
-  const { isLoading, isError } = useGetConsultPost(category);
-
   const [productPage, setProductPage] = useState(1);
 
   // 페이지네이션 프로토타입용
@@ -64,12 +54,7 @@ const CounselingLists = () => {
       </section>
       {/* 게시된 글 정보 */}
       <section className="w-[90%] max-w-5xl font-[pretendard] mx-auto grow py-8">
-        <PostSection
-          posts={filteredPosts}
-          category={category}
-          isLoading={isLoading}
-          isError={isError}
-        />
+        <PostSection category={category} />
         <div className="flex items-start justify-end mb-4">
           <button
             className="text-sm px-12 py-2 bg-[#AB3130] text-white rounded-full cursor-pointer"

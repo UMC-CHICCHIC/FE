@@ -2,8 +2,11 @@ import counselingMainImage from "/counselingHome.svg";
 import RightArrow from "../../../assets/icons/arrowRight.svg";
 import PostSection from "../../../components/Community/CounselingPostSection";
 import { recommendedPosts, recommendPosts } from "../../../mocks/PostPrev";
+import { usePostList } from "../../../hooks/queries/usePostList";
 
 const PerfumeCounselingHome = () => {
+  const { isLoading: isGiveLoading } = usePostList("GIVE");
+  const { isLoading: isReceiveLoading } = usePostList("RECEIVE");
   return (
     <div className="bg-[#F7F4EF]">
       {/* 상단 배너 */}
@@ -38,12 +41,22 @@ const PerfumeCounselingHome = () => {
             <img src={RightArrow} width={6} alt="rightArrow" />
           </a>
         </div>
-        <PostSection posts={recommendedPosts} category="RECEIVE" />
+        <PostSection
+          posts={recommendedPosts}
+          category="RECEIVE"
+          isLoading={isReceiveLoading}
+          isError
+        />
         <span className="text-[#AB3130] font-semibold text-2xl mb-2">
           추천해요! 최근 게시글
         </span>
 
-        <PostSection posts={recommendPosts} category="GIVE" />
+        <PostSection
+          posts={recommendPosts}
+          category="GIVE"
+          isLoading={isGiveLoading}
+          isError
+        />
       </section>
     </div>
   );

@@ -65,7 +65,7 @@ const CounselingDetail = () => {
                 <div className="flex items-center border border-[#AB3130] rounded-xl bg-transparent">
                   <input
                     type="text"
-                    placeholder="답글답글"
+                    placeholder="답글 쓰기"
                     className="flex-1 px-4 bg-transparent sm:p-4 focus:outline-none"
                   />
                   <button className="p-2 pr-3 cursor-pointer">

@@ -1,20 +1,22 @@
-import React from "react";
-import { Outlet, Navigate, useLocation } from "react-router-dom";
+import { Outlet, useLocation, Navigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CommunityTabBar from "../components/Community/CommunityTabBar";
 import ScrollTop from "../components/ScrollTop";
+import { useAuth } from "../hooks/useAuth";
 
-const ProtectedLayout = () => {
+interface BaseLayoutProps {
+  protectedRoute?: boolean;
+}
+
+const BaseLayout = ({ protectedRoute = false }: BaseLayoutProps) => {
+  const { isLoggedIn } = useAuth();
   const location = useLocation();
-  // community page's navbar
   const isCommunityPage = location.pathname.startsWith("/community");
 
-  // 인증 상태 확인 로직 추가
-  const isAuthenticated = true;
-
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+  if (protectedRoute && !isLoggedIn) {
+    // 로그인 안 되어 있으면 로그인 페이지로 리디렉션
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return (
@@ -30,4 +32,4 @@ const ProtectedLayout = () => {
   );
 };
 
-export default ProtectedLayout;
+export default BaseLayout;

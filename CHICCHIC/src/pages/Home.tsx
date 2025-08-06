@@ -4,7 +4,6 @@ import { PerfumeGrid } from "../components/PersonalPerfumeTest/perfume-grid";
 import mainlogo2 from '../assets/images/main-logo.png';
 import mainbackground from '../assets/images/main_background.png';
 import mainpage from '../assets/images/mainpage.png';
-import mainlogo from'../assets/icons/main-logo.svg'
 
 export default function Home() {
   // 인증 상태 확인 (실제로는 Context나 상태관리에서 가져옴)

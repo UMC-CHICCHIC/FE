@@ -37,10 +37,10 @@ export default function Signup() {
 
   const [pwError, setPwError] = useState<string | null>(null); // 비밀번호 불일치 에러 디바운싱(바로)
   const debounceTimer = useRef<number | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({}); // 전체적으로 input 밑에 에러 띄우기
+  const [fieldErrors, setFieldErrors] = useState<string | Record<string, string>>({});
   
   const [debouncedError, setDebouncedError] = useState<string | null>(null);
-  const errorDebounceTimer = useRef<NodeJS.Timeout | null>(null);
+  const errorDebounceTimer = useRef<number | null>(null);
 
   useEffect(() => {
     if (form.password && form.passwordConfirm && form.password !== form.passwordConfirm) {
@@ -145,9 +145,9 @@ export default function Signup() {
               중복확인
             </button>
           </InputField>
-        {fieldErrors.username && (
-          <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors.username}</div>
-        )}
+        {typeof fieldErrors !== "string" && fieldErrors.username && (
+            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors.username}</div>
+          )}
         {typeof fieldErrors === "string" && fieldErrors.includes("아이디") && (
           <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors}</div>
         )}
@@ -163,7 +163,7 @@ export default function Signup() {
             required
           />
           {/* 비밀번호 에러 */}
-          {fieldErrors.password && (
+          {typeof fieldErrors !== "string" && fieldErrors.password && (
             <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors.password}</div>
           )}
 
@@ -190,7 +190,7 @@ export default function Signup() {
             required
           />
           {/* 이메일 중복 */}
-          {fieldErrors.email && (
+          {typeof fieldErrors !== "string" && fieldErrors.email && (
             <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors.email}</div>
           )}
           {typeof fieldErrors === "string" && fieldErrors.includes("이메일") && (
@@ -206,7 +206,7 @@ export default function Signup() {
             placeholder="휴대폰 번호 입력"
             required
           />
-          {fieldErrors.phoneNumber && (
+          {typeof fieldErrors !== "string" && fieldErrors.phoneNumber && (
             <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors.phoneNumber}</div>
           )}
           {typeof fieldErrors === "string" && fieldErrors.includes("휴대폰") && (
@@ -221,7 +221,7 @@ export default function Signup() {
             placeholder="닉네임 입력"
             required
           />
-          {fieldErrors.nickname && (
+          {typeof fieldErrors !== "string" && fieldErrors.nickname && (
             <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors.nickname}</div>
           )}
 

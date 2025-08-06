@@ -29,6 +29,7 @@ import PerfumeStoryLongevity from "../pages/Community/PerfumeStory/PerfumeStoryL
 import PerfumeStoryNote from "../pages/Community/PerfumeStory/PerfumeStoryNote.tsx";
 import MyDiaryList from "../pages/Community/PerfumeDiary/MyDiaryList.tsx";
 import PublicDiaryList from "../pages/Community/PerfumeDiary/PublicDiaryList.tsx";
+import PopularPerfumeId from "../pages/PopularPerfume/PopularPerfumeId";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -93,6 +94,11 @@ const publicRoutes: RouteObject[] = [
         children: [
           { path: "test", element: <Test /> }, // /personal-perfume/test
         ],
+      },
+
+      {
+        path: "PopularPerfumeId",
+        element: <PopularPerfumeId />
       },
 
       { path: "privacy-policy", element: <PrivacyPolicy /> },

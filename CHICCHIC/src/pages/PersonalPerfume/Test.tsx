@@ -1,32 +1,12 @@
-import Navbar from "../../components/Navbar";
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { perfumes } from "../../types/perfumetypes";
 
-type Gender = "female" | "male" | "private";
-type Season = "spring" | "summer" | "autumn" | "winter";
-type Style = "pure" | "feminine" | "neutral" | "masculine" | "chic" | "warm";
-type Space = "garden" | "rainy_room" | "sunny_room" | "dawn";
-type Occasion = "sweet" | "fresh" | "woody" | "earthy";
-type StandoutScent = "floral" | "spicy" | "powdery" | "pungent";
-type Attraction =
-  | "fruity_herbal"
-  | "woody_bookstore"
-  | "salty_sand"
-  | "earthy_mist";
+// 타입 정의는 향수 추천 로직에서 사용할 때 필요시 추가
 
 export default function Test() {
   const [step, setStep] = useState(0);
-  const [gender, setGender] = useState<Gender | null>(null);
-  const [season, setSeason] = useState<Season | null>(null);
-  const [style, setStyle] = useState<Style | null>(null);
-  const [space, setSpace] = useState<Space | null>(null);
-  const [occasion, setOccasion] = useState<Occasion | null>(null);
-  const [standoutScent, setStandoutScent] = useState<StandoutScent | null>(
-    null
-  );
-  const [attraction, setAttraction] = useState<Attraction | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
 
@@ -50,8 +30,7 @@ export default function Test() {
     }
   };
 
-  const handleSelect = <T,>(setter: (value: T) => void, value: T) => {
-    setter(value);
+  const handleSelect = () => {
     handleNext();
   };
 
@@ -67,27 +46,13 @@ export default function Test() {
     if (isLoading) {
       return (
         <div className="w-full text-center">
-          <svg
+          <img
+            src="/src/assets/images/main-logo.png"
+            alt="CHICCHIC Logo"
             width="60"
             height="85"
-            viewBox="0 0 60 85"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="mx-auto mb-4 text-primary"
-          >
-            <path
-              d="M54.1667 9.16667H5.83333C4.24242 9.16667 3.33333 7.50001 3.33333 5.83334V3.33334C3.33333 2.44929 4.04492 1.66667 5 1.66667H10.8333V0.833336C10.8333 0.372919 11.2063 0 11.6667 0H15C15.4604 0 15.8333 0.372919 15.8333 0.833336V1.66667H44.1667V0.833336C44.1667 0.372919 44.5396 0 45 0H48.3333C48.7937 0 49.1667 0.372919 49.1667 0.833336V1.66667H55C55.9551 1.66667 56.6667 2.44929 56.6667 3.33334V5.83334C56.6667 7.50001 55.7576 9.16667 54.1667 9.16667Z"
-              fill="currentColor"
-            />
-            <path
-              d="M42.483 14.1667H17.517C10.9765 14.1667 5.83333 19.31 5.83333 25.8504C5.83333 30.1215 8.16917 33.9133 11.8322 36.1965C10.9946 38.6042 10.4167 41.2032 10.4167 43.9167C10.4167 54.3499 18.7334 62.6667 29.1667 62.6667C31.5714 62.6667 33.8569 62.1158 35.9184 61.1213C36.6358 65.0383 37.5255 68.8055 38.5638 72.391C39.0494 74.0818 41.0567 74.8329 42.6105 73.9317L54.761 67.2415C56.0964 66.4678 56.6315 64.8324 56.1245 63.3824L48.2435 39.421C55.1528 35.034 59.1667 28.6186 59.1667 21.25C59.1667 17.3488 57.6534 13.6708 55.0064 10.9238C52.3594 8.17684 48.7779 6.25 44.5833 6.25C44.5833 10.6067 42.483 14.1667 42.483 14.1667ZM30 84.1667C27.2386 84.1667 25 81.9281 25 79.1667C25 76.4052 27.2386 74.1667 30 74.1667C32.7614 74.1667 35 76.4052 35 79.1667C35 81.9281 32.7614 84.1667 30 84.1667Z"
-              fill="currentColor"
-            />
-            <path
-              d="M42.483 14.1667C42.483 14.1667 44.5833 10.6067 44.5833 6.25C38.6922 6.25 33.7842 11.2312 33.75 17.5C33.75 24.3225 38.6367 30 44.5833 30C49.914 30 54.4258 25.9961 55.0064 20.9238C52.3594 23.1768 48.7779 25.625 44.5833 25.625C44.5833 21.2683 42.483 17.7117 42.483 14.1667Z"
-              fill="currentColor"
-            />
-          </svg>
+            className="mx-auto mb-4"
+          />
           <h3 className="text-xl font-bold text-[#AB3130] mb-4">CHICCHIC</h3>
           <p className="text-[#AB3130]/80">
             당신과 어울리는 향수를 찾는 중이에요!
@@ -174,17 +139,11 @@ export default function Test() {
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
               <button
-                onClick={handleNext}
-                className="px-8 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors"
+                onClick={handleSelect}
+                className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
                 테스트 시작하기
               </button>
-              <Link
-                to="/personal-perfume-test"
-                className="px-8 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors text-center"
-              >
-                이전 테스트 결과 보기
-              </Link>
             </div>
           </div>
         );
@@ -194,34 +153,32 @@ export default function Test() {
           <div className="w-full text-center">
             <p className="text-2xl font-bold text-[#AB3130] mb-2">1</p>
             <p className="text-lg text-[#AB3130]/80 mb-8">
-              성별을 알려주세요.
+              평소 어떤 성별 계열의 향수를 선호하시나요?
             </p>
             <div className="flex flex-col max-w-md mx-auto gap-4">
               <button
-                onClick={() => handleSelect(setGender, "female")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                여성
+                남성향
               </button>
               <button
-                onClick={() => handleSelect(setGender, "male")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                남성
+                여성향
               </button>
               <button
-                onClick={() => handleSelect(setGender, "private")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                공개하지 않음
+                중성향
               </button>
-            </div>
-            <div className="mt-8">
               <button
-                onClick={handleNext}
-                className="w-full max-w-md text-center px-6 py-3 rounded-full bg-[#AB3130] text-white hover:bg-[#AB3130]/90 transition-colors shadow-md"
+                onClick={handleSelect}
+                className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                다음으로
+                상관없음
               </button>
             </div>
           </div>
@@ -232,32 +189,32 @@ export default function Test() {
           <div className="w-full text-center">
             <p className="text-2xl font-bold text-[#AB3130] mb-2">2</p>
             <p className="text-lg text-[#AB3130]/80 mb-8">
-              가장 어울리는 계절은 언제인가요?
+              어느 정도의 지속력을 원하시나요?
             </p>
             <div className="flex flex-col max-w-md mx-auto gap-4">
               <button
-                onClick={() => handleSelect(setSeason, "spring")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                따스한 바람이 불고 꽃이 피는 봄
+                EDT (약한 지속력)
               </button>
               <button
-                onClick={() => handleSelect(setSeason, "summer")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                뜨거운 태양빛이 비치는 여름
+                EDP (중간 지속력)
               </button>
               <button
-                onClick={() => handleSelect(setSeason, "autumn")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                서늘한 공기가 불며 낙엽이 떨어지는 가을
+                Parfum (강한 지속력)
               </button>
               <button
-                onClick={() => handleSelect(setSeason, "winter")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                고요하고 차가운 바람이 부는 겨울
+                상관없음
               </button>
             </div>
           </div>
@@ -266,46 +223,34 @@ export default function Test() {
       case 3:
         return (
           <div className="w-full text-center">
-            <p className="text-2xl font-bold text-[#AB3130] mb-2">3</p>
+            <p className="text-2xl font-bold text-[#AB3130] mb-2">2</p>
             <p className="text-lg text-[#AB3130]/80 mb-8">
-              추구미는 무엇인가요?
+              어느 계열의 향수가 가장 끌리시나요?
             </p>
-            <div className="grid max-w-md mx-auto grid-cols-2 gap-4">
+            <div className="flex flex-col max-w-md mx-auto gap-4">
               <button
-                onClick={() => handleSelect(setStyle, "pure")}
-                className="w-full text-center px-4 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
+                onClick={handleSelect}
+                className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                순수함
+                우디
               </button>
               <button
-                onClick={() => handleSelect(setStyle, "feminine")}
-                className="w-full text-center px-4 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
+                onClick={handleSelect}
+                className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                여성스러운
+                플로럴
               </button>
               <button
-                onClick={() => handleSelect(setStyle, "neutral")}
-                className="w-full text-center px-4 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
+                onClick={handleSelect}
+                className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                중성적인
+                프레시
               </button>
               <button
-                onClick={() => handleSelect(setStyle, "masculine")}
-                className="w-full text-center px-4 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
+                onClick={handleSelect}
+                className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                남성스러운
-              </button>
-              <button
-                onClick={() => handleSelect(setStyle, "chic")}
-                className="w-full text-center px-4 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
-              >
-                시크한
-              </button>
-              <button
-                onClick={() => handleSelect(setStyle, "warm")}
-                className="w-full text-center px-4 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
-              >
-                따뜻한
+                스위트
               </button>
             </div>
           </div>
@@ -316,32 +261,32 @@ export default function Test() {
           <div className="w-full text-center">
             <p className="text-2xl font-bold text-[#AB3130] mb-2">4</p>
             <p className="text-lg text-[#AB3130]/80 mb-8">
-              가장 선호하는 공간은 어디인가요?
+              향수를 뿌린지 일정 시간이 지난 후 남는 잔향은 어떤게 좋으신가요?
             </p>
             <div className="flex flex-col max-w-md mx-auto gap-4">
               <button
-                onClick={() => handleSelect(setSpace, "garden")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                이슬 맺힌 들꽃이 가득한 숲 속의 정원
+                샌달우드
               </button>
               <button
-                onClick={() => handleSelect(setSpace, "rainy_room")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                깊고 진한 와인 향이 가득한 비 오는 한밤중의 방 안
+                머스크
               </button>
               <button
-                onClick={() => handleSelect(setSpace, "sunny_room")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                커튼 사이로 나른한 오후 햇살이 새어들어오는 나무 바닥의 방 안
+                앰버
               </button>
               <button
-                onClick={() => handleSelect(setSpace, "dawn")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                따뜻한 차 한 잔을 즐길 수 있는 고요한 새벽
+                베티버
               </button>
             </div>
           </div>
@@ -352,32 +297,32 @@ export default function Test() {
           <div className="w-full text-center">
             <p className="text-2xl font-bold text-[#AB3130] mb-2">5</p>
             <p className="text-lg text-[#AB3130]/80 mb-8">
-              지칠 때 가장 맡고싶은 향은 무엇인가요?
+              평소 어떤 향을 가장 좋아하시나요?
             </p>
             <div className="flex flex-col max-w-md mx-auto gap-4">
               <button
-                onClick={() => handleSelect(setOccasion, "sweet")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                달콤한 바닐라와 꿀
+                자스민
               </button>
               <button
-                onClick={() => handleSelect(setOccasion, "fresh")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                신선한 풀 내음과 레몬의 톡톡 튀는 향
+                로즈
               </button>
               <button
-                onClick={() => handleSelect(setOccasion, "woody")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                따뜻하고 중성적인 머스크와 나무의 향
+                일랑일랑
               </button>
               <button
-                onClick={() => handleSelect(setOccasion, "earthy")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                흙내음과 비 내린 후 차분한 공기의 향
+                해당 없음
               </button>
             </div>
           </div>
@@ -388,32 +333,32 @@ export default function Test() {
           <div className="w-full text-center">
             <p className="text-2xl font-bold text-[#AB3130] mb-2">6</p>
             <p className="text-lg text-[#AB3130]/80 mb-8">
-              당신을 더 돋보이게 할 수 있는 향은 무엇인가요?
+              앞의 질문과 이어 평소 어떤 향을 가장 좋아하시나요?
             </p>
             <div className="flex flex-col max-w-md mx-auto gap-4">
               <button
-                onClick={() => handleSelect(setStandoutScent, "floral")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                고혹적이고 깊은 꽃 향
+                프루티
               </button>
               <button
-                onClick={() => handleSelect(setStandoutScent, "spicy")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                향초처럼 잔잔히 퍼지는 스파이시한 향
+                시트러스
               </button>
               <button
-                onClick={() => handleSelect(setStandoutScent, "powdery")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                은은하고 세련된 파우더리한 향
+                그린
               </button>
               <button
-                onClick={() => handleSelect(setStandoutScent, "pungent")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                톡 쏘는 향과 그 뒤에 남는 잔향의 이어짐
+                해당 없음
               </button>
             </div>
           </div>
@@ -424,40 +369,32 @@ export default function Test() {
           <div className="w-full text-center">
             <p className="text-2xl font-bold text-[#AB3130] mb-2">7</p>
             <p className="text-lg text-[#AB3130]/80 mb-8">
-              낯선 도시를 여행한다면 어떤 향에 끌릴 것 같나요?
+              아래의 향 중 본인의 취향이 있으신가요?
             </p>
             <div className="flex flex-col max-w-md mx-auto gap-4">
               <button
-                onClick={() => handleSelect(setAttraction, "fruity_herbal")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                시장의 과일과 허브가 뒤섞인 생기 있는 향
+                파우더리
               </button>
               <button
-                onClick={() => handleSelect(setAttraction, "woody_bookstore")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                골목길의 오래된 서점이 품은 나무 향
+                비누향
               </button>
               <button
-                onClick={() => handleSelect(setAttraction, "salty_sand")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                해변의 소금기 어린 바람과 따뜻한 모래 냄새
+                클린
               </button>
               <button
-                onClick={() => handleSelect(setAttraction, "earthy_mist")}
+                onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
-                안개 낀 새벽길, 가로등 아래서 풍기는 흙내
-              </button>
-            </div>
-            <div className="mt-10">
-              <button
-                onClick={handleShowResults}
-                className="w-full max-w-md mx-auto text-center px-6 py-3 rounded-full bg-[#AB3130] text-white hover:bg-[#AB3130]/90 transition-colors shadow-md"
-              >
-                결과보기
+                해당 없음
               </button>
             </div>
           </div>

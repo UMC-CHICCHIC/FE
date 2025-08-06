@@ -2,7 +2,7 @@ import "../styles/index.css";
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import DiaryHome from "../pages/Community/PerfumeDiary/DiaryHome";
 import NewDiary from "../pages/Community/PerfumeDiary/NewDiary";
-import PublicLayout from "../layouts/PublicLayout";
+import BaseLayout from "../layouts/BaseLayout";
 import ProductDetail from "../pages/Shopping/ProductDetail.tsx";
 import ShoppingHome from "../pages/Shopping/ShoppingHome.tsx";
 import NotFound from "../pages/NotFound.tsx";
@@ -12,7 +12,6 @@ import Signup from "../pages/SignUp.tsx";
 import PrivacyPolicy from "../pages/Footer/PrivacyPolicy.tsx";
 import Terms from "../pages/Footer/Terms.tsx";
 import Contact from "../pages/Footer/contact.tsx";
-import ProtectedLayout from "../layouts/ProtectedLayout.tsx";
 import Profile from "../pages/Mypage/Profile.tsx";
 import Privacy from "../pages/Mypage/Privacy.tsx";
 import MyScraps from "../pages/Mypage/MyScraps.tsx";
@@ -34,7 +33,7 @@ import PopularPerfumeId from "../pages/PopularPerfume/PopularPerfumeId";
 const publicRoutes: RouteObject[] = [
   {
     path: "/",
-    element: <PublicLayout />,
+    element: <BaseLayout />,
     errorElement: <NotFound />,
     children: [
       { index: true, element: <Home /> },
@@ -110,14 +109,14 @@ const publicRoutes: RouteObject[] = [
 
 const protectedRoutes: RouteObject[] = [
   {
-    element: <ProtectedLayout />,
+    element: <BaseLayout protectedRoute={true} />,
     children: [
       {
         path: "mypage",
         children: [
-          { index: true, element: <Profile /> }, // /mypage
-          { path: "privacy", element: <Privacy /> }, // /mypage/privacy
-          { path: "scraps", element: <MyScraps /> }, // /mypage/scraps
+          { index: true, element: <Profile /> },
+          { path: "privacy", element: <Privacy /> },
+          { path: "scraps", element: <MyScraps /> },
         ],
       },
     ],

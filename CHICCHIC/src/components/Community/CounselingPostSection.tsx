@@ -25,7 +25,7 @@ const PostSection = ({
     <section className="mb-20 text-[#66191F]">
       <ul className="space-y-4">
         {/* 게시글 스켈레톤 UI */}
-        {isLoading || isError
+        {isLoading
           ? Array.from({ length: 3 }).map((_, i) => (
               <SkeletonPostCard key={i} />
             ))

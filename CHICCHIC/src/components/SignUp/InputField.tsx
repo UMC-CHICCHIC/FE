@@ -1,4 +1,3 @@
-import React from "react";
 import type { InputFieldProps } from "../../types/inputfieldtypes"
 
 export const InputField = ({

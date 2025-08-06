@@ -2,8 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import { PerfumeGrid } from "../components/PersonalPerfumeTest/perfume-grid";
 import mainlogo2 from '../assets/images/main-logo.png';
-import mainbackground from '../assets/images/main_background.png';
-import mainpage from '../assets/images/mainpage.png';
+import mainpage from '../../public/mainpage.png';
 
 export default function Home() {
   // 인증 상태 확인 (실제로는 Context나 상태관리에서 가져옴)
@@ -18,7 +17,7 @@ export default function Home() {
           <img
             src={mainpage}
             alt="CHICCHIC perfume bottle"
-            className="hidden md:block absolute right-0 top-0 h-full w-ful object-cover object-left z-10"
+            className="hidden md:block absolute right-0 top-0 h-full w-full object-cover object-left z-10"
           />
 
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-30">

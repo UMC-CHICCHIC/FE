@@ -8,9 +8,9 @@ import { QUERY_KEY } from "../../constants/key";
 export function useUploadPostImg() {
   const setImg = useImgUploadStore((s) => s.setImg);
 
-  return useMutation({
-    mutationFn: uploadPostImg,
-    onSuccess: (res: ResponseUploadImg) => {
+  return useMutation<ResponseUploadImg, unknown, File>({
+    mutationFn: (file: File) => uploadPostImg(file),
+    onSuccess: (res) => {
       setImg(res.result.url, res.result.key);
       console.log("이미지 업로드 성공");
     },

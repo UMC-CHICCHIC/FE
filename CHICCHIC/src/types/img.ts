@@ -8,5 +8,5 @@ export type Image = {
 export type ResponseUploadImg = CommonResponse<Image>;
 
 export type RequestImgDto = {
-  file: string;
+  file: File;
 };

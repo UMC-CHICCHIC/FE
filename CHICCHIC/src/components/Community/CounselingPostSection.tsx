@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { usePostFilter } from "../../store/usePostFilter";
-import type { Post } from "../../types/post";
+import type { ConsultPost } from "../../types/post";
 import type { PostCategory } from "../../types/enums/postCategory";
 import SkeletonPostCard from "../skeletons/SkeletonPostCard";
 
 type CouselingCategoryProps = {
-  posts: Post[];
+  posts: ConsultPost[];
   category: PostCategory;
   isLoading: boolean;
   isError: boolean;
@@ -16,7 +16,6 @@ const PostSection = ({
   posts,
   category,
   isLoading,
-  isError,
 }: CouselingCategoryProps) => {
   const { setCategory } = usePostFilter();
   const navigate = useNavigate();
@@ -25,7 +24,7 @@ const PostSection = ({
     <section className="mb-20 text-[#66191F]">
       <ul className="space-y-4">
         {/* 게시글 스켈레톤 UI */}
-        {isLoading || isError
+        {isLoading
           ? Array.from({ length: 3 }).map((_, i) => (
               <SkeletonPostCard key={i} />
             ))

@@ -17,7 +17,7 @@ const CounselingLists = () => {
     return allPosts.filter((post) => post.postType === category);
   }, [category]);
   // 엔드포인트: /consult-post 게시글 정보 훅
-  const { isLoading, data, isError } = usePostList(category);
+  const { isLoading, isError } = usePostList(category);
 
   const [productPage, setProductPage] = useState(1);
 

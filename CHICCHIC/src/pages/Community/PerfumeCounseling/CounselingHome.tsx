@@ -38,12 +38,22 @@ const PerfumeCounselingHome = () => {
             <img src={RightArrow} width={6} alt="rightArrow" />
           </a>
         </div>
-        <PostSection posts={recommendedPosts} category="RECEIVE" />
+        <PostSection
+          posts={recommendedPosts}
+          category="RECEIVE"
+          isLoading={false}
+          isError={false}
+        />
         <span className="text-[#AB3130] font-semibold text-2xl mb-2">
           추천해요! 최근 게시글
         </span>
 
-        <PostSection posts={recommendPosts} category="GIVE" />
+        <PostSection
+          posts={recommendPosts}
+          category="GIVE"
+          isLoading={false}
+          isError={false}
+        />
       </section>
     </div>
   );

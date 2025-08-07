@@ -1,4 +1,4 @@
-import { type Post, type PostPrev } from "../types/post";
+import { type Post } from "../types/post";
 
 // 추천함 포스트 데모
 export const recommendPosts: Post[] = [

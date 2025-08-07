@@ -1,14 +1,7 @@
-import axios, { type InternalAxiosRequestConfig } from "axios";
+import axios  from "axios";
 import { LOCAL_STORAGE_KEY } from "../constants/key";
-import { useLocalStorage } from "../hooks/useLocalStorage";
 
-// retry 플래그
-interface RetryableAxiosRequestConfig extends InternalAxiosRequestConfig {
-  _retry?: boolean;
-}
 
-// refresh의 중복 요청 방지
-let refreshPromise: Promise<string | null> | null = null;
 
 // axiosInstance 생성
 export const axiosInstance = axios.create({

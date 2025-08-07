@@ -2,8 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import { PerfumeGrid } from "../components/PersonalPerfumeTest/perfume-grid";
 import mainlogo2 from "../assets/images/main-logo.png";
-import mainbackground from "../assets/images/main_background.png";
-import mainpage from "../assets/images/mainpage.png";
+import mainpage from "../../public/mainpage.png";
 
 export default function Home() {
   // 인증 상태 확인 (실제로는 Context나 상태관리에서 가져옴)
@@ -16,18 +15,9 @@ export default function Home() {
         <section className="bg-[#66191F] text-white min-h-screen flex items-center relative overflow-hidden">
           {/* 배경 이미지 레이어 */}
           <img
-            src={mainbackground}
-            alt="CHICCHIC background"
-            className="absolute inset-0 w-full h-full object-cover object-center opacity-30 z-8"
-          />
-
-          {/* 그라데이션 오버레이 레이어 */}
-          <div className="absolute inset-0 z-20 bg-gradient-to-r from-[#66191F]/90 via-[#66191F]/60 to-transparent" />
-
-          <img
             src={mainpage}
             alt="CHICCHIC perfume bottle"
-            className="hidden md:block absolute right-0 top-0 h-full w-7/8 object-cover object-center z-10"
+            className="hidden md:block absolute right-0 top-0 h-full w-full object-cover object-left z-10"
           />
 
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-30">
@@ -52,7 +42,7 @@ export default function Home() {
                   <h2 className="text-2xl md:text-3xl font-light text-[#AB3130]">
                     more CHIC,
                   </h2>
-                  <p className="text-xl md:text-3xl font-light text-[#AB3130] pt-4">
+                  <p className="text-2xl md:text-3xl font-light text-[#AB3130] pt-4">
                     start with
                   </p>
                 </div>
@@ -61,7 +51,7 @@ export default function Home() {
                   CHICCHIC.
                 </h1>
 
-                <p className="text-base md:text-lg text-white mt-6 leading-relaxed">
+                <p className="text-xl md:text-lg text-[#AB3130] mt-6 leading-relaxed">
                   나를 더 CHIC하게 드러내는 법,
                   <br />
                   CHICCHIC에서 시작하세요.
@@ -80,7 +70,7 @@ export default function Home() {
                       </Link>
                       <Link
                         to="/personal-perfume/test"
-                        className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-[#AB3130]/80 rounded-md text-base font-semibold text-white hover:bg-[#D9A0A0] transition-colors w-full sm:w-auto"
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-[#AB3130]/80 rounded-md text-base font-semibold text-white hover:bg-[#66191F] transition-colors w-full sm:w-auto"
                       >
                         <span>퍼스널 향수 테스트</span>
                         <ChevronRight className="h-5 w-5" />
@@ -124,7 +114,7 @@ export default function Home() {
                 </p>
               </div>
               <Link
-                to="/PopularProductsList"
+                to="/PopularPerfumeId"
                 className="text-[#AB3130] font-semibold flex items-center gap-1"
               >
                 <span>인기 향수 더보기</span>
@@ -220,8 +210,8 @@ export default function Home() {
                 </p>
               </div>
               <Link
-                to="/story"
-                className="text-[#AB3130] font-semibold flex items-center gap-1 text-sm"
+                to="/PerfumeStory"
+                className="text-[#AB3130] font-semibold flex items-center gap-1 text-xl"
               >
                 <span>향수 이야기에서 더 다양한 소식 확인하기</span>
                 <ArrowRight className="h-4 w-4" />

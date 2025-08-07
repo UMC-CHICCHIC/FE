@@ -9,7 +9,7 @@ export function useUploadPostImg() {
   const setImg = useImgUploadStore((s) => s.setImg);
 
   return useMutation({
-    mutationFn: uploadPostImg,
+    mutationFn: (file: File) => uploadPostImg(file),
     onSuccess: (res: ResponseUploadImg) => {
       setImg(res.result.url, res.result.key);
       console.log("이미지 업로드 성공");
@@ -26,7 +26,7 @@ export function useUploadProfileImg() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: uploadProfileImg,
+    mutationFn: (file: File) => uploadProfileImg(file),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.myInfo],

@@ -1,15 +1,27 @@
 import { useQuery } from "@tanstack/react-query";
 import type { PostCategory } from "../../types/enums/postCategory";
-import type { ResponseConsultListDto } from "../../types/post";
+import type {
+  ResponseConsultDetailDto,
+  ResponseConsultListDto,
+} from "../../types/post";
 import { QUERY_KEY } from "../../constants/key";
-import { getConsultPostList } from "../../apis/postApi";
+import { getConsultPostDetail, getConsultPostList } from "../../apis/postApi";
 
-// 추천 게시물 GET 훅
+// 추천 상담소 페이지 게시글 리스트
 export const useGetConsultPost = (category: PostCategory) => {
   return useQuery<ResponseConsultListDto, Error>({
     queryKey: [QUERY_KEY.post, category],
     queryFn: () => getConsultPostList(category),
     // 3분간 캐시 유지
     staleTime: 1000 * 60 * 3,
+  });
+};
+
+// 추천 상담소 페이지 게시글 디테일
+export const useGetConsultDetail = (consultPostId: number | null) => {
+  return useQuery<ResponseConsultDetailDto, Error>({
+    queryKey: [QUERY_KEY.post, consultPostId],
+    queryFn: () => getConsultPostDetail(consultPostId!),
+    enabled: !!consultPostId,
   });
 };

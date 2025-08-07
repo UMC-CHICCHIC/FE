@@ -4,6 +4,7 @@ import type {
   ResponseConsultListDto,
   RequestCreatePostDto,
   ResponseConsultCreateDto,
+  ResponseConsultDetailDto,
 } from "../types/post";
 import type { ResponseUploadImg } from "../types/img";
 
@@ -16,6 +17,26 @@ export const getConsultPostList = async (
     const { data } = await axiosInstance.get("/consult-posts", {
       params: { type: category, page: 0, size: 5 },
     });
+    console.log("요청보냄");
+    return data;
+  } catch (e) {
+    console.error("요청 실패", e);
+    throw e;
+  }
+};
+
+// 향수 추천 상담소 게시글 상세
+export const getConsultPostDetail = async (
+  consultPostId: number
+): Promise<ResponseConsultDetailDto> => {
+  try {
+    console.log("게시글 상세", consultPostId);
+    const { data } = await axiosInstance.get(
+      `/consult-posts/${consultPostId}`,
+      {
+        params: consultPostId,
+      }
+    );
     console.log("요청보냄");
     return data;
   } catch (e) {

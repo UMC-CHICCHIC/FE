@@ -3,6 +3,7 @@ import { usePostFilter } from "../../store/usePostFilter";
 import SkeletonPostCard from "../skeletons/SkeletonPostCard";
 import { useGetConsultPost } from "../../hooks/queries/useGetConsultPost";
 import type { PostCategory } from "../../types/enums/postCategory";
+import { useCounselingStore } from "../../store/useConsultPost";
 
 type PostSectionProps = {
   category: PostCategory;
@@ -11,11 +12,10 @@ type PostSectionProps = {
 // List에서 게시글 미리보기
 const PostSection = ({ category }: PostSectionProps) => {
   const { setCategory } = usePostFilter();
+  const { setConsultPostId } = useCounselingStore();
   const navigate = useNavigate();
-
   const { data, isLoading } = useGetConsultPost(category);
 
-  data?.result.content.map((post) => console.log(post));
   return (
     <section className="mb-20 text-[#66191F]">
       <ul className="space-y-4">
@@ -43,6 +43,7 @@ const PostSection = ({ category }: PostSectionProps) => {
                     <button
                       onClick={() => {
                         setCategory(category);
+                        setConsultPostId(post.consultPostId);
                         navigate(
                           `/community/recommendation/list/${post.consultPostId}`
                         );

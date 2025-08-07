@@ -2,13 +2,17 @@ import { useState } from "react";
 import { usePostFilter } from "../../../store/usePostFilter";
 import { POST_CATEGORY } from "../../../types/post";
 import arrowUp from "../../../assets/icons/arrowUp.svg";
+import { useGetConsultDetail } from "../../../hooks/queries/useGetConsultPost";
+import { useCounselingStore } from "../../../store/useConsultPost";
 
 const CounselingDetail = () => {
   // const [comment, setComment] = useState("");
 
   const { category } = usePostFilter();
   const select = POST_CATEGORY[category];
-  const [openReply, setOpenReply] = useState(false);
+  const { consultPostId } = useCounselingStore();
+  const { data } = useGetConsultDetail(consultPostId!);
+  const [openReply, setOpenReply] = useState(true);
 
   const handleReplyClick = () => {
     setOpenReply((prev) => !prev);
@@ -25,7 +29,7 @@ const CounselingDetail = () => {
       {/* 작성 게시물 상세정보 */}
       <section>
         <span className="text-2xl font-medium sm:text-4xl ">
-          제목제목제목제목
+          {data?.result.title}
         </span>
         <div className="flex py-8 border-b">
           <img
@@ -34,13 +38,13 @@ const CounselingDetail = () => {
             alt="profile"
           />
           <div className="flex flex-col items-center justify-center gap-2 pl-4">
-            <span>작성자 닉네임</span>
-            <span>2025.07.01.</span>
+            <span>{data?.result.nickname}</span>
+            <span>{data?.result.dateTime}</span>
           </div>
         </div>
         <div className="pt-6 border-b">
-          <img src="/sample-image.png" alt="" />
-          <p className="pt-8 pb-20">이 향수 이름이 뭔가요?</p>
+          <img src={data?.result.imageUrl} alt="uploadedImg" />
+          <p className="pt-8 pb-20">{data?.result.content}</p>
         </div>
         {/* 댓글란 */}
         <section>

@@ -10,6 +10,7 @@ export type ConsultPost = {
   title: string;
   imageUrl?: string;
   dateTime: string;
+  content?: string;
 };
 
 // 추천 게시글 미리보기 정보
@@ -46,3 +47,6 @@ export type ResponseConsultPostPrevDto = CommonResponse<{
   receivePost: ConsultPostPrev;
   givePost: ConsultPostPrev;
 }>;
+
+// /consult-posts/{consultPostId}에 대한 ResponseDto
+export type ResponseConsultDetailDto = CommonResponse<ConsultPost>;

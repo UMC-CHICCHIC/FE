@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import { PerfumeGrid } from "../components/PersonalPerfumeTest/perfume-grid";
 import mainlogo2 from "../assets/images/main-logo.png";
-import mainpage from "../../public/mainpage.png";
 
 export default function Home() {
   // 인증 상태 확인 (실제로는 Context나 상태관리에서 가져옴)
@@ -15,7 +14,7 @@ export default function Home() {
         <section className="bg-[#66191F] text-white min-h-screen flex items-center relative overflow-hidden">
           {/* 배경 이미지 레이어 */}
           <img
-            src={mainpage}
+            src="/mainpage.png"
             alt="CHICCHIC perfume bottle"
             className="hidden md:block absolute right-0 top-0 h-full w-full object-cover object-left z-10"
           />

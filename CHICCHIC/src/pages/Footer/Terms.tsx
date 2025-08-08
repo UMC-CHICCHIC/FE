@@ -1,7 +1,5 @@
 const Terms = () => {
-  return (
-    <div>Terms</div>
-  )
-}
+  return <div>Terms</div>;
+};
 
-export default Terms
+export default Terms;

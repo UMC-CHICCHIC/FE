@@ -67,14 +67,17 @@ export default function Test() {
           <h2 className="text-2xl font-bold text-[#AB3130] mb-6">
             테스트 결과 CHICCHIC이 추천하는 향수들이에요!
           </h2>
-          
+
           {/* 5개의 향수 세로 나열 */}
           <div className="flex flex-col gap-4 max-w-2xl mx-auto mb-8">
             {perfumes.slice(0, 5).map((perfume, index) => (
-              <div key={index} className="bg-white rounded-2xl p-6 shadow-lg border border-[#AB3130]/10 flex items-center gap-6">
+              <div
+                key={index}
+                className="bg-white rounded-2xl p-6 shadow-lg border border-[#AB3130]/10 flex items-center gap-6"
+              >
                 <div className="w-32 h-32 flex-shrink-0 flex items-center justify-center">
-                  <img 
-                    src={perfume.imageUrl || "/samplePerfumeImg.png"} 
+                  <img
+                    src={perfume.imageUrl || "/samplePerfumeImg.png"}
                     alt={`${perfume.brand} ${perfume.name}`}
                     className="w-full h-full object-contain rounded-xl"
                   />
@@ -87,7 +90,8 @@ export default function Test() {
                     {perfume.brand} {perfume.name}
                   </p>
                   <p className="text-sm text-[#AB3130]/60 mb-4">
-                    {perfume.notes?.slice(0, 3).join(", ") || "notenotenotenotenotenotenote"}
+                    {perfume.notes?.slice(0, 3).join(", ") ||
+                      "notenotenotenotenotenotenote"}
                   </p>
                   <button className="py-2 px-6 rounded-full border border-[#AB3130]/50 text-[#AB3130] text-sm hover:bg-[#AB3130]/10 transition-colors">
                     상세 페이지 이동
@@ -133,9 +137,7 @@ export default function Test() {
               <p className="text-[#AB3130]/80">
                 새로운 향수에 도전하고 싶은 향수 애호가라면
               </p>
-              <p className="text-[#AB3130]/80">
-                CHICCHIC이 추천 해드릴게요!
-              </p>
+              <p className="text-[#AB3130]/80">CHICCHIC이 추천 해드릴게요!</p>
             </div>
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
               <button
@@ -413,7 +415,7 @@ export default function Test() {
           {step > 0 && step <= 7 && !showResults && !isLoading && (
             <div className="mb-6">
               <div className="w-full bg-[#AB3130]/20 rounded-full h-2">
-                <div 
+                <div
                   className="bg-[#AB3130] h-2 rounded-full transition-all duration-300"
                   style={{ width: `${(step / 7) * 100}%` }}
                 ></div>

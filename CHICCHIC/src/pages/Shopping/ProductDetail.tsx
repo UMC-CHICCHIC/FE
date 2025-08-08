@@ -22,7 +22,7 @@ const ProductDetail = (): JSX.Element => {
 
   return (
     <div className="flex flex-col items-center justify-center bg-[#F7F4EF] px-[12px]">
-      {/* 브랜드 네임, 향수 네임, 용량, 발향률, 가격 UI */}
+      {/* 브랜드 네임, 향수 네임, 용량, 발향률, 가격 */}
       <section className="flex justify-center md:flex-row w-full gap-[12px] max-w-7xl">
         <img src={perfumeImg} className="h-120" alt="" />
         <div className="flex flex-col justify-center">
@@ -58,8 +58,8 @@ const ProductDetail = (): JSX.Element => {
         </div>
       </section>
       <div className="items-center w-full">
-        {/* 노트 이미지 및 정보 UI */}
-        <section className="flex pt-6 py-4 justify-center gap-8 bg-[#AB3130] px-[12px] mx-auto max-w-7xl">
+        {/* 노트 이미지 및 정보 */}
+        <section className="flex pt-6 py-4 justify-center gap-8 bg-[#AB3130] px-[12px] mx-auto w-full">
           <div className="flex flex-col px-4 mx-auto max-w-7xl gap-7">
             <div className="flex items-center justify-center w-full gap-4 mb-2 text-[#F7F4EF]">
               <div className="flex-1 h-px bg-[#F7F4EF]" />
@@ -95,7 +95,7 @@ const ProductDetail = (): JSX.Element => {
           </button>
         </div>
       </div>
-      {/* 향수 디테일 및 리뷰 UI */}
+      {/* 향수 디테일 및 리뷰 */}
       <div className="flex w-full h-12 mt-24">
         <button
           className={`flex-1 flex items-center justify-center border border-[#AB3130] text-lg cursor-pointer ${

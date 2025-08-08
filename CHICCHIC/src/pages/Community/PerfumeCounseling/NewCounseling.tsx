@@ -47,16 +47,21 @@ const NewCounseling = () => {
       {/* 게시글 카테고리 */}
       <div className="w-[70%] font-[pretendard]">
         <section className="mb-[60px]">
-          <div className="flex items-baseline gap-[20px]">
-            <h2 className="text-[36px] font-medium">작성글 유형</h2>
-            <p className="text-sm font-light">
+          <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-baseline sm:gap-5">
+            <h2 className="text-2xl sm:text-[36px] font-medium leading-tight">
+              작성글 유형
+            </h2>
+            <p className="text-xs sm:text-sm font-light leading-snug text-[#66191F] break-keep">
               작성글 유형을 선택해야 글을 작성할 수 있어요.
             </p>
           </div>
-          <div className="flex mt-6 text-[18px] font-medium space-x-2 max-w-100">
+
+          <div className="flex sm:flex-row flex-col mt-6 text-[18px] space-y-2 font-medium sm:space-x-2 max-w-100">
             <button
               className={`${
-                select === "RECEIVE" ? "text-white bg-[#AB3130]" : ""
+                select === "RECEIVE"
+                  ? "text-white bg-[#AB3130]"
+                  : "hover:bg-[#AB3130]/10 transition-colors"
               } flex flex-1 justify-center items-center border rounded-full px-8 py-4 cursor-pointer border-[#AB3130]`}
               onClick={() => {
                 setSelect("RECEIVE");
@@ -66,7 +71,9 @@ const NewCounseling = () => {
             </button>
             <button
               className={`${
-                select === "GIVE" ? "text-white bg-[#AB3130]" : ""
+                select === "GIVE"
+                  ? "text-white bg-[#AB3130]"
+                  : "hover:bg-[#AB3130]/10 transition-colors"
               } flex flex-1 justify-center items-center border rounded-full px-8 py-4 cursor-pointer border-[#AB3130] `}
               onClick={() => {
                 setSelect("GIVE");
@@ -86,7 +93,7 @@ const NewCounseling = () => {
             placeholder="제목을 작성해주세요."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="items-center w-full py-6 px-8 bg-transparent text-xl border border-[#AB3130] rounded-[15px] placeholder:text-[#AB3130] placeholder:text-xl focus:outline-none "
+            className="items-center w-full py-6 px-8 bg-transparent text-xl border border-[#AB3130] rounded-[15px] placeholder:opacity-50 placeholder:text-xl focus:outline-[#AB3130]"
           />
         </section>
 
@@ -97,15 +104,15 @@ const NewCounseling = () => {
         <div className="border border-[#AB3130] rounded-[15px] overflow-hidden">
           {/* 이미지 미리보기 */}
           {url && (
-            <div className="flex justify-start mt-4">
+            <div className="flex justify-start px-8 mt-4">
               <img
                 src={url}
                 alt="업로드된 이미지"
-                className="mx-8 max-h-[300px] rounded-lg border border-[#AB3130]"
+                className="max-h-[300px] rounded-lg border border-[#AB3130]"
               />
               <button
                 onClick={reset}
-                className="bg-white text-[#AB3130] border border-[#AB3130] rounded-full w-8 h-8 flex items-center justify-center hover:bg-[#AB3130] hover:text-white transition"
+                className="ml-2 bg-white text-[#AB3130] border border-[#AB3130] rounded-full w-8 h-8 flex items-center justify-center hover:bg-[#AB3130] hover:text-white transition"
               >
                 <X />
               </button>
@@ -116,16 +123,16 @@ const NewCounseling = () => {
             rows={20}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="resize-none w-full py-6 px-8 bg-transparent border-none text-xl placeholder:text-[#AB3130] placeholder:text-xl focus:outline-none"
+            className="w-full px-8 py-6 text-xl bg-transparent focus:outline-[#AB3130] resize-none rounded-[15px]"
           />
-          <div className="w-full py-[12px] border-t border-[#AB3130] ">
+          <div className="w-full -mt-[6px] py-[12px] border-t border-[#AB3130]">
             <ImgUploader type="post" />
           </div>
         </div>
 
         {/* 작성 완료 버튼 */}
         <button
-          className="mt-18 block mx-auto w-full h-[70px] rounded-full bg-[#AB3130] text-white text-2xl transition-colors border-none hover:bg-[#992a29]"
+          className="mt-18 block mx-auto w-full h-[70px] rounded-full bg-[#AB3130] text-white text-2xl transition-colors border-none hover:bg-[#af0000]"
           onClick={handlePost}
         >
           작성 완료하기

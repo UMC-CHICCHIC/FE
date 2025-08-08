@@ -4,6 +4,7 @@ import SkeletonPostCard from "../skeletons/SkeletonPostCard";
 import { useGetConsultPost } from "../../hooks/queries/useGetConsultPost";
 import type { PostCategory } from "../../types/enums/postCategory";
 import { useCounselingStore } from "../../store/useConsultPost";
+import { DateTimeFormat } from "../../utils/dateTimeFormat";
 
 type PostSectionProps = {
   category: PostCategory;
@@ -27,19 +28,19 @@ const PostSection = ({ category }: PostSectionProps) => {
           : data?.result.content.map((post) => (
               <li
                 key={post.consultPostId}
-                className="flex justify-between items-center border-b border-[#AB3130] py-4"
+                className="flex justify-between items-end border-b border-[#AB3130] py-4"
               >
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-8">
                   {post.imageUrl ? (
                     <img
                       src={post.imageUrl}
                       alt="postImage"
-                      className="object-cover h-24 w-30 rounded-xl"
+                      className="object-cover rounded-xl w-30 h-26 sm:w-[224px] sm:h-[177px]"
                     />
                   ) : (
                     <div className="h-24 bg-gray-300 w-30 rounded-xl"></div>
                   )}
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-8 sm:gap-10">
                     <button
                       onClick={() => {
                         setCategory(category);
@@ -48,21 +49,23 @@ const PostSection = ({ category }: PostSectionProps) => {
                           `/community/recommendation/list/${post.consultPostId}`
                         );
                       }}
-                      className="text-[#AB3130] font-semibold text-lg mb-2 hover:underline cursor-pointer"
+                      className="text-[#AB3130] text-start font-semibold text-lg sm:text-3xl mb-2 hover:underline cursor-pointer"
                     >
                       {post.title}
                     </button>
-                    <div className="flex items-center text-sm">
+                    <div className="flex items-center space-x-4">
                       <img
                         src={"/profile.png"}
                         alt="프로필"
-                        className="object-cover w-6 h-6 rounded-full"
+                        className="object-cover w-6 h-6 rounded-full sm:w-12 sm:h-12"
                       />
-                      <span className="ml-2">{post.nickname}</span>
+                      <span className="sm:text-2xl">{post.nickname}</span>
                     </div>
                   </div>
                 </div>
-                <span className="text-sm">{post.dateTime}</span>
+                <span className="text-[8px] sm:text-xl mb-3 sm:mb-4">
+                  {DateTimeFormat(post.dateTime)}
+                </span>
               </li>
             ))}
       </ul>

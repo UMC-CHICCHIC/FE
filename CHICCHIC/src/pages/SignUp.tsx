@@ -8,8 +8,7 @@ import axios from "axios";
 
 const signupSchema = z
   .object({
-    password: z
-      .string(),
+    password: z.string(),
     passwordConfirm: z.string(),
     email: z.string().email("이메일 형식이 올바르지 않습니다."),
     phoneNumber: z
@@ -37,13 +36,19 @@ export default function Signup() {
 
   const [pwError, setPwError] = useState<string | null>(null); // 비밀번호 불일치 에러 디바운싱(바로)
   const debounceTimer = useRef<number | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<string | Record<string, string>>({});
-  
+  const [fieldErrors, setFieldErrors] = useState<
+    string | Record<string, string>
+  >({});
+
   const [debouncedError, setDebouncedError] = useState<string | null>(null);
   const errorDebounceTimer = useRef<number | null>(null);
 
   useEffect(() => {
-    if (form.password && form.passwordConfirm && form.password !== form.passwordConfirm) {
+    if (
+      form.password &&
+      form.passwordConfirm &&
+      form.password !== form.passwordConfirm
+    ) {
       if (debounceTimer.current) clearTimeout(debounceTimer.current);
       debounceTimer.current = setTimeout(() => {
         setPwError("비밀번호가 일치하지 않습니다.");
@@ -94,7 +99,7 @@ export default function Signup() {
     try {
       await postSignup(form);
       setShowModal(true);
-    } catch (err: any) {
+    } catch (err) {
       console.error("회원가입 실패", err);
 
       if (axios.isAxiosError(err)) {
@@ -123,7 +128,9 @@ export default function Signup() {
         className="bg-[#F7F4EF] w-full max-w-[800px] min-h-[600px] p-10 rounded-2xl"
         style={{ boxShadow: "12px 12px 30px #893B3A" }}
       >
-        <h1 className="text-[#AB3130] text-3xl font-bold mb-3 mt-8">회원가입</h1>
+        <h1 className="text-[#AB3130] text-3xl font-bold mb-3 mt-8">
+          회원가입
+        </h1>
         <p className="text-lg text-[#66191F] mb-8">
           CHICCHIC 회원가입 후 다양한 서비스를 경험해보세요.
         </p>
@@ -145,13 +152,18 @@ export default function Signup() {
               중복확인
             </button>
           </InputField>
-        {typeof fieldErrors !== "string" && fieldErrors.username && (
-            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors.username}</div>
+          {typeof fieldErrors !== "string" && fieldErrors.username && (
+            <div className="pl-2 mb-3 -mt-3 text-sm text-red-500">
+              {fieldErrors.username}
+            </div>
           )}
-        {typeof fieldErrors === "string" && fieldErrors.includes("아이디") && (
-          <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors}</div>
-        )}
-        {/* 아이디 중복(따로 버튼으로 처리하려면 api 필요), 아이디 6자 이상 */}
+          {typeof fieldErrors === "string" &&
+            fieldErrors.includes("아이디") && (
+              <div className="pl-2 mb-3 -mt-3 text-sm text-red-500">
+                {fieldErrors}
+              </div>
+            )}
+          {/* 아이디 중복(따로 버튼으로 처리하려면 api 필요), 아이디 6자 이상 */}
 
           <InputField
             label="비밀번호 *"
@@ -164,7 +176,9 @@ export default function Signup() {
           />
           {/* 비밀번호 에러 */}
           {typeof fieldErrors !== "string" && fieldErrors.password && (
-            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors.password}</div>
+            <div className="pl-2 mb-3 -mt-3 text-sm text-red-500">
+              {fieldErrors.password}
+            </div>
           )}
 
           <InputField
@@ -177,7 +191,9 @@ export default function Signup() {
             required
           />
           {pwError && (
-            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{pwError}</div>
+            <div className="pl-2 mb-3 -mt-3 text-sm text-red-500">
+              {pwError}
+            </div>
           )}
 
           <InputField
@@ -191,11 +207,16 @@ export default function Signup() {
           />
           {/* 이메일 중복 */}
           {typeof fieldErrors !== "string" && fieldErrors.email && (
-            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors.email}</div>
+            <div className="pl-2 mb-3 -mt-3 text-sm text-red-500">
+              {fieldErrors.email}
+            </div>
           )}
-          {typeof fieldErrors === "string" && fieldErrors.includes("이메일") && (
-            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors}</div>
-          )}
+          {typeof fieldErrors === "string" &&
+            fieldErrors.includes("이메일") && (
+              <div className="pl-2 mb-3 -mt-3 text-sm text-red-500">
+                {fieldErrors}
+              </div>
+            )}
 
           <InputField
             label="휴대폰 번호 *"
@@ -207,11 +228,16 @@ export default function Signup() {
             required
           />
           {typeof fieldErrors !== "string" && fieldErrors.phoneNumber && (
-            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors.phoneNumber}</div>
+            <div className="pl-2 mb-3 -mt-3 text-sm text-red-500">
+              {fieldErrors.phoneNumber}
+            </div>
           )}
-          {typeof fieldErrors === "string" && fieldErrors.includes("휴대폰") && (
-            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors}</div>
-          )}
+          {typeof fieldErrors === "string" &&
+            fieldErrors.includes("휴대폰") && (
+              <div className="pl-2 mb-3 -mt-3 text-sm text-red-500">
+                {fieldErrors}
+              </div>
+            )}
 
           <InputField
             label="닉네임 *"
@@ -222,7 +248,9 @@ export default function Signup() {
             required
           />
           {typeof fieldErrors !== "string" && fieldErrors.nickname && (
-            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">{fieldErrors.nickname}</div>
+            <div className="pl-2 mb-3 -mt-3 text-sm text-red-500">
+              {fieldErrors.nickname}
+            </div>
           )}
 
           <div className="flex justify-center mt-6">
@@ -236,14 +264,16 @@ export default function Signup() {
         </form>
 
         {showModal && (
-          <div className="p-6 fixed inset-0 z-50 flex items-center justify-center"
-               style={{ background: "rgba(0, 0, 0, 0.5)" }}>
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-6"
+            style={{ background: "rgba(0, 0, 0, 0.5)" }}
+          >
             <div className="pl-8 pr-8 pb-8 pt-2 text-center shadow-lg rounded-xl flex-col items-center justify-center bg-[#F7F4EF]">
               <img
-                  src={signupmodal}
-                  alt="signup modal"
-                  className="w-20 m-auto"
-                />
+                src={signupmodal}
+                alt="signup modal"
+                className="w-20 m-auto"
+              />
               <div className="text-2xl mt-1 text-[#66191F] font-semibold">
                 회원가입이 완료되었습니다.
               </div>

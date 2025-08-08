@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { usePostFilter } from "../../store/usePostFilter";
+import type { PostCategory } from "../../types/enums/postCategory";
 import SkeletonPostCard from "../skeletons/SkeletonPostCard";
 import { useGetConsultPost } from "../../hooks/queries/useGetConsultPost";
-import type { PostCategory } from "../../types/enums/postCategory";
 import { useCounselingStore } from "../../store/useConsultPost";
 
 type PostSectionProps = {

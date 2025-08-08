@@ -99,7 +99,9 @@ const Login = () => {
               className="font-crimson font-light w-full px-2 sm:px-4 py-2 sm:py-3 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] placeholder-[#AB3130] placeholder-opacity-60 focus:outline-none focus:ring-[#AB3130] text-sm sm:text-lg"
             />
             {loginError && (
-              <div className="sm:-mt-3 text-xs pl-2 mb-3 sm:text-sm text-red-500">{loginError}</div>
+              <div className="sm:-mt-3 text-xs pl-2 mb-3 sm:text-sm text-red-500">
+                {loginError}
+              </div>
             )}
           </div>
 

@@ -1,4 +1,4 @@
-import type { InputFieldProps } from "../../types/inputfieldtypes"
+import type { InputFieldProps } from "../../types/inputfieldtypes";
 
 export const InputField = ({
   label,
@@ -12,9 +12,7 @@ export const InputField = ({
   children,
 }: InputFieldProps) => (
   <div>
-    <label className="text-base font-semibold text-[#AB3130]">
-      {label}
-    </label>
+    <label className="text-base font-semibold text-[#AB3130]">{label}</label>
     <div className="flex gap-2 mt-2 text-[#AB3130]">
       <input
         type={type}

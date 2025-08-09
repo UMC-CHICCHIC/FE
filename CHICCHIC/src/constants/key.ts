@@ -12,4 +12,5 @@ export const QUERY_KEY = {
   consultPosts: "consultPosts",
   categories: "categories",
   products: "products",
+  reviews: "reviews",
 };

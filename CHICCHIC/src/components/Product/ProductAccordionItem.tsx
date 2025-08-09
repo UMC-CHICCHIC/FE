@@ -20,7 +20,7 @@ export function ProductAccordionItem({
         className="flex items-center justify-between py-4 min-w-120"
         onClick={onClick}
       >
-        <span className="text-[#AB3130] font-bold text-lg">{title}</span>
+        <span className="text-[#AB3130] font-medium text-lg">{title}</span>
         <img
           width={44}
           src={ArrowIcon}

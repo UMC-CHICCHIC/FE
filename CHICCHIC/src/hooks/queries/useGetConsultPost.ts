@@ -8,10 +8,14 @@ import { QUERY_KEY } from "../../constants/key";
 import { getConsultPostDetail, getConsultPostList } from "../../apis/posts";
 
 // 추천 상담소 페이지 게시글 리스트
-export const useGetConsultPost = (category: PostCategory) => {
+export const useGetConsultPost = (
+  category: PostCategory,
+  page = 0,
+  size = 5
+) => {
   return useQuery<ResponseConsultListDto, Error>({
-    queryKey: [QUERY_KEY.consultPosts, category],
-    queryFn: () => getConsultPostList(category),
+    queryKey: [QUERY_KEY.consultPosts, category, page, size],
+    queryFn: () => getConsultPostList(category, page, size),
     // 3분간 캐시 유지
     staleTime: 1000 * 60 * 3,
   });

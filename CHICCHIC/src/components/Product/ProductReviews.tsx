@@ -15,7 +15,7 @@ const ProductReviews = () => {
       <div className="flex flex-col flex-1 w-full lg:w-[800px]">
         <span className="text-[#AB3130] text-4xl">REVIEWS</span>
         <div className="flex flex-col border-[1.8px] border-[#AB3130] rounded py-6 px-16 mt-6">
-          <span className="text-[#AB3130] text-2xl font-[pretendard] font-black py-2">
+          <span className="text-[#AB3130] text-2xl font-bold py-2">
             리뷰 작성
           </span>
           <span className="text-[#AB3130] pb-2 font-[pretendard] font-light text-xl">
@@ -32,7 +32,7 @@ const ProductReviews = () => {
           <div className="flex flex-col items-center justify-center">
             <textarea
               placeholder="리뷰 작성하기"
-              className="resize-none placeholder-[#AB3130] border border-[#AB3130] rounded-xl font-[pretendard] text-md w-full min-h-60 font-light px-6 py-4 mb-6"
+              className="resize-none placeholder-[#AB3130] placeholder:opacity-50 border border-[#AB3130] rounded-xl font-[pretendard] outline-[#AB3130] text-md w-full min-h-80 font-light px-6 py-4 mb-6"
               onChange={(e) => e.target.value}
             />
             <div className="flex justify-end flex-1 w-full">

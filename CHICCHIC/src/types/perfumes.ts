@@ -1,4 +1,4 @@
-import type { PerfumeCategory } from "./enums/postCategory";
+import type { CommonResponse } from "./common";
 
 export interface Perfume {
   id: number;
@@ -10,13 +10,29 @@ export interface Perfume {
   notes: string[];
 }
 
-// /category Response body
-export type ProductCategory = {
-  categoryId: number;
-  name: string;
-  type: PerfumeCategory;
-  order: number;
+// 별점
+export type Rating = 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5;
+
+// 상품 리뷰
+export type ProductReview = {
+  id: number;
+  memberNickname: string;
+  rating: Rating;
+  content: string;
+  createdAt: string;
 };
 
-// 상품 카테고리 Dto
-export type ResponseProductCategoryDto = ProductCategory[];
+// 상품 리뷰 생성 및 수정 요청
+export type RequestProductReviewDto = {
+  rating: Rating;
+  content: string;
+};
+
+// 상품 리뷰 삭제 응답
+export type ResponseDeleteReviewDto = CommonResponse<Record<string, never>>;
+
+// 상품 리뷰 조회 응답
+export type ResponseProductReviewDto = CommonResponse<ProductReview[]>;
+
+// 상품 리뷰 수정 응답
+export type ResponseUpdateReviewDto = CommonResponse<ProductReview>;

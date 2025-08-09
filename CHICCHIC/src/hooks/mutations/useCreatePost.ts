@@ -7,7 +7,7 @@ import type {
 } from "../../types/post";
 
 // 추천 게시글 작성 훅
-export const useCreateConsultPost = () => {
+export function useCreateConsultPost() {
   const queryClient = useQueryClient();
 
   return useMutation<ResponseConsultCreateDto, Error, RequestCreatePostDto>({
@@ -22,4 +22,4 @@ export const useCreateConsultPost = () => {
       console.error("작성실패", error);
     },
   });
-};
+}

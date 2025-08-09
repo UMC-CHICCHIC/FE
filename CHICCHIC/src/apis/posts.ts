@@ -10,13 +10,18 @@ import type { ResponseUploadImg } from "../types/img";
 
 // 향수 추천 상담소 게시글 리스트 조회
 export const getConsultPostList = async (
-  category: PostCategory
+  category: PostCategory,
+  page = 0,
+  size = 5
 ): Promise<ResponseConsultListDto> => {
   try {
     console.log("요청 카테고리", category);
-    const { data } = await axiosInstance.get("/consult-posts", {
-      params: { type: category, page: 0, size: 5 },
-    });
+    const { data } = await axiosInstance.get<ResponseConsultListDto>(
+      "/consult-posts",
+      {
+        params: { type: category, page, size },
+      }
+    );
     console.log("요청보냄");
     return data;
   } catch (e) {
@@ -31,7 +36,7 @@ export const getConsultPostDetail = async (
 ): Promise<ResponseConsultDetailDto> => {
   try {
     console.log("게시글 상세", consultPostId);
-    const { data } = await axiosInstance.get(
+    const { data } = await axiosInstance.get<ResponseConsultDetailDto>(
       `/consult-posts/${consultPostId}`,
       {
         params: consultPostId,

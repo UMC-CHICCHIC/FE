@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { uploadPostImg, uploadProfileImg } from "../../apis/postApi";
+import { uploadPostImg, uploadProfileImg } from "../../apis/posts";
 import { useImgUploadStore } from "../../store/useImgUploadStore";
 import type { ResponseUploadImg } from "../../types/img";
 import { QUERY_KEY } from "../../constants/key";

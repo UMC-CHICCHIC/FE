@@ -31,8 +31,10 @@ const CounselingLists = () => {
           <div className="flex flex-col w-full gap-2 md:flex-row">
             <button
               className={`${
-                category === "RECEIVE" ? "text-white bg-[#AB3130]" : ""
-              } flex flex-1 w-full justify-center items-center border rounded-full px-6 py-3 cursor-pointer border-[#AB3130]`}
+                category === "RECEIVE"
+                  ? "text-white bg-[#AB3130]"
+                  : "hover:bg-[#AB3130]/10 transition-colors"
+              } flex flex-1 w-full justify-center items-center border rounded-full px-6 py-3 cursor-pointer border-[#AB3130] `}
               onClick={() => {
                 setCategory("RECEIVE");
               }}
@@ -41,7 +43,9 @@ const CounselingLists = () => {
             </button>
             <button
               className={`${
-                category === "GIVE" ? "text-white bg-[#AB3130]" : ""
+                category === "GIVE"
+                  ? "text-white bg-[#AB3130]"
+                  : "hover:bg-[#AB3130]/10 transition-colors"
               } flex flex-1 w-full justify-center items-center border rounded-full px-6 py-3 cursor-pointer border-[#AB3130]`}
               onClick={() => {
                 setCategory("GIVE");
@@ -57,7 +61,7 @@ const CounselingLists = () => {
         <PostSection category={category} />
         <div className="flex items-start justify-end mb-4">
           <button
-            className="text-sm px-12 py-2 bg-[#AB3130] text-white rounded-full cursor-pointer"
+            className="text-sm px-12 py-2 bg-[#AB3130] hover:bg-[#66191F] transition-colors text-white rounded-full cursor-pointer"
             onClick={() => navigate("/community/recommendation/new")}
           >
             글쓰기

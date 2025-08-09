@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createConsultPost } from "../../apis/postApi";
+import { createConsultPost } from "../../apis/posts";
 import { QUERY_KEY } from "../../constants/key";
 import type {
   RequestCreatePostDto,
@@ -15,7 +15,7 @@ export const useCreateConsultPost = () => {
     onSuccess: (res) => {
       console.log("작성 성공", res.result.consultPostId);
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.post],
+        queryKey: [QUERY_KEY.consultPost],
       });
     },
     onError: (error) => {

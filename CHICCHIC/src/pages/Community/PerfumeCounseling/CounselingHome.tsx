@@ -1,8 +1,10 @@
 import counselingMainImage from "/counselingHome.svg";
 import RightArrow from "../../../assets/icons/arrowRight.svg";
 import PostSection from "../../../components/Counseling/CounselingPostSection";
+import { useNavigate } from "react-router-dom";
 
 const PerfumeCounselingHome = () => {
+  const navigate = useNavigate();
   return (
     <div className="bg-[#F7F4EF]">
       {/* 상단 배너 */}
@@ -22,26 +24,27 @@ const PerfumeCounselingHome = () => {
           </p>
         </div>
       </section>
-
       {/* 콘텐츠 섹션 */}
-      <section className="w-[90%] max-w-5xl font-[pretendard] mx-auto py-16">
-        <div className="flex items-center justify-between">
-          <span className="text-[#AB3130] font-semibold text-2xl mb-2">
+      <section className="w-[90%] max-w-6xl font-[pretendard] mx-auto py-16">
+        <div className="flex items-center justify-between mb-6 sm:mb-12">
+          <span className="text-[#AB3130] font-semibold text-2xl sm:text-4xl ">
             추천받아요! 최근 게시글
           </span>
           <a
-            href="/community/recommendation/list"
-            className="flex items-center justify-center gap-3 text-[#AB3130] text-sm sm:text-base"
+            onClick={() => navigate("/community/recommendation/list")}
+            className="cursor-pointer flex items-center justify-center gap-3 text-[#AB3130] text-sm sm:text-xl"
           >
             더보기
             <img src={RightArrow} width={6} alt="rightArrow" />
           </a>
         </div>
-        <PostSection category="GIVE" />
-        <span className="text-[#AB3130] font-semibold text-2xl mb-2">
-          추천해요! 최근 게시글
-        </span>
         <PostSection category="RECEIVE" />
+        <div className="mb-6 sm:mb-12">
+          <span className="text-[#AB3130] font-semibold text-2xl sm:text-4xl">
+            추천해요! 최근 게시글
+          </span>
+        </div>
+        <PostSection category="GIVE" />
       </section>
     </div>
   );

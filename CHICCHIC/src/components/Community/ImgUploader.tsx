@@ -57,7 +57,7 @@ export const ImgUploader = ({ type }: ImgUploaderProps) => {
           className="flex items-center gap-[16px] px-[40px] font-semibold bg-transparent border-none cursor-pointer"
         >
           <img src={ImgIcon} alt="imgIcon" width={26} />
-          <span className="text-[#AB3130] text-2xl font-normal">
+          <span className="text-[#AB3130] text-xl sm:text-2xl font-normal">
             이미지 첨부하기
           </span>
         </button>

@@ -15,7 +15,7 @@ export type ConsultPost = {
 
 // 추천 게시글 미리보기 정보
 export type ConsultPostPrev = {
-  consultId: number;
+  consultPostId: number;
   postType: PostCategory;
   title: string;
   content: string;

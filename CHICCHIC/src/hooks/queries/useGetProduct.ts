@@ -12,20 +12,20 @@ import type {
 import { QUERY_KEY } from "../../constants/key";
 import type { ProductReview } from "../../types/perfumes";
 
-// 향수 상품 상세
-export function useGetProductDetail(id: number) {
-  return useQuery<ResponseProductDetailDto, Error>({
-    queryKey: [QUERY_KEY.products, id],
-    queryFn: () => getPerfumeDetail(id),
-  });
-}
-
-// 향수 상품 카테고리
+// 향수 상품 카테고리 (노트, 가격대, 발향률)
 export function useGetProductCategory(type: PerfumeCategory) {
   return useQuery<ResponseProductCategoryDto, Error>({
     queryKey: [QUERY_KEY.categories, type],
     queryFn: () => getPerfumeCategory(type),
     staleTime: 1000 * 60 * 3,
+  });
+}
+
+// 향수 상품 상세
+export function useGetProductDetail(id: number) {
+  return useQuery<ResponseProductDetailDto, Error>({
+    queryKey: [QUERY_KEY.products, id],
+    queryFn: () => getPerfumeDetail(id),
   });
 }
 

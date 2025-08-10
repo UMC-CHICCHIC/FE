@@ -31,16 +31,11 @@ export default function Signup() {
     phoneNumber: "",
     nickname: "",
   });
-  const [error, setError] = useState<string | null>(null);
-
   const [pwError, setPwError] = useState<string | null>(null); // 비밀번호 불일치 에러 디바운싱(바로)
   const debounceTimer = useRef<number | null>(null);
   const [fieldErrors, setFieldErrors] = useState<
     Record<string, string> | string
-  >({}); // 전체적으로 input 밑에 에러 띄우기
-
-  const [debouncedError, setDebouncedError] = useState<string | null>(null);
-  const errorDebounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  >({});
 
   useEffect(() => {
     if (
@@ -58,18 +53,6 @@ export default function Signup() {
     }
   }, [form.password, form.passwordConfirm]);
 
-  useEffect(() => {
-    if (error) {
-      if (errorDebounceTimer.current) clearTimeout(errorDebounceTimer.current);
-      errorDebounceTimer.current = setTimeout(() => {
-        setDebouncedError(error);
-      }, 400);
-    } else {
-      setDebouncedError(null);
-      if (errorDebounceTimer.current) clearTimeout(errorDebounceTimer.current);
-    }
-  }, [error]);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
@@ -79,7 +62,6 @@ export default function Signup() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(null);
     setFieldErrors({});
 
     const result = signupSchema.safeParse(form);
@@ -104,10 +86,7 @@ export default function Signup() {
       if (axios.isAxiosError(err)) {
         const resData = err.response?.data;
 
-        // 공통 에러 메시지
-        setError(resData?.message || "회원가입에 실패했습니다.");
-
-        // 필드별 에러 세팅
+        // 필드별 에러
         if (resData?.result) {
           const errors = resData.result;
           setFieldErrors(errors);

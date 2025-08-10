@@ -1,7 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useLogout } from "../../utils/useLogout";
-import { getUserInfo } from "../../apis/auth";
+import { getUserInfo, getProfileImage } from "../../apis/auth";
+
+const DEFAULT_PROFILE_IMAGE = "https://aws-chicchic-bucket.s3.ap-northeast-2.amazonaws.com/default-profile.png";
 
 export default function MyHome() {
   const location = useLocation();
@@ -11,6 +13,7 @@ export default function MyHome() {
 
   const [userNickname, setUserNickname] = useState("(닉네임)");
   const [isLoading, setIsLoading] = useState(true);
+  const [profileImage, setProfileImage] = useState<string>(DEFAULT_PROFILE_IMAGE);
 
   useEffect(() => {
     getUserInfo()
@@ -24,6 +27,15 @@ export default function MyHome() {
       })
       .finally(() => {
         setIsLoading(false);
+      });
+      
+    getProfileImage()
+      .then((res) => {
+        const url = res.data.result;
+        setProfileImage(url && url.trim() ? url : DEFAULT_PROFILE_IMAGE);
+      })
+      .catch(() => {
+        setProfileImage(DEFAULT_PROFILE_IMAGE);
       });
   }, []);
 
@@ -66,15 +78,24 @@ export default function MyHome() {
 
       {/* 내용 영역 */}
       <main className="flex-1 flex flex-col items-center justify-start pt-16 px-8 sm:items-start sm:ml-20">
-        {/* 프로필 이미지 (더미 원형 박스) */}
-        <div className="w-55 h-55 rounded-full bg-gray-300 flex items-center justify-center mb-6 mt-20" />
+        {/* 프로필 이미지 */}
+        <div className="w-55 h-55 rounded-full flex items-center justify-center mb-6 mt-20 overflow-hidden">
+          {isLoading ? (
+            <div className="w-full h-full object-cover rounded-full bg-gray-200 animate-pulse" />
+          ) : (
+            <img
+            src={profileImage}
+            alt="Profile"
+            className="w-full h-full object-cover rounded-full"/>
+          )}
+        </div>
 
         {/* 닉네임 영역 + Skeleton UI */}
         <div className="text-3xl mt-5 font-semibold mb-2 text-center sm:text-left">
           {isLoading ? (
             <div className="w-60 h-10 bg-gray-200 animate-pulse rounded-md" />
           ) : (
-            `안녕하세요, ${userNickname} 님!`
+            `안녕하세요, ${userNickname}님!`
           )}
         </div>
 

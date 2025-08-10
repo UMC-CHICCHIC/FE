@@ -1,5 +1,5 @@
 import { axiosInstance } from "./axiosInstance";
-import type { LoginPayload, SignupPayload, UserInfo } from "../types/authtypes";
+import type { LoginPayload, SignupPayload, UserInfo, UpdateUserInfoPayload } from "../types/authtypes";
 
 export const postLogin = (data: LoginPayload) => {
   return axiosInstance.post("/api/v1/auth/login", data);
@@ -15,5 +15,24 @@ export const getUserInfo = () => {
     code: string;
     message: string;
     result: UserInfo;
-  }>("/api/v1/auth/info");
+  }>("/member/info");
+};
+
+export const putUserInfo = (data: UpdateUserInfoPayload) => {
+  return axiosInstance.put("/member/info", data);
+};
+
+export const deleteUserInfo = () => {
+  return axiosInstance.delete("/member/info");
+};
+
+export const getProfileImage = () => {
+  return axiosInstance.get<{ result: string }>("/member/profile-image");
+  // result: string (URL)
+};
+
+export const putProfileImage = (formData: FormData) => {
+  return axiosInstance.put<{ result: string }>("/member/profile-image", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
 };

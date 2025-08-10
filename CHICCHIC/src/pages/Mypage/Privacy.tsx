@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { Pencil } from "lucide-react";
-import { getUserInfo } from "../../apis/auth";
-import { useImgUploadStore } from "../../store/useImgUploadStore";
+import { getUserInfo, putUserInfo, deleteUserInfo, putProfileImage, getProfileImage } from "../../apis/auth";
+import { useImgUploadStore } from "../../store/useProfileImg";
 import { PrivacySkeleton } from "../../components/skeletons/PrivacySkeleton";
+import { removeAccessToken, removeRefreshToken } from "../../utils/authStorage";
+
+const DEFAULT_PROFILE_IMAGE = "https://aws-chicchic-bucket.s3.ap-northeast-2.amazonaws.com/default-profile.png";
 
 const Privacy = () => {
   const location = useLocation();
@@ -11,72 +14,101 @@ const Privacy = () => {
   const currentPath = location.pathname;
 
   const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // 추가
+  const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
-    name: '',
     nickname: '',
     phone: '',
     email: '',
-    id: '',
-    password: '••••••'
   });
+  const [error, setError] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
 
   //zustand 상용
-  const { url: profileImage, setImg } = useImgUploadStore();
+  const { file, previewUrl, setImg, reset } = useImgUploadStore();
+  const [profileImage, setProfileImage] = useState<string>(DEFAULT_PROFILE_IMAGE);
 
-  // 유저 정보 API 연동
   useEffect(() => {
     getUserInfo()
       .then((res) => {
         const user = res.data.result;
         setFormData({
-          name: user.username || '',
           nickname: user.nickname || '',
           phone: user.phoneNumber || '',
           email: user.email || '',
-          id: user.username || '',
-          password: '••••••'
         });
       })
       .catch(() => {
         setFormData({
-          name: '',
           nickname: '',
           phone: '',
           email: '',
-          id: '',
-          password: '••••••'
         });
       })
-      .finally(() => setIsLoading(false)); // 로딩 끝
+      .finally(() => setIsLoading(false));
+
+    getProfileImage()
+      .then((res) => {
+        const url = res.data.result;
+        setProfileImage(url && url.trim() ? url : DEFAULT_PROFILE_IMAGE);
+      })
+      .catch(() => {
+        setProfileImage(DEFAULT_PROFILE_IMAGE);
+      });
   }, []);
 
   const handleProfileClick = () => navigate('/mypage');
   const handlePrivacyClick = () => navigate('/mypage/privacy');
   const handleEditClick = () => setIsEditing(!isEditing);
-  const handleSaveClick = () => setIsEditing(false);
-  const handleWithdrawClick = () => alert('회원 탈퇴 성공');
-
-  const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
-  //프로필 이미지 업로드
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const result = e.target?.result as string;
-        setImg(result, file.name);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
   const handleImageClick = () => {
     const fileInput = document.getElementById('profile-image-input') as HTMLInputElement;
     fileInput?.click();
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (f) setImg(f); // File 그대로 저장, 미리보기는 store에서 관리
+  };
+
+  const handleSaveClick = async () => {
+    setError(null);
+    setSaving(true);
+    try {
+      await putUserInfo({
+        nickname: formData.nickname,
+        phoneNumber: formData.phone,
+      });
+
+      if (file) {
+        const fd = new FormData();
+        fd.append("file", file);
+        const res = await putProfileImage(fd);
+
+        // 응답 URL로 프로필 갱신 + 캐시 버스터
+        const newUrl = `${res.data.result}?v=${Date.now()}`;
+        setProfileImage(newUrl);
+        reset();
+      }
+
+      setIsEditing(false);
+    } catch (err) {
+      setError("회원정보 수정에 실패했습니다.");
+    } finally {
+      setSaving(false);
+    }
+  };
+  const handleWithdrawClick = async () => {
+    try {
+      await deleteUserInfo();
+      removeAccessToken();
+      removeRefreshToken();
+      alert("회원 탈퇴가 완료되었습니다.");
+      navigate("/");
+    } catch (err) {
+    }
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   return (
@@ -132,49 +164,77 @@ const Privacy = () => {
             <div className="relative w-32 h-32 mb-13">
               <div 
                 className="w-32 h-32 rounded-full bg-gray-400 flex items-center justify-center cursor-pointer hover:bg-gray-500 transition-colors relative overflow-hidden"
-                onClick={handleImageClick}
+                onClick={isEditing ? handleImageClick : undefined}
+                style={{ cursor: isEditing ? "pointer" : "default" }}
               >
-                {profileImage ? (
+                {isEditing && previewUrl ? (
+                  <img 
+                    src={previewUrl} 
+                    alt="Profile Preview" 
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                ) : (
                   <img 
                     src={profileImage} 
                     alt="Profile" 
                     className="w-full h-full object-cover rounded-full"
                   />
-                ) : (
-                  <div className="w-full h-full" />
                 )}
               </div>
-              <button
-                onClick={handleImageClick}
-                className="absolute bottom-2.5 right-0 w-8 h-8 bg-[#AB3130] rounded-full flex items-center justify-center hover:bg-[#8b2a25] transition-colors shadow-lg cursor-pointer"
-              >
-                <Pencil size={14} className="text-white" />
-              </button>
+              {isEditing && (
+                <button
+                  onClick={handleImageClick}
+                  className="absolute bottom-2.5 right-0 w-8 h-8 bg-[#AB3130] rounded-full flex items-center justify-center hover:bg-[#8b2a25] transition-colors shadow-lg cursor-pointer"
+                >
+                  <Pencil size={14} className="text-white" />
+                </button>
+              )}
             </div>
             <div className="w-full max-w-2xl">
               <div className="grid grid-cols-2 gap-x-16 gap-y-6">
-                {[
-                  { label: "아이디", field: "name" },
-                  { label: "닉네임", field: "nickname" },
-                  { label: "휴대폰 번호", field: "phone" },
-                  { label: "이메일", field: "email" }
-                ].map(({ label, field }) => (
-                  <div key={field}>
-                    <label className="block text-[#AB3130] mb-2 font-semibold">{label}</label>
-                    {isEditing ? (
-                      <input
-                        type="text"
-                        value={formData[field as keyof typeof formData]}
-                        onChange={(e) => handleInputChange(field, e.target.value)}
-                        className="w-full max-w-[180px] sm:max-w-[300px] px-3 py-2 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] focus:outline-none focus:ring-1 focus:ring-[#AB3130] truncate"
-                      />
-                    ) : (
-                      <div className="w-full max-w-[180px] sm:max-w-[300px] px-3 py-2 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] truncate">
-                        {formData[field as keyof typeof formData]}
-                      </div>
-                    )}
-                  </div>
-                ))}
+                {/* 이메일: 항상 읽기 전용 */}
+                <div>
+                  <label className="block text-[#AB3130] mb-2 font-semibold">이메일</label>
+                  <input
+                    type="text"
+                    value={formData.email}
+                    disabled
+                    className="w-full max-w-[180px] sm:max-w-[300px] px-3 py-2 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] truncate cursor-not-allowed"
+                    readOnly
+                  />
+                </div>
+                {/* 닉네임 */}
+                <div>
+                  <label className="block text-[#AB3130] mb-2 font-semibold">닉네임</label>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={formData.nickname}
+                      onChange={(e) => handleInputChange("nickname", e.target.value)}
+                      className="w-full max-w-[180px] sm:max-w-[300px] px-3 py-2 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] focus:outline-none focus:ring-1 focus:ring-[#AB3130] truncate"
+                    />
+                  ) : (
+                    <div className="w-full max-w-[180px] sm:max-w-[300px] px-3 py-2 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] truncate">
+                      {formData.nickname}
+                    </div>
+                  )}
+                </div>
+                {/* 휴대폰 번호 */}
+                <div>
+                  <label className="block text-[#AB3130] mb-2 font-semibold">휴대폰 번호</label>
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={formData.phone}
+                      onChange={(e) => handleInputChange("phone", e.target.value)}
+                      className="w-full max-w-[180px] sm:max-w-[300px] px-3 py-2 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] focus:outline-none focus:ring-1 focus:ring-[#AB3130] truncate"
+                    />
+                  ) : (
+                    <div className="w-full max-w-[180px] sm:max-w-[300px] px-3 py-2 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] truncate">
+                      {formData.phone}
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="grid grid-cols-2 gap-x-16 mt-12">
@@ -187,7 +247,7 @@ const Privacy = () => {
                   <>
                     <button
                       onClick={handleWithdrawClick}
-                      className="cursor-pointer bg-transparent text-[#AB3130] border border-[#AB3130] px-4 py-3 rounded-full hover:bg-gray-50 transition-colors mt-5 mb-20"
+                      className="cursor-pointer bg-transparent text-[#AB3130] border border-[#AB3130] px-4 py-3 rounded-full hover:bg-[#EFE8DC] transition-colors mt-5 mb-20"
                     >
                       회원 탈퇴하기
                     </button>
@@ -195,7 +255,7 @@ const Privacy = () => {
                       onClick={handleSaveClick}
                       className="cursor-pointer bg-[#AB3130] text-white px-4 py-3 rounded-full hover:bg-[#8b2a25] transition-colors mt-5 mb-20"
                     >
-                      수정 완료
+                      {saving ? "저장 중..." : "수정 완료"}
                     </button>
                   </>
                 ) : (
@@ -211,6 +271,9 @@ const Privacy = () => {
               </div>
             </div>
           </>
+        )}
+        {error && (
+          <div className="text-sm text-red-500 mt-2">{error}</div>
         )}
       </main>
     </div>

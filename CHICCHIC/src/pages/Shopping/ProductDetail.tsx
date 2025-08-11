@@ -127,11 +127,11 @@ const ProductDetail = () => {
       )}
       {/* 스크랩 및 홈페이지 라우팅 버튼 */}
       <div className="flex flex-col items-center justify-center w-full max-w-3xl gap-2 py-12 mx-auto md:flex-row">
-        <button className="flex flex-1 w-full items-center justify-center gap-2 border border-[#AB3130] text-[#AB3130] rounded-full py-2 px-8 text-xl font-[pretendard] cursor-pointer">
+        <button className="flex flex-1 w-full hover:bg-[#AB3130]/10 items-center justify-center gap-2 border border-[#AB3130] text-[#AB3130] rounded-full py-2 px-8 text-xl font-[pretendard] cursor-pointer">
           <img src={BookmarkIcon} width={14} alt="스크랩" />
           스크랩
         </button>
-        <button className="flex flex-1 items-center justify-center bg-[#AB3130] text-[#F7F4EF] rounded-full py-2 px-8 text-xl w-full font-[pretendard] font-light cursor-pointer">
+        <button className="flex flex-1 items-center justify-center hover:bg-[#66191F] bg-[#AB3130] text-[#F7F4EF] rounded-full py-2 px-8 text-xl w-full font-[pretendard] font-light cursor-pointer">
           공식 홈페이지 바로가기
         </button>
       </div>

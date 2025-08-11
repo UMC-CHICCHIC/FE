@@ -29,7 +29,7 @@ export function useUploadProfileImg() {
     mutationFn: (file: File) => uploadProfileImg(file),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.myInfo],
+        queryKey: [QUERY_KEY.member],
       });
     },
     onError: () => alert("프로필 이미지 업로드 실패"),

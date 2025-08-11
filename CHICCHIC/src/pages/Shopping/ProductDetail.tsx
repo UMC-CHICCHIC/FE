@@ -4,12 +4,13 @@ import note2Img from "../../assets/images/sampleNote2.png";
 import note3Img from "../../assets/images/sampleNote3.png";
 import { ProductAccordion } from "../../components/Product/ProductAccordion";
 import { ProductAccordionItem } from "../../components/Product/ProductAccordionItem";
-import ProductReviews from "../../components/Product/ProductReviews";
 import BookmarkIcon from "../../assets/icons/Bookmark.svg";
 import perfumeImg from "../../assets/images/samplePerfumeImg.png";
 import { useProductStore } from "../../store/useProductStore";
 import { useGetProductDetail } from "../../hooks/queries/useGetProduct";
 import { useParams } from "react-router-dom";
+import ReviewForm from "../../components/Product/ReviewForm";
+import { ReviewList } from "../../components/Product/ReviewList";
 
 const ProductDetail = () => {
   const [selectTab, setSelectTab] = useState<"DETAILS" | "REVIEW">("DETAILS");
@@ -42,12 +43,21 @@ const ProductDetail = () => {
       ],
     },
     {
+      // API 필드 수정 예정
+      title: "전성분",
+      content: <div>{data?.result.warnings ?? "정보없음"}</div>,
+    },
+    {
       title: "사용방법",
       content: <div>{data?.result.usage ?? "정보없음"}</div>,
     },
     {
       title: "사용 시 주의사항",
       content: <div>{data?.result.warnings ?? "정보없음"}</div>,
+    },
+    {
+      title: "제조업자",
+      content: <div>{data?.result.brand ?? "정보없음"}</div>,
     },
   ];
 
@@ -175,7 +185,10 @@ const ProductDetail = () => {
             ))}
           </ProductAccordion>
         ) : (
-          <ProductReviews perfumeId={perfumeId!} />
+          <>
+            <ReviewForm perfumeId={perfumeId!} />
+            <ReviewList perfumeId={perfumeId!} page={1} size={10} />
+          </>
         )}
       </div>
     </div>

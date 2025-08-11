@@ -25,7 +25,7 @@ const CommunityHome = () => {
           <span className="mb-10 whitespace-pre-line sm:leading-20 leading-12 text-[clamp(3rem,6vw,5rem)]">
             Perfume{"\n"}Community
           </span>
-          <span className="max-w-2xl font-[pretendard] font-extralight whitespace-break-spaces text-[clamp(1rem,1.75vw,1.25rem)] leading-relaxed">
+          <span className="max-w-2xl font-[pretendard] font-extralight break-keep text-[clamp(1rem,1.75vw,1.25rem)] leading-relaxed">
             향수 추천부터 향수에 대한 다양한 이야기, 그리고 향수를 기록하는 향수
             일기장까지.{"\n"}CHICCHIC의 커뮤니티에서 경험하세요.
           </span>

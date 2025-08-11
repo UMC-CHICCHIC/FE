@@ -33,7 +33,7 @@ export function useGetProductDetail(id?: number) {
 // 향수 상품 리뷰 조회
 export function useGetProductReview(perfumeId: number, page = 1, size = 10) {
   return useQuery<ProductReview[], Error>({
-    queryKey: [QUERY_KEY.reviews, perfumeId, page, size],
+    queryKey: [QUERY_KEY.perfumes, perfumeId, page, size],
     queryFn: () => getProductReview(perfumeId, page, size),
     staleTime: 1000 * 60,
   });

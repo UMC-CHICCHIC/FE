@@ -28,6 +28,23 @@ export type RequestProductReviewDto = {
   content: string;
 };
 
+// 스크랩
+export type Scrap = {
+  id: number;
+  name: string;
+  brand: string;
+  ml: number;
+  topNotes: string[];
+  middleNote: string;
+  baseNote: string;
+  concentration: string;
+  price: number;
+  itemRating: number;
+};
+
+// 스크랩 추가 및 삭제 응답
+export type ResponseScrapDto = CommonResponse<"">;
+
 // 상품 리뷰 삭제 응답
 export type ResponseDeleteReviewDto = CommonResponse<Record<string, never>>;
 

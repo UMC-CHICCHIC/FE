@@ -18,7 +18,7 @@ export function ProductAccordionItem({
   content,
 }: AccordionItemProps) {
   return (
-    <div className="border-t border-[#AB3130] cursor-pointer select-none md:w-[780px] lg:w-[1000px]">
+    <div className="font-[pretendard] border-t border-[#AB3130] cursor-pointer select-none md:w-[780px] lg:w-[1000px]">
       <div
         className="flex items-center justify-between py-4 min-w-120"
         onClick={onClick}
@@ -36,11 +36,7 @@ export function ProductAccordionItem({
       {open && (
         <div className="pb-6 text-[#AB3130] flex flex-col gap-2">
           {notes?.length
-            ? notes.map((note, idx) => (
-                <div key={idx}>
-                  {note.noteId} : {note.name}
-                </div>
-              ))
+            ? notes.map((note, idx) => <div key={idx}>{note.name}</div>)
             : content}
         </div>
       )}

@@ -19,12 +19,13 @@ export function useCreateProductReview(perfumeId: number) {
     onSuccess: (res) => {
       console.log("작성 성공", res.result.id);
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.reviews, perfumeId],
+        queryKey: [QUERY_KEY.perfumes, perfumeId],
       });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.products, perfumeId],
       });
     },
+    onError: () => console.log("작성 실패"),
   });
 }
 
@@ -37,7 +38,7 @@ export function useUpdateProductReview(perfumeid: number, reviewId: number) {
     onSuccess: (res) => {
       console.log("수정 성공", res.result.id);
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.reviews, perfumeid],
+        queryKey: [QUERY_KEY.perfumes, perfumeid],
       });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.products, perfumeid],
@@ -48,13 +49,17 @@ export function useUpdateProductReview(perfumeid: number, reviewId: number) {
 
 // 향수 리뷰 삭제
 export const useDeleteProductReview = (perfumeId: number) => {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation<void, Error, number>({
     mutationFn: (reviewId) => deleteProductReview(perfumeId, reviewId),
     onSuccess: (res) => {
       console.log("삭제 성공", res);
-      qc.invalidateQueries({ queryKey: [QUERY_KEY.reviews, perfumeId] });
-      qc.invalidateQueries({ queryKey: [QUERY_KEY.products, perfumeId] });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.perfumes, perfumeId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.products, perfumeId],
+      });
     },
   });
 };

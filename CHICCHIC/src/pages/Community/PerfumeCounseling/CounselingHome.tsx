@@ -14,7 +14,7 @@ const PerfumeCounselingHome = () => {
           alt="background"
           className="absolute inset-0 z-0 object-cover w-full h-full"
         />
-        <div className="pb-25 ml-20 font-[pretendard] relative z-10 flex flex-col items-start justify-end h-full px-4 text-white sm:px-8 md:px-20">
+        <div className="pb-25 ml-10 sm:ml-20 font-[pretendard] relative z-10 flex flex-col items-start justify-end h-full px-4 text-white sm:px-8 md:px-20">
           <h1 className="mb-4 whitespace-pre-line leading-24 text-[clamp(2.25rem,4.75vw,3.75rem)] font-medium">
             향수 추천 상담소
           </h1>

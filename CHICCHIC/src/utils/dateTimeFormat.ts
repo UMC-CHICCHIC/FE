@@ -18,3 +18,14 @@ export const HoursTimeFormat = (isoString: string) => {
 
   return `${hours}:${minutes}`;
 };
+
+// 리뷰 시간 : (월 일, 년)
+export const ReivewTimeFormat = (isoString: string) => {
+  const date = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(isoString));
+
+  return date;
+};

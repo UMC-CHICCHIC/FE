@@ -2,6 +2,7 @@ import type {
   ProductReview,
   RequestProductReviewDto,
   ResponseProductReviewDto,
+  ResponseScrapDto,
   ResponseUpdateReviewDto,
 } from "../types/perfumes";
 import type {
@@ -78,7 +79,7 @@ export const createProductReview = async (
   try {
     console.log("생성 요청 성공");
     const { data } = await axiosInstance.post<ResponseUpdateReviewDto>(
-      `/perfumes/${perfumeId}/reviews/`,
+      `/perfumes/${perfumeId}/reviews`,
       body
     );
     return data;
@@ -120,6 +121,34 @@ export const updateProductReview = async (
     return data;
   } catch (e) {
     console.error("수정 요청 실패", e);
+    throw e;
+  }
+};
+
+// 상품 스크랩 추가
+export const createScrap = async (
+  productId: number
+): Promise<ResponseScrapDto> => {
+  try {
+    console.log("스크랩 추가 응답 성공", productId);
+    const { data } = await axiosInstance.post<ResponseScrapDto>(
+      `/scrap/${productId}`
+    );
+    return data;
+  } catch (e) {
+    console.error("스크랩 추가 응답 실패", e);
+    throw e;
+  }
+};
+
+// 상품 스크랩 삭제
+export const deleteScrap = async (productId: number) => {
+  try {
+    console.log("스크랩 삭제 응답 성공", productId);
+    const { data } = await axiosInstance.delete(`/scrap/${productId}`);
+    return data;
+  } catch (e) {
+    console.error("스크랩 삭제 응답 실패", e);
     throw e;
   }
 };

@@ -15,7 +15,7 @@ export function useCreateConsultPost() {
     onSuccess: (res) => {
       console.log("작성 성공", res.result.consultPostId);
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.consultPost],
+        queryKey: [QUERY_KEY.consultPosts],
       });
     },
     onError: (error) => {

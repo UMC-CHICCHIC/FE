@@ -5,7 +5,7 @@ import mainlogo2 from "../assets/images/main-logo.png";
 
 export default function Home() {
   // 인증 상태 확인 (실제로는 Context나 상태관리에서 가져옴)
-  const isAuthenticated = false; // 실제 로그인 상태로 변경
+  const isAuthenticated = true; // 실제 로그인 상태로 변경
 
   return (
     <div className="flex flex-col min-h-screen">

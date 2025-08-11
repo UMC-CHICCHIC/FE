@@ -20,7 +20,10 @@ export function PerfumeCard({ perfume }: PerfumeCardProps) {
       <div className="text-left text-[#AB3130]">
         <h3 className="font-semibold text-base mb-1">{perfume.name}</h3>
         <p className="text-sm text-muted-foreground">{perfume.brand}</p>
-        <p className="text-sm font-semibold mt-1">130,000 ₩</p>
+        {perfume.price && (
+          <p className="text-sm font-semibold mt-1">{perfume.price.toLocaleString()} ₩</p>
+        )}
+        <p className="text-sm mt-1 truncate">{perfume.description}</p>
       </div>
     </div>
   );

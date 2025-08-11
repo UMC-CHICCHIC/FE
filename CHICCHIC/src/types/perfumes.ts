@@ -8,6 +8,7 @@ export interface Perfume {
   imageUrl: string;
   purchaseUrl: string;
   notes: string[];
+  price?: number; // price 속성을 선택적으로 추가
 }
 
 // 별점

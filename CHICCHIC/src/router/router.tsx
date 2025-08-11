@@ -29,6 +29,7 @@ import PerfumeStoryNote from "../pages/Community/PerfumeStory/PerfumeStoryNote.t
 import MyDiaryList from "../pages/Community/PerfumeDiary/MyDiaryList.tsx";
 import PublicDiaryList from "../pages/Community/PerfumeDiary/PublicDiaryList.tsx";
 import PopularPerfumeId from "../pages/PopularPerfume/PopularPerfumeId";
+import Brand from "../pages/Brand/Brand";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -97,6 +98,8 @@ const publicRoutes: RouteObject[] = [
         path: "PopularPerfumeId",
         element: <PopularPerfumeId />,
       },
+
+  { path: "brand", element: <Brand /> },
 
       { path: "privacy-policy", element: <PrivacyPolicy /> },
       { path: "terms", element: <Terms /> },

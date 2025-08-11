@@ -10,7 +10,7 @@ import { setAccessToken, setRefreshToken } from "../utils/authStorage";
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    id: "",
+    email: "",
     password: "",
   });
   const [rememberMe, setRememberMe] = useState(false);
@@ -30,7 +30,7 @@ const Login = () => {
     setLoginError(null);
     try {
       const response = await postLogin({
-        username: formData.id,
+        email: formData.email,
         password: formData.password,
       });
 
@@ -86,9 +86,9 @@ const Login = () => {
           <div className="mb-4 space-y-2 sm:space-y-4 sm:mb-6">
             <input
               type="text"
-              placeholder="ID"
-              value={formData.id}
-              onChange={(e) => handleInputChange("id", e.target.value)}
+              placeholder="Email"
+              value={formData.email}
+              onChange={(e) => handleInputChange("email", e.target.value)}
               className="font-crimson w-full px-2 sm:px-4 py-2 sm:py-3 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] placeholder-[#AB3130] placeholder-opacity-60 focus:outline-none focus:ring-[#AB3130] text-sm sm:text-lg"
             />
             <input

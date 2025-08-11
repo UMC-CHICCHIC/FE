@@ -25,26 +25,17 @@ export default function Signup() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({
-    username: "",
+    email: "",
     password: "",
     passwordConfirm: "",
-    email: "",
     phoneNumber: "",
     nickname: "",
   });
-  const [error, setError] = useState<string | null>(null);
-
   const [pwError, setPwError] = useState<string | null>(null); // 비밀번호 불일치 에러 디바운싱(바로)
   const debounceTimer = useRef<number | null>(null);
   const [fieldErrors, setFieldErrors] = useState<
     Record<string, string> | string
-  >({}); // 전체적으로 input 밑에 에러 띄우기
-
-  const [debouncedError, setDebouncedError] = useState<string | null>(null);
-  const errorDebounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // debouncedError 사용처리
-  console.log("debouncedError:", debouncedError);
+  >({});
 
   useEffect(() => {
     if (
@@ -62,18 +53,6 @@ export default function Signup() {
     }
   }, [form.password, form.passwordConfirm]);
 
-  useEffect(() => {
-    if (error) {
-      if (errorDebounceTimer.current) clearTimeout(errorDebounceTimer.current);
-      errorDebounceTimer.current = setTimeout(() => {
-        setDebouncedError(error);
-      }, 400);
-    } else {
-      setDebouncedError(null);
-      if (errorDebounceTimer.current) clearTimeout(errorDebounceTimer.current);
-    }
-  }, [error]);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({
       ...form,
@@ -83,7 +62,6 @@ export default function Signup() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setError(null);
     setFieldErrors({});
 
     const result = signupSchema.safeParse(form);
@@ -108,10 +86,7 @@ export default function Signup() {
       if (axios.isAxiosError(err)) {
         const resData = err.response?.data;
 
-        // 공통 에러 메시지
-        setError(resData?.message || "회원가입에 실패했습니다.");
-
-        // 필드별 에러 세팅
+        // 필드별 에러
         if (resData?.result) {
           const errors = resData.result;
           setFieldErrors(errors);
@@ -141,32 +116,26 @@ export default function Signup() {
 
         <form className="space-y-5" onSubmit={handleSubmit}>
           <InputField
-            label="아이디 *"
-            name="username"
-            value={form.username}
+            label="이메일 *"
+            name="email"
+            type="email"
+            value={form.email}
             onChange={handleChange}
-            placeholder="6~12자 이내 입력"
+            placeholder="이메일 주소 입력"
             required
-          >
-            <button
-              type="button"
-              className="px-4 sm:px-10 py-1 text-base font-bold border-1 border-[#AB3130] text-[#AB3130] rounded-full hover:bg-[#a8342f] hover:text-white transition"
-            >
-              중복확인
-            </button>
-          </InputField>
-          {typeof fieldErrors === "object" && fieldErrors.username && (
+          />
+          {/* 이메일 중복 */}
+          {typeof fieldErrors === "object" && fieldErrors.email && (
             <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">
-              {fieldErrors.username}
+              {fieldErrors.email}
             </div>
           )}
           {typeof fieldErrors === "string" &&
-            fieldErrors.includes("아이디") && (
+            fieldErrors.includes("이메일") && (
               <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">
                 {fieldErrors}
               </div>
             )}
-          {/* 아이디 중복(따로 버튼으로 처리하려면 api 필요), 아이디 6자 이상 */}
 
           <InputField
             label="비밀번호 *"
@@ -198,28 +167,6 @@ export default function Signup() {
               {pwError}
             </div>
           )}
-
-          <InputField
-            label="이메일 *"
-            name="email"
-            type="email"
-            value={form.email}
-            onChange={handleChange}
-            placeholder="이메일 주소 입력"
-            required
-          />
-          {/* 이메일 중복 */}
-          {typeof fieldErrors === "object" && fieldErrors.email && (
-            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">
-              {fieldErrors.email}
-            </div>
-          )}
-          {typeof fieldErrors === "string" &&
-            fieldErrors.includes("이메일") && (
-              <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">
-                {fieldErrors}
-              </div>
-            )}
 
           <InputField
             label="휴대폰 번호 *"

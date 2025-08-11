@@ -1,14 +1,14 @@
 // import { useState } from 'react';
 import starFull from "../../assets/icons/starFull.svg";
 import starHalf from "../../assets/icons/starHalf.svg";
+import { useCreateProductReview } from "../../hooks/mutations/useUpdateProduct";
 
-const ProductReviews = () => {
-  // 커스텀 훅 추가 예정
-  // const [textValue, setTextvalue] = useState("");
+interface ProductReviewProps {
+  perfumeId: number;
+}
 
-  // const handleSetValue = (e:Event) => {
-  //   setTextvalue(e.target?.value);
-  // }
+const ProductReviews = ({ perfumeId }: ProductReviewProps) => {
+  const { data } = useCreateProductReview(perfumeId);
 
   return (
     <div className="flex items-center justify-center m-14 md:w-[800px] lg:w-[1000px]">

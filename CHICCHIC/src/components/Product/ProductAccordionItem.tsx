@@ -1,18 +1,21 @@
 import type { ReactNode } from "react";
 import ArrowIcon from "../../assets/icons/arrow.svg";
+import type { Notes } from "../../types/products";
 
 interface AccordionItemProps {
   title: string;
   open: boolean;
   onClick: () => void;
-  children?: ReactNode;
+  notes?: Notes[];
+  content?: ReactNode;
 }
 
 export function ProductAccordionItem({
   title,
   open,
   onClick,
-  children,
+  notes,
+  content,
 }: AccordionItemProps) {
   return (
     <div className="border-t border-[#AB3130] cursor-pointer select-none md:w-[780px] lg:w-[1000px]">
@@ -29,7 +32,18 @@ export function ProductAccordionItem({
           }`}
         />
       </div>
-      {open && <div className="pb-6 text-[#AB3130]">{children}</div>}
+
+      {open && (
+        <div className="pb-6 text-[#AB3130] flex flex-col gap-2">
+          {notes?.length
+            ? notes.map((note, idx) => (
+                <div key={idx}>
+                  {note.noteId} : {note.name}
+                </div>
+              ))
+            : content}
+        </div>
+      )}
     </div>
   );
 }

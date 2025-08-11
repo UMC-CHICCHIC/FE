@@ -30,6 +30,8 @@ export const getPerfumeCategory = async (
   }
 };
 
+// 향수 카테고리 조회 (인기순, 낮은 가격순, 높은 가격순, 누적판매순, 리뷰많은순, 평점높은순)
+
 // 상품 상세정보 조회
 export const getPerfumeDetail = async (
   id: number

@@ -10,7 +10,8 @@ import type {
   ResponseUpdateReviewDto,
 } from "../../types/perfumes";
 
-export function useCreateProduct(perfumeId: number) {
+// 향수 리뷰 작성
+export function useCreateProductReview(perfumeId: number) {
   const queryClient = useQueryClient();
 
   return useMutation<ResponseUpdateReviewDto, Error, RequestProductReviewDto>({

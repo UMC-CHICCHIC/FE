@@ -15,7 +15,9 @@ const PostSection = ({ category }: PostSectionProps) => {
   const { setCategory } = usePostFilter();
   const { setConsultPostId } = useCounselingStore();
   const navigate = useNavigate();
-  const { data, isLoading } = useGetConsultPost(category);
+  const { data, isLoading, error } = useGetConsultPost(category);
+
+  if (error) return <div className="p-6">상품 정보를 불러오지 못했어요.</div>;
 
   return (
     <section className="mb-20 text-[#66191F]">

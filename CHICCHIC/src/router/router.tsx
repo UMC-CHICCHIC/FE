@@ -52,7 +52,7 @@ const publicRoutes: RouteObject[] = [
                 path: "list",
                 children: [
                   { index: true, element: <CounselingLists /> },
-                  { path: ":consultId", element: <CounselingDetail /> },
+                  { path: ":consultPostId", element: <CounselingDetail /> },
                 ],
               },
             ],

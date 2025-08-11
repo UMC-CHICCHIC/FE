@@ -31,8 +31,8 @@ export type ProductDetail = {
   averageRation: number;
   reviewCount: number;
   notes: Notes[];
-  usage: string;
-  warnings: string;
+  usage: string[];
+  warnings: string[];
 };
 
 // 상품 상세 Dto

@@ -22,10 +22,11 @@ export function useGetProductCategory(type: PerfumeCategory) {
 }
 
 // 향수 상품 상세
-export function useGetProductDetail(id: number) {
+export function useGetProductDetail(id?: number) {
   return useQuery<ResponseProductDetailDto, Error>({
     queryKey: [QUERY_KEY.products, id],
-    queryFn: () => getPerfumeDetail(id),
+    queryFn: () => getPerfumeDetail(id!),
+    enabled: id !== null,
   });
 }
 

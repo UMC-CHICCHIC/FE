@@ -6,5 +6,5 @@ interface AccordionProps {
 }
 
 export const ProductAccordion = ({ children, className }: AccordionProps) => {
-  return <div className={className ? className : ""}>{children}</div>;
+  return <div className={className ?? ""}>{children}</div>;
 };

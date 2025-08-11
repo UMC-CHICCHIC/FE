@@ -19,7 +19,7 @@ export default function Brand() {
 							<img
 								src={mainLogo}
 								alt="CHICCHIC Brand Logo"
-								className="w-28 h-28 md:w-36 md:h-36 object-contain"
+								className="w-36 h-36 md:w-48 md:h-48 object-contain"
 							/>
 							{/* Small bottle/brand mark replacement using wordmark */}
 							<p className="text-3xl md:text-4xl text-[#F3E3E3] leading-loose">

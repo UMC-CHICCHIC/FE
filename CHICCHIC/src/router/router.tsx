@@ -99,7 +99,7 @@ const publicRoutes: RouteObject[] = [
         element: <PopularPerfumeId />,
       },
 
-  { path: "brand", element: <Brand /> },
+      { path: "brand", element: <Brand /> },
 
       { path: "privacy-policy", element: <PrivacyPolicy /> },
       { path: "terms", element: <Terms /> },
@@ -121,8 +121,13 @@ const protectedRoutes: RouteObject[] = [
         ],
       },
       {
-        path: "recommendation",
-        children: [{ path: "new", element: <NewCounseling /> }],
+        path: "/community",
+        children: [
+          {
+            path: "recommendation",
+            children: [{ path: "new", element: <NewCounseling /> }],
+          },
+        ],
       },
     ],
   },

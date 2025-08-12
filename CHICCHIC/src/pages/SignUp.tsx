@@ -126,13 +126,13 @@ export default function Signup() {
           />
           {/* 이메일 중복 */}
           {typeof fieldErrors === "object" && fieldErrors.email && (
-            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">
+            <div className="pl-2 mb-3 -mt-3 text-sm text-red-500">
               {fieldErrors.email}
             </div>
           )}
           {typeof fieldErrors === "string" &&
             fieldErrors.includes("이메일") && (
-              <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">
+              <div className="pl-2 mb-3 -mt-3 text-sm text-red-500">
                 {fieldErrors}
               </div>
             )}
@@ -148,7 +148,7 @@ export default function Signup() {
           />
           {/* 비밀번호 에러 */}
           {typeof fieldErrors === "object" && fieldErrors.password && (
-            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">
+            <div className="pl-2 mb-3 -mt-3 text-sm text-red-500">
               {fieldErrors.password}
             </div>
           )}
@@ -163,7 +163,7 @@ export default function Signup() {
             required
           />
           {pwError && (
-            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">
+            <div className="pl-2 mb-3 -mt-3 text-sm text-red-500">
               {pwError}
             </div>
           )}
@@ -178,13 +178,13 @@ export default function Signup() {
             required
           />
           {typeof fieldErrors === "object" && fieldErrors.phoneNumber && (
-            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">
+            <div className="pl-2 mb-3 -mt-3 text-sm text-red-500">
               {fieldErrors.phoneNumber}
             </div>
           )}
           {typeof fieldErrors === "string" &&
             fieldErrors.includes("휴대폰") && (
-              <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">
+              <div className="pl-2 mb-3 -mt-3 text-sm text-red-500">
                 {fieldErrors}
               </div>
             )}
@@ -198,7 +198,7 @@ export default function Signup() {
             required
           />
           {typeof fieldErrors === "object" && fieldErrors.nickname && (
-            <div className="-mt-3 pl-2 mb-3 text-sm text-red-500">
+            <div className="pl-2 mb-3 -mt-3 text-sm text-red-500">
               {fieldErrors.nickname}
             </div>
           )}
@@ -215,7 +215,7 @@ export default function Signup() {
 
         {showModal && (
           <div
-            className="p-6 fixed inset-0 z-50 flex items-center justify-center"
+            className="fixed inset-0 z-50 flex items-center justify-center p-6"
             style={{ background: "rgba(0, 0, 0, 0.5)" }}
           >
             <div className="pl-8 pr-8 pb-8 pt-2 text-center shadow-lg rounded-xl flex-col items-center justify-center bg-[#F7F4EF]">

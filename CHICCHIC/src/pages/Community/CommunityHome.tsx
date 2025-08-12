@@ -1,9 +1,15 @@
 import CommunityMainImage from "/communityMain.svg";
 import RightArrow from "../../assets/icons/arrowRight.svg";
 import SamplePerfumeImg2 from "../../assets/images/samplePerfumeImg2.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { perfumeStoryMock } from "../../mocks/perfumeStroyMock";
+import { useGetConsultDetail } from "../../hooks/queries/useGetConsultPost";
+import { useCounselingStore } from "../../store/useConsultPost";
 
 const CommunityHome = () => {
+  const { consultPostId } = useCounselingStore();
+  const { data } = useGetConsultDetail(consultPostId);
+  const navigate = useNavigate();
   return (
     <>
       <section className="relative w-full pt-[136px] h-[80vh]">
@@ -16,10 +22,10 @@ const CommunityHome = () => {
 
         {/* 텍스트 레이어 */}
         <div className="relative flex flex-col items-start justify-start h-full px-4 pt-16 text-white z-5 sm:px-8 md:px-20">
-          <span className="mb-10 whitespace-pre-line leading-14 text-[clamp(3rem,6vw,5rem)]">
+          <span className="mb-10 whitespace-pre-line sm:leading-20 leading-12 text-[clamp(3rem,6vw,5rem)]">
             Perfume{"\n"}Community
           </span>
-          <span className="max-w-2xl font-[pretendard] font-extralight whitespace-break-spaces text-[clamp(1rem,1.75vw,1.25rem)] leading-relaxed">
+          <span className="max-w-2xl font-[pretendard] font-extralight break-keep text-[clamp(1rem,1.75vw,1.25rem)] leading-relaxed">
             향수 추천부터 향수에 대한 다양한 이야기, 그리고 향수를 기록하는 향수
             일기장까지.{"\n"}CHICCHIC의 커뮤니티에서 경험하세요.
           </span>
@@ -27,16 +33,16 @@ const CommunityHome = () => {
       </section>
       {/* 향수 추천 상담소 섹션 */}
       <section className="bg-[#fdfaf7] font-[pretendard] py-20 px-6 sm:px-10 md:px-20">
-        <span className="flex text-2xl sm:text-3xl font-medium text-[#AB3130] mb-4">
+        <span className="flex text-2xl sm:text-4xl font-medium text-[#AB3130] mb-4">
           향수 추천 상담소 최신글
         </span>
-        <div className="flex justify-between mb-16 font-light">
-          <span className="text-sm sm:text-base text-[#AB3130]">
+        <div className="flex flex-col justify-between font-light sm:mb-16 sm:flex-row">
+          <span className="text-sm sm:text-xl text-[#AB3130]">
             향수 추천하고 추천받으며 더 다양한 향수를 경험해보세요.
           </span>
           <a
-            className="flex justify-center gap-3 text-sm sm:text-base text-[#AB3130]"
-            href="/community/recommendation"
+            className="flex justify-end gap-3 sm:p-0 p-4 text-sm sm:text-base text-[#AB3130] sm:justify-center cursor-pointer"
+            onClick={() => navigate("/community/recommendation")}
           >
             추천 상담소 바로가기
             <img src={RightArrow} width={6} alt="" />
@@ -45,14 +51,14 @@ const CommunityHome = () => {
         <div className="flex justify-around gap-4 mb-4">
           <div className="flex items-center justify-center w-full">
             <div className="flex-1 h-px bg-[#AB3130]" />
-            <label className="font-light text-lg px-4 text-[#AB3130]">
+            <label className="font-light text-xl sm:px-8 px-2 text-[#AB3130]">
               추천받아요!
             </label>
             <div className="flex-1 h-px bg-[#AB3130]" />
           </div>
           <div className="flex items-center justify-center w-full">
             <div className="flex-1 h-px bg-[#AB3130]" />
-            <label className=" font-light text-lg px-4 text-[#AB3130]">
+            <label className=" font-light text-xl sm:px-8 px-2 text-[#AB3130]">
               추천해요!
             </label>
             <div className="flex-1 h-px bg-[#AB3130]" />
@@ -67,7 +73,7 @@ const CommunityHome = () => {
                 className="mr-4"
                 alt=""
               />
-              <div className="flex flex-col gap-4 text-[#AB3130]">
+              <div className="flex flex-col text-xl gap-4 text-[#AB3130]">
                 <p className="font-bold">제목</p>
                 <p className="font-light">향수 추천 받고싶어요!</p>
               </div>
@@ -75,9 +81,11 @@ const CommunityHome = () => {
             <div className="flex justify-center">
               <button
                 type="button"
-                className="border rounded-full p-2 w-[200px] bg-[#AB3130] text-[#F7F4EF] cursor-pointer"
+                className="border rounded-full p-2 w-[200px] bg-[#AB3130] hover:bg-[#66191F] text-[#F7F4EF] transition-colors cursor-pointer"
               >
-                <Link to="/community/recommendation/list/:postId">
+                <Link
+                  to={`/community/recommendation/list/${data?.result.consultPostId}`}
+                >
                   View Post
                 </Link>
               </button>
@@ -91,14 +99,16 @@ const CommunityHome = () => {
                 className="mr-4"
                 alt=""
               />
-              <div className="flex flex-col gap-4 text-[#AB3130]">
+              <div className="flex flex-col gap-4 text-xl text-[#AB3130]">
                 <p className="font-bold">제목</p>
                 <p className="font-light">향수 추천 받고싶어요!</p>
               </div>
             </div>
             <div className="flex justify-center">
-              <button className="border rounded-full p-2 w-[200px] cursor-pointer bg-[#AB3130] text-[#F7F4EF]">
-                <Link to="/community/recommendation/list/:postId">
+              <button className="border rounded-full p-2 w-[200px] cursor-pointer bg-[#AB3130] hover:bg-[#66191F] transition-colors text-[#F7F4EF]">
+                <Link
+                  to={`/community/recommendation/list/${data?.result.consultPostId}`}
+                >
                   View Post
                 </Link>
               </button>
@@ -117,7 +127,7 @@ const CommunityHome = () => {
             향수에 대한 다양한 이야기를 담았어요.
           </span>
           <a
-            href="/community/story"
+            onClick={() => navigate("/community/story")}
             className="flex justify-center gap-3 text-sm sm:text-base font-light text-[#AB3130]"
           >
             향수 이야기에서 더 다양한 소식 확인하기
@@ -125,17 +135,26 @@ const CommunityHome = () => {
           </a>
         </div>
         {/* 공백 카드 2x2 */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-4">
-          {Array(4)
-            .fill(0)
-            .map((_, idx) => (
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-2">
+          {perfumeStoryMock.posts.map((post) => {
+            return (
               <div
-                key={idx}
-                className="bg-[#AB3130] h-40 rounded-xl flex items-end px-4 py-2 text-white text-sm"
+                key={post.id}
+                className="flex-col bg-[#AB3130] rounded-xl flex px-4 py-2 cursor-pointer text-white text-xl items-center aspect-[16/10]"
+                onClick={() => navigate(`/community/story/${post.id}`)}
               >
-                제목
+                <img
+                  className="object-cover w-full h-full pt-8"
+                  src={post.imageUrl}
+                  alt={post.imageAlt}
+                />
+                <div className="flex flex-col sm:flex-row space-x-1.5 items-center text-center sm:py-8 py-2 sm:text-3xl text-2xl ">
+                  <p>{post.title}</p>
+                  <p>{post.description}</p>
+                </div>
               </div>
-            ))}
+            );
+          })}
         </div>
       </section>
     </>

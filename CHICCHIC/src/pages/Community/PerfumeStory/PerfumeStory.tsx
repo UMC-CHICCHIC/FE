@@ -1,37 +1,5 @@
 import { useNavigate } from "react-router-dom";
-
-const mockData = {
-  posts: [
-    {
-      id: "ancient-egypt",
-      title: "신들의 향기, 고대 이집트에서 시작된",
-      description: "향수의 역사",
-      imageUrl: "/storyEgypt.png",
-      imageAlt: "고대 이집트 향수",
-    },
-    {
-      id: "perfume-vs-eau",
-      title: "퍼퓸? 오드퍼퓸?",
-      description: "향수 부향률 알아보기!",
-      imageUrl: "/storyVase.png",
-      imageAlt: "향수병",
-    },
-    {
-      id: "perfume-longevity",
-      title: "향수의 롱래스팅,",
-      description: "무조건 지켜야할까?",
-      imageUrl: "/storyLongevity.png",
-      imageAlt: "향수 지속력",
-    },
-    {
-      id: "perfume-notes",
-      title: "향수의 3단계 Note,",
-      description: "Top, Middle, Base Note",
-      imageUrl: "/storyNote.png",
-      imageAlt: "향수 노트",
-    },
-  ],
-};
+import { perfumeStoryMock } from "../../../mocks/perfumeStroyMock";
 
 const PerfumeStory: React.FC = () => {
   const navigate = useNavigate();
@@ -41,7 +9,7 @@ const PerfumeStory: React.FC = () => {
 
   return (
     <div className="w-[70%] flex flex-col mx-auto my-8">
-      <div className="text-center mb-8">
+      <div className="mb-8 text-center">
         <h1 className="text-[48px] font-bold text-[#AB3130] mb-2">
           Perfume Story
         </h1>
@@ -52,7 +20,7 @@ const PerfumeStory: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-2 gap-6 mt-[2rem]">
-        {mockData.posts.map((post) => {
+        {perfumeStoryMock.posts.map((post) => {
           return (
             <div
               key={post.id}

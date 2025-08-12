@@ -49,13 +49,11 @@ const publicRoutes: RouteObject[] = [
             path: "recommendation",
             children: [
               { index: true, element: <CounselingHome /> },
-              { path: "new", element: <NewCounseling /> },
               {
                 path: "list",
                 children: [
                   { index: true, element: <CounselingLists /> },
-                  { path: ":postId", element: <CounselingDetail /> },
-                  { path: "new", element: <NewCounseling /> },
+                  { path: ":consultPostId", element: <CounselingDetail /> },
                 ],
               },
             ],
@@ -98,7 +96,7 @@ const publicRoutes: RouteObject[] = [
 
       {
         path: "PopularPerfumeId",
-        element: <PopularPerfumeId />
+        element: <PopularPerfumeId />,
       },
 
   { path: "brand", element: <Brand /> },
@@ -121,6 +119,10 @@ const protectedRoutes: RouteObject[] = [
           { path: "privacy", element: <Privacy /> },
           { path: "scraps", element: <MyScraps /> },
         ],
+      },
+      {
+        path: "recommendation",
+        children: [{ path: "new", element: <NewCounseling /> }],
       },
     ],
   },

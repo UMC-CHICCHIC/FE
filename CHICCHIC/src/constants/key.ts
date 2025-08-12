@@ -5,8 +5,15 @@ export const LOCAL_STORAGE_KEY = {
 
 // 쿼리 키
 export const QUERY_KEY = {
-  uploadImage: "uploadImage",
-  comments: "comments",
-  myInfo: "myInfo",
-  post: "post",
+  images: "images",
+  api: "api",
+  home: "home",
+  diary: "diary",
+  member: "member",
+  consultPosts: "consultPosts",
+  categories: "categories",
+  products: "products",
+  perfumes: "perfumes",
+  scraps: "scraps",
+  perfumeStories: "perfumeStories",
 };

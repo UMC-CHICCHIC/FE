@@ -98,7 +98,6 @@ const ShoppingHome = () => {
             </div>
             <div className="text-center text-[#AB3130]">130,000 ₩</div>
           </div>
-
           {[...Array(20)].map((_, idx) => (
             <div
               key={idx}

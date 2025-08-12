@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { uploadPostImg, uploadProfileImg } from "../../apis/postApi";
+import { uploadPostImg, uploadProfileImg } from "../../apis/posts";
 import { useImgUploadStore } from "../../store/useImgUploadStore";
 import type { ResponseUploadImg } from "../../types/img";
 import { QUERY_KEY } from "../../constants/key";
@@ -8,9 +8,9 @@ import { QUERY_KEY } from "../../constants/key";
 export function useUploadPostImg() {
   const setImg = useImgUploadStore((s) => s.setImg);
 
-  return useMutation<ResponseUploadImg, unknown, File>({
+  return useMutation({
     mutationFn: (file: File) => uploadPostImg(file),
-    onSuccess: (res) => {
+    onSuccess: (res: ResponseUploadImg) => {
       setImg(res.result.url, res.result.key);
       console.log("이미지 업로드 성공");
     },
@@ -26,10 +26,10 @@ export function useUploadProfileImg() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: uploadProfileImg,
+    mutationFn: (file: File) => uploadProfileImg(file),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.myInfo],
+        queryKey: [QUERY_KEY.member],
       });
     },
     onError: () => alert("프로필 이미지 업로드 실패"),

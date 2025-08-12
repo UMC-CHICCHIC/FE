@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { PostCategory } from "../types/enums/postCategory";
+import type { PostCategory } from "../types/enums/category";
 
 // 상담소 카테고리 필터링 구현
 interface PostFilterState {

@@ -1,5 +1,5 @@
 import type { CommonResponse } from "./common";
-import type { PerfumeCategory } from "./enums/postCategory";
+import type { PerfumeCategory } from "./enums/Category";
 
 // /category 카테고리 목록 조회
 export type ProductCategory = {

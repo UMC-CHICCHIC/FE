@@ -8,6 +8,7 @@ interface useUpdateScrapProps {
   scrapped: boolean;
 }
 
+// 스크랩 추가 및 삭제 훅
 export function useUpdateScrap({ productId, scrapped }: useUpdateScrapProps) {
   const queryClient = useQueryClient();
   const [isScrapped, setIsSrapped] = useState<boolean>(scrapped);

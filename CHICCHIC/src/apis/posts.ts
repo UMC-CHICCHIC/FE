@@ -1,5 +1,5 @@
 import { axiosInstance } from "./axiosInstance";
-import type { PostCategory } from "../types/enums/postCategory";
+import type { PostCategory } from "../types/enums/category";
 import type {
   ResponseConsultListDto,
   RequestCreatePostDto,

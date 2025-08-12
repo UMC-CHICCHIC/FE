@@ -1,5 +1,5 @@
 import type { CommonResponse, PaginatedResponse } from "./common";
-import type { PostCategory } from "./enums/postCategory";
+import type { PostCategory } from "./enums/Category";
 
 // 추천 게시글 정보
 export type ConsultPost = {

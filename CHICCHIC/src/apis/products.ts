@@ -11,7 +11,7 @@ import type {
 } from "../types/products";
 import { axiosInstance } from "./axiosInstance";
 
-// 향수 카테고리 조회 (노트, 가격대, 발향률)
+// 향수 카테고리 조회 (가격대, 발향률)
 export const getPerfumeCategory = async (
   type?: string
 ): Promise<ResponseProductCategoryDto> => {

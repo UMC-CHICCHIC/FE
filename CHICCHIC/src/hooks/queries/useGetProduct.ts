@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import type { PerfumeCategory } from "../../types/enums/postCategory";
+import type { PerfumeCategory } from "../../types/enums/category";
 import {
   getPerfumeCategory,
   getPerfumeDetail,

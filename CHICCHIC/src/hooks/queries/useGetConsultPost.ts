@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import type { PostCategory } from "../../types/enums/postCategory";
+import type { PostCategory } from "../../types/enums/category";
 import type {
   ResponseConsultDetailDto,
   ResponseConsultListDto,

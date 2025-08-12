@@ -47,26 +47,15 @@ const ShoppingHome = () => {
 
         <div className="items-center text-black border-b border-[#ece3d4] py-4 font-[pretendard]">
           <div className="grid items-center grid-cols-3 md:grid-cols-6 border-t border-[#EAE6DF]">
-            <span className="text-white bg-[#AB3130] py-2">노트</span>
-            <span className="">노트</span>
-            <span>노트</span>
-            <span>노트</span>
-            <span>노트</span>
-            <span>노트</span>
-          </div>
-
-          <div className="grid items-center grid-cols-3 md:grid-cols-6 border-t border-[#EAE6DF]">
             <span className="text-white bg-[#AB3130] py-2">가격대</span>
-            <span>가격대</span>
-            <span>가격대</span>
-            <span>가격대</span>
-            <span>가격대</span>
-            <span>가격대</span>
+            <label>가격대</label>
+            <label>가격대</label>
+            <label>가격대</label>
           </div>
 
           <div className="grid items-center grid-cols-3 md:grid-cols-6 border-t border-[#EAE6DF]">
             <span className="text-white bg-[#AB3130] py-2">발향률</span>
-            <span>발향률</span>
+            <label>발향률</label>
             <span>발향률</span>
             <span>발향률</span>
             <span>발향률</span>

@@ -1,4 +1,13 @@
+import { useAuthStore } from "../store/useAuthStore";
+import { getAccessToken, getRefreshToken } from "../utils/authStorage";
+
 export function useAuth() {
-  const isLoggedIn = Boolean(localStorage.getItem("accessToken"));
-  return { isLoggedIn };
-} // 전역 상태 관리 추가
+  const isRefreshing = useAuthStore((state) => state.isRefreshing);
+  
+  const accessToken = getAccessToken();
+  const refreshToken = getRefreshToken();
+  
+  const isLoggedIn = !!accessToken || !!refreshToken || isRefreshing;
+  
+  return { isLoggedIn, isRefreshing };
+}

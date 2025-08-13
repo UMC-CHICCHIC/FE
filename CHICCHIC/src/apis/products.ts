@@ -4,6 +4,7 @@ import type {
   ResponseProductReviewDto,
   ResponseScrapDto,
   ResponseUpdateReviewDto,
+  ResponseScrapListDto,
 } from "../types/perfumes";
 import type {
   ResponseProductCategoryDto,
@@ -30,8 +31,6 @@ export const getPerfumeCategory = async (
     throw e;
   }
 };
-
-// 향수 카테고리 조회 (인기순, 낮은 가격순, 높은 가격순, 누적판매순, 리뷰많은순, 평점높은순)
 
 // 상품 상세정보 조회
 export const getPerfumeDetail = async (
@@ -121,6 +120,19 @@ export const updateProductReview = async (
     return data;
   } catch (e) {
     console.error("수정 요청 실패", e);
+    throw e;
+  }
+};
+
+// 스크랩 목록 조회
+export const getScrapList = async (): Promise<ResponseScrapListDto> => {
+  try {
+    console.log("스크랩 목록 조회 요청");
+    const { data } = await axiosInstance.get<ResponseScrapListDto>("/scrap");
+    console.log("스크랩 목록 조회 성공", data);
+    return data;
+  } catch (e) {
+    console.error("스크랩 목록 조회 실패", e);
     throw e;
   }
 };

@@ -4,6 +4,7 @@ import { POST_CATEGORY } from "../../../types/post";
 import arrowUp from "../../../assets/icons/arrowUp.svg";
 import { useGetConsultDetail } from "../../../hooks/queries/useGetConsultPost";
 import { useCounselingStore } from "../../../store/useConsultPost";
+import { DateTimeFormat } from "../../../utils/dateTimeFormat";
 
 const CounselingDetail = () => {
   // const [comment, setComment] = useState("");
@@ -37,9 +38,9 @@ const CounselingDetail = () => {
             src={"/profile.png"}
             alt="profile"
           />
-          <div className="flex flex-col items-center justify-center gap-2 pl-4">
+          <div className="flex flex-col items-start justify-center gap-2 pl-4">
             <span>{data?.result.nickname}</span>
-            <span>{data?.result.dateTime}</span>
+            <span>{DateTimeFormat(data?.result.dateTime as string)}</span>
           </div>
         </div>
         <div className="pt-6 border-b">

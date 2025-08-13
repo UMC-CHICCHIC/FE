@@ -37,10 +37,7 @@ export const getConsultPostDetail = async (
   try {
     console.log("게시글 상세", consultPostId);
     const { data } = await axiosInstance.get<ResponseConsultDetailDto>(
-      `/consult-posts/${consultPostId}`,
-      {
-        params: consultPostId,
-      }
+      `/consult-posts/${consultPostId}`
     );
     console.log("요청보냄");
     return data;

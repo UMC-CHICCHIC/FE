@@ -3,8 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Pencil } from "lucide-react";
 import { getUserInfo, putUserInfo, deleteUserInfo, putProfileImage, getProfileImage } from "../../apis/auth";
 import { useImgUploadStore } from "../../store/useProfileImg";
+import { useAuthStore } from "../../store/useAuthStore";
 import { PrivacySkeleton } from "../../components/skeletons/PrivacySkeleton";
-import { removeAccessToken, removeRefreshToken } from "../../utils/authStorage";
+import { clearAuthTokens } from "../../utils/authStorage";
 
 const DEFAULT_PROFILE_IMAGE = "https://aws-chicchic-bucket.s3.ap-northeast-2.amazonaws.com/default-profile.png";
 
@@ -13,8 +14,12 @@ const Privacy = () => {
   const navigate = useNavigate();
   const currentPath = location.pathname;
 
+  // zustand에서 사용자 정보 가져오기
+  const { user, setUser, logout: storeLogout } = useAuthStore();
+
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [isProfileImageLoading, setIsProfileImageLoading] = useState(true);
   const [formData, setFormData] = useState({
     nickname: '',
     phone: '',
@@ -23,29 +28,47 @@ const Privacy = () => {
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
-  //zustand 상용
   const { file, previewUrl, setImg, reset } = useImgUploadStore();
   const [profileImage, setProfileImage] = useState<string>(DEFAULT_PROFILE_IMAGE);
 
   useEffect(() => {
-    getUserInfo()
-      .then((res) => {
-        const user = res.data.result;
-        setFormData({
-          nickname: user.nickname || '',
-          phone: user.phoneNumber || '',
-          email: user.email || '',
-        });
-      })
-      .catch(() => {
-        setFormData({
-          nickname: '',
-          phone: '',
-          email: '',
-        });
-      })
-      .finally(() => setIsLoading(false));
+    if (user && user.nickname) {
+      setFormData({
+        nickname: user.nickname || '',
+        phone: user.phoneNumber || '',
+        email: user.email || '',
+      });
+      setIsLoading(false);
+    } else {
+      getUserInfo()
+        .then((res) => {
+          const userData = res.data.result;
+          const userInfo = {
+            email: userData.email,
+            phoneNumber: userData.phoneNumber || '',
+            nickname: userData.nickname,
+          };
+          
+          setUser(userInfo);
 
+          setFormData({
+            nickname: userData.nickname || '',
+            phone: userData.phoneNumber || '',
+            email: userData.email || '',
+          });
+        })
+        .catch(() => {
+          setFormData({
+            nickname: '',
+            phone: '',
+            email: '',
+          });
+        })
+        .finally(() => setIsLoading(false));
+    }
+
+    // 프로필 이미지 따로 처리
+    setIsProfileImageLoading(true);
     getProfileImage()
       .then((res) => {
         const url = res.data.result;
@@ -53,8 +76,11 @@ const Privacy = () => {
       })
       .catch(() => {
         setProfileImage(DEFAULT_PROFILE_IMAGE);
+      })
+      .finally(() => {
+        setIsProfileImageLoading(false);
       });
-  }, []);
+  }, [user, setUser]);
 
   const handleProfileClick = () => navigate('/mypage');
   const handlePrivacyClick = () => navigate('/mypage/privacy');
@@ -66,7 +92,7 @@ const Privacy = () => {
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
-    if (f) setImg(f); // File 그대로 저장, 미리보기는 store에서 관리
+    if (f) setImg(f);
   };
 
   const handleSaveClick = async () => {
@@ -78,32 +104,46 @@ const Privacy = () => {
         phoneNumber: formData.phone,
       });
 
+      setUser({
+        email: formData.email,
+        phoneNumber: formData.phone,
+        nickname: formData.nickname,
+      });
+
       if (file) {
+        setIsProfileImageLoading(true);
         const fd = new FormData();
         fd.append("file", file);
         const res = await putProfileImage(fd);
 
-        // 응답 URL로 프로필 갱신 + 캐시 버스터
         const newUrl = `${res.data.result}?v=${Date.now()}`;
         setProfileImage(newUrl);
         reset();
+        setIsProfileImageLoading(false);
       }
 
       setIsEditing(false);
     } catch (err) {
       setError("회원정보 수정에 실패했습니다.");
+      setIsProfileImageLoading(false);
     } finally {
       setSaving(false);
     }
   };
+
   const handleWithdrawClick = async () => {
+    const confirmWithdraw = window.confirm("정말로 회원 탈퇴하시겠습니까?");
+    if (!confirmWithdraw) return;
+
     try {
       await deleteUserInfo();
-      removeAccessToken();
-      removeRefreshToken();
+      clearAuthTokens();
+      storeLogout();
+      
       alert("회원 탈퇴가 완료되었습니다.");
       navigate("/");
     } catch (err) {
+      setError("회원 탈퇴에 실패했습니다.");
     }
   };
 
@@ -136,7 +176,6 @@ const Privacy = () => {
                   ? 'font-semibold border-b-4 sm:border-b-0 sm:border-r-4 border-[#AB3130] opacity-100' 
                   : 'font-semibold opacity-50 hover:opacity-75'
               }`}
-              style={{ borderRight: currentPath === '/mypage/privacy' && window.innerWidth >= 640 ? '4px solid #AB3130' : undefined }}
             >
               개인정보
             </button>
@@ -144,7 +183,6 @@ const Privacy = () => {
         </ul>
       </div>
 
-      {/* 내용 영역 */}
       <main className="flex-1 flex flex-col items-center justify-start pt-20 px-8 sm:items-start sm:ml-20">
         <div className="text-2xl font-semibold text-[#AB3130] mb-8 text-center sm:text-left">프로필 이미지</div>
         
@@ -156,7 +194,6 @@ const Privacy = () => {
           className="hidden"
         />
 
-        {/* 개인정보 입력 폼 */}
         {isLoading ? (
           <PrivacySkeleton />
         ) : (
@@ -167,7 +204,9 @@ const Privacy = () => {
                 onClick={isEditing ? handleImageClick : undefined}
                 style={{ cursor: isEditing ? "pointer" : "default" }}
               >
-                {isEditing && previewUrl ? (
+                {isProfileImageLoading ? (
+                  <div className="w-full h-full object-cover rounded-full bg-gray-200 animate-pulse" />
+                ) : isEditing && previewUrl ? (
                   <img 
                     src={previewUrl} 
                     alt="Profile Preview" 
@@ -190,6 +229,7 @@ const Privacy = () => {
                 </button>
               )}
             </div>
+
             <div className="w-full max-w-2xl">
               <div className="grid grid-cols-2 gap-x-16 gap-y-6">
                 {/* 이메일: 항상 읽기 전용 */}
@@ -203,6 +243,7 @@ const Privacy = () => {
                     readOnly
                   />
                 </div>
+                
                 {/* 닉네임 */}
                 <div>
                   <label className="block text-[#AB3130] mb-2 font-semibold">닉네임</label>
@@ -219,6 +260,7 @@ const Privacy = () => {
                     </div>
                   )}
                 </div>
+                
                 {/* 휴대폰 번호 */}
                 <div>
                   <label className="block text-[#AB3130] mb-2 font-semibold">휴대폰 번호</label>
@@ -253,9 +295,10 @@ const Privacy = () => {
                     </button>
                     <button
                       onClick={handleSaveClick}
-                      className="cursor-pointer bg-[#AB3130] text-white px-4 py-3 rounded-full hover:bg-[#8b2a25] transition-colors mt-5 mb-20"
+                      disabled={saving || isProfileImageLoading}
+                      className="cursor-pointer bg-[#AB3130] text-white px-4 py-3 rounded-full hover:bg-[#8b2a25] transition-colors mt-5 mb-20 disabled:opacity-50"
                     >
-                      {saving ? "저장 중..." : "수정 완료"}
+                      {saving ? "저장 중..." : isProfileImageLoading ? "이미지 업로드 중..." : "수정 완료"}
                     </button>
                   </>
                 ) : (

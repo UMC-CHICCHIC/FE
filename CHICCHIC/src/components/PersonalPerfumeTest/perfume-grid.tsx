@@ -29,7 +29,7 @@ export function PerfumeGrid() {
     const fetchPopularPerfumes = async () => {
       try {
         // Mock 데이터를 사용할지 여부를 설정합니다.
-        const useMock = true;
+        const useMock = false;
         if (useMock) {
           setPerfumes(popularPerfumesMock);
           return;

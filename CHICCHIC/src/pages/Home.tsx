@@ -1,11 +1,154 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, ChevronRight } from "lucide-react";
+import { useState, useEffect } from "react";
 import { PerfumeGrid } from "../components/PersonalPerfumeTest/perfume-grid";
 import mainlogo2 from "../assets/images/main-logo.png";
+import mainpage from "../assets/images/mainpage.png";
 
 export default function Home() {
   // 인증 상태 확인 (실제로는 Context나 상태관리에서 가져옴)
   const isAuthenticated = true; // 실제 로그인 상태로 변경
+  
+  // 로딩 상태 관리
+  const [isLoading, setIsLoading] = useState(true);
+
+  // 컴포넌트 마운트 시 로딩 시뮬레이션
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 150); // 150ms 후 로딩 완료
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // 로딩 중일 때 스켈레톤 UI 표시
+  if (isLoading) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <main className="flex-grow">
+          {/* Hero Section 스켈레톤 */}
+          <section className="bg-[#66191F] text-white min-h-screen flex items-center relative overflow-hidden">
+            <div className="container relative z-30 px-4 mx-auto sm:px-6 lg:px-8">
+              <div className="flex md:translate-x-8 md:-translate-y-10">
+                <div className="w-full py-16 text-center md:w-1/2 md:text-left">
+                  {/* 로고 스켈레톤 */}
+                  <div className="w-48 h-48 md:w-60 md:h-60 bg-gray-300/20 rounded-lg mx-auto md:mx-0 md:-ml-20 mb-4 animate-pulse"></div>
+                  
+                  {/* 텍스트 스켈레톤 */}
+                  <div className="space-y-4 mb-6">
+                    <div className="h-8 bg-gray-300/20 rounded-md w-3/4 mx-auto md:mx-0 animate-pulse"></div>
+                    <div className="h-8 bg-gray-300/20 rounded-md w-2/3 mx-auto md:mx-0 animate-pulse"></div>
+                    <div className="h-8 bg-gray-300/20 rounded-md w-1/2 mx-auto md:mx-0 animate-pulse"></div>
+                  </div>
+                  
+                  {/* 메인 타이틀 스켈레톤 */}
+                  <div className="h-20 bg-gray-300/20 rounded-md w-full mb-6 animate-pulse"></div>
+                  
+                  {/* 설명 텍스트 스켈레톤 */}
+                  <div className="space-y-2 mb-8">
+                    <div className="h-6 bg-gray-300/20 rounded-md w-full animate-pulse"></div>
+                    <div className="h-6 bg-gray-300/20 rounded-md w-4/5 animate-pulse"></div>
+                  </div>
+                  
+                  {/* 버튼 스켈레톤 */}
+                  <div className="flex flex-col items-center justify-center gap-4 sm:flex-row md:justify-start">
+                    <div className="h-12 bg-gray-300/20 rounded-md w-48 animate-pulse"></div>
+                    <div className="h-12 bg-gray-300/20 rounded-md w-48 animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* 로딩 스피너 중앙 배치 */}
+            <div className="absolute inset-0 flex items-center justify-center z-40">
+              <div className="text-white text-center">
+                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
+                <p className="text-xl">페이지를 불러오는 중입니다...</p>
+              </div>
+            </div>
+          </section>
+
+          {/* Popular Products Section 스켈레톤 */}
+          <section className="py-16 bg-[#F8F5F2]">
+            <div className="container px-4 mx-auto">
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <div className="h-10 bg-gray-300 rounded-md w-64 mb-2 animate-pulse"></div>
+                  <div className="h-6 bg-gray-300 rounded-md w-80 animate-pulse"></div>
+                </div>
+                <div className="h-6 bg-gray-300 rounded-md w-32 animate-pulse"></div>
+              </div>
+              
+              {/* 상품 그리드 스켈레톤 */}
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <div key={index} className="flex flex-col group">
+                    <div className="relative aspect-[4/5] w-full overflow-hidden mb-4 bg-gray-300 animate-pulse rounded-lg" />
+                    <div className="text-left space-y-2">
+                      <div className="w-3/4 h-6 mb-1 bg-gray-300 rounded animate-pulse" />
+                      <div className="w-1/2 h-4 bg-gray-300 rounded animate-pulse" />
+                      <div className="w-1/3 h-4 bg-gray-300 rounded animate-pulse" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Personal Perfume Section 스켈레톤 */}
+          <section className="py-16 bg-[#F8F5F2]">
+            <div className="container px-4 mx-auto">
+              <div className="mb-8">
+                <div className="h-10 bg-gray-300 rounded-md w-72 mb-2 animate-pulse"></div>
+                <div className="h-6 bg-gray-300 rounded-md w-96 animate-pulse"></div>
+              </div>
+              
+              {/* 콘텐츠 영역 스켈레톤 */}
+              <div className="max-w-4xl mx-auto bg-white border-2 border-gray-300 rounded-lg p-10">
+                <div className="text-center space-y-6">
+                  <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto animate-pulse"></div>
+                  <div className="h-8 bg-gray-300 rounded-md w-3/4 mx-auto animate-pulse"></div>
+                  <div className="space-y-2">
+                    <div className="h-6 bg-gray-300 rounded-md w-full animate-pulse"></div>
+                    <div className="h-6 bg-gray-300 rounded-md w-5/6 mx-auto animate-pulse"></div>
+                  </div>
+                  <div className="h-12 bg-gray-300 rounded-full w-64 mx-auto animate-pulse"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Perfume Story Section 스켈레톤 */}
+          <section className="pt-8 pb-16 bg-[#F8F5F2]">
+            <div className="container px-4 mx-auto">
+              <div className="flex items-center justify-between pt-12 mb-8 border-t border-gray-300">
+                <div>
+                  <div className="h-10 bg-gray-300 rounded-md w-64 mb-2 animate-pulse"></div>
+                  <div className="h-6 bg-gray-300 rounded-md w-48 animate-pulse"></div>
+                </div>
+                <div className="h-6 bg-gray-300 rounded-md w-80 animate-pulse"></div>
+              </div>
+              
+              <div className="space-y-16">
+                {Array.from({ length: 3 }).map((_, index) => (
+                  <div key={index} className="flex flex-col items-center gap-8 md:flex-row md:gap-12">
+                    <div className="w-full md:w-1/2">
+                      <div className="w-full h-64 bg-gray-300 rounded-lg animate-pulse"></div>
+                    </div>
+                    <div className="w-full md:w-1/2 space-y-4">
+                      <div className="h-8 bg-gray-300 rounded-md w-4/5 animate-pulse"></div>
+                      <div className="h-5 bg-gray-300 rounded-md w-full animate-pulse"></div>
+                      <div className="h-5 bg-gray-300 rounded-md w-5/6 animate-pulse"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -14,7 +157,7 @@ export default function Home() {
         <section className="bg-[#66191F] text-white min-h-screen flex items-center relative overflow-hidden">
           {/* 배경 이미지 레이어 */}
           <img
-            src="/mainpage.png"
+            src={mainpage}
             alt="CHICCHIC perfume bottle"
             className="absolute top-0 right-0 z-10 hidden object-cover object-left w-full h-full md:block"
           />

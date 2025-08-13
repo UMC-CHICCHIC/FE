@@ -49,7 +49,7 @@ const PopularPerfumeId: React.FC = () => {
                   {/* 상세보기 버튼 */}
                   <div className="pt-4">
                     <Link
-                      to="/ProductDetail"
+                      to="/shopping/:perfumeId"
                       className="inline-flex items-center justify-center px-8 py-3 border-2 border-[#AB3130] text-[#AB3130] font-semibold hover:bg-[#AB3130] hover:text-white transition-colors duration-300 rounded-md"
                     >
                       상세 페이지 이동

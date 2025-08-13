@@ -1,15 +1,23 @@
 import { useEffect, useState } from 'react';
 import { PerfumeCard } from './perfume-card';
+import { popularPerfumesMock } from '../../mocks/popularPerfumes';
 import type { Perfume } from '../../types/perfumes';
 
 // API 응답에 대한 타입 정의
+interface TopNote {
+  noteId: number;
+  name: string;
+}
+
 interface ApiPerfume {
   id: number;
   name: string;
+  topNote: TopNote[];
   baseNote: string;
   middleNote: string;
   price: number;
   itemRating: number;
+  imageUrl: string;
 }
 
 export function PerfumeGrid() {
@@ -20,6 +28,13 @@ export function PerfumeGrid() {
   useEffect(() => {
     const fetchPopularPerfumes = async () => {
       try {
+        // Mock 데이터를 사용할지 여부를 설정합니다.
+        const useMock = true;
+        if (useMock) {
+          setPerfumes(popularPerfumesMock);
+          return;
+        }
+
         const response = await fetch(
           'https://be-chicchicenvironments.up.railway.app/home/popular-products',
         );
@@ -41,7 +56,7 @@ export function PerfumeGrid() {
           id: p.id,
           name: p.name,
           brand: '브랜드 정보 없음', // API에 브랜드 정보가 없으므로 기본값 설정
-          imageUrl: 'https://placehold.co/400x500.png', // API에 이미지 URL이 없으므로 Placeholder 사용
+          imageUrl: p.imageUrl, // API에서 제공하는 이미지 URL 사용
           description: `Middle: ${p.middleNote}, Base: ${p.baseNote}`,
           purchaseUrl: '#',
           notes: [p.middleNote, p.baseNote],

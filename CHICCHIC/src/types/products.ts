@@ -1,5 +1,52 @@
 import type { CommonResponse } from "./common";
-import type { PerfumeCategory } from "./enums/Category";
+import type { PerfumeCategory } from "./enums/category";
+
+// /products 리스트
+export type Product = {
+  id: number;
+  name: string;
+  brand: string;
+  ml: number;
+  topNote: Notes[];
+  baseNote: string;
+  middleNote: string;
+  concentration: string;
+  price: number;
+  itemRating: number;
+  imageUrl: string;
+};
+
+// 상품 리스트
+export type ProductSort = {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+};
+
+// /products 페이지네이션
+export type Pageable = {
+  offset: number;
+  sort: ProductSort;
+  pageNumber: number;
+  pageSize: number;
+  paged: boolean;
+  unpaged: boolean;
+};
+
+// 상품 응답 요청
+export type ResponseProductListDto = CommonResponse<{
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  content: Product[];
+  number: number;
+  sort: ProductSort;
+  numberOfElements: number;
+  pageable: Pageable;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+}>;
 
 // /category 카테고리 목록 조회
 export type ProductCategory = {
@@ -12,6 +59,7 @@ export type ProductCategory = {
 // 상품 카테고리 Dto
 export type ResponseProductCategoryDto = ProductCategory[];
 
+// topNote
 export type Notes = {
   noteId: number;
   name: string;

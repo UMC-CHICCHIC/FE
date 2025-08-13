@@ -8,6 +8,7 @@ import type {
 import type {
   ResponseProductCategoryDto,
   ResponseProductDetailDto,
+  ResponseProductListDto,
 } from "../types/products";
 import { axiosInstance } from "./axiosInstance";
 
@@ -31,7 +32,40 @@ export const getPerfumeCategory = async (
   }
 };
 
+// products 파라미터
+export interface GetProductsParams {
+  cat?: number;
+  page: number;
+  size: number;
+  sort?: string | string[]; // 예: "price,asc"
+}
+
 // 향수 카테고리 조회 (인기순, 낮은 가격순, 높은 가격순, 누적판매순, 리뷰많은순, 평점높은순)
+export const getPerfumeList = async ({
+  cat,
+  page,
+  size,
+  sort,
+}: GetProductsParams): Promise<ResponseProductListDto> => {
+  try {
+    const { data } = await axiosInstance.get<ResponseProductListDto>(
+      `/products`,
+      {
+        params: {
+          ...(cat ? { cat } : {}),
+          page: Math.max(0, page - 1), // 0-based로 변환
+          size,
+          ...(sort ? { sort } : {}),
+        },
+      }
+    );
+    console.log("요청보냄");
+    return data;
+  } catch (e) {
+    console.error("요청 실패", e);
+    throw e;
+  }
+};
 
 // 상품 상세정보 조회
 export const getPerfumeDetail = async (

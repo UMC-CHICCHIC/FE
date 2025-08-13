@@ -1,9 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import type { PerfumeCategory } from "../../types/enums/category";
 import {
   getPerfumeCategory,
   getPerfumeDetail,
+  getPerfumeList,
   getProductReview,
+  type GetProductsParams,
 } from "../../apis/products";
 import type {
   ResponseProductCategoryDto,
@@ -36,5 +38,15 @@ export function useGetProductReview(perfumeId: number, page = 1, size = 10) {
     queryKey: [QUERY_KEY.perfumes, perfumeId, page, size],
     queryFn: () => getProductReview(perfumeId, page, size),
     staleTime: 1000 * 60,
+  });
+}
+
+// 향수 상품 리스트 조회
+export function useGetProductList(params: GetProductsParams) {
+  return useQuery({
+    queryKey: [QUERY_KEY.products, params],
+    queryFn: () => getPerfumeList,
+    staleTime: 1000 * 60 * 3,
+    placeholderData: keepPreviousData,
   });
 }

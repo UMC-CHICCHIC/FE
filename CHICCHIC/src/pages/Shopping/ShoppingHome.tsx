@@ -1,22 +1,22 @@
-import { useMemo, useState } from "react";
+import React, { useState } from "react";
 import SearchIcon from "../../assets/icons/search.svg";
 import SamplePerfumeImg from "../../assets/images/samplePerfumeImg.png";
-import LeftArrowIcon from "../../assets/icons/arrowLeft.svg";
-import RightArrowIcon from "../../assets/icons/arrowRight.svg";
+import type { PAGINATION_ORDER } from "../../types/enums/category";
+import { Pagination } from "../../components/Pagination";
+
+const sortItems = [
+  "인기도순",
+  "낮은가격순",
+  "높은가격순",
+  "누적판매순",
+  "리뷰많은순",
+  "평점높은순",
+];
 
 const ShoppingHome = () => {
   const [productPage, setProductPage] = useState(1);
-
-  // 프로토타입용
-  const totalPages = 20;
-  const pageNumbers = useMemo(() => {
-    const start = Math.max(1, Math.min(productPage - 2, totalPages - 4));
-    const pages: number[] = [];
-    for (let i = start; i < start + 5; i++) {
-      if (i >= 1 && i <= totalPages) pages.push(i);
-    }
-    return pages;
-  }, [productPage, totalPages]);
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState<PAGINATION_ORDER>("");
 
   return (
     <div className="flex flex-col min-h-screen items-center p-4 space-y-8 bg-[#F7F4EF]">
@@ -26,6 +26,9 @@ const ShoppingHome = () => {
           type="text"
           placeholder="Search"
           className="flex-grow bg-transparent outline-none placeholder-[#AB3130] text-[#AB3130] px-2"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setSearch(e.target.value)
+          }
         />
         <img
           src={SearchIcon}
@@ -55,11 +58,10 @@ const ShoppingHome = () => {
 
           <div className="grid items-center grid-cols-3 md:grid-cols-6 border-t border-[#EAE6DF]">
             <span className="text-white bg-[#AB3130] py-2">발향률</span>
-            <label>발향률</label>
-            <span>발향률</span>
-            <span>발향률</span>
-            <span>발향률</span>
-            <span>발향률</span>
+            <label>퍼퓸</label>
+            <label>오 드 퍼퓸</label>
+            <label>오 드 뚜왈렛</label>
+            <label>오 드 코롱</label>
           </div>
         </div>
       </section>
@@ -67,12 +69,16 @@ const ShoppingHome = () => {
       {/* 상품 필터링 */}
       <section className="w-full max-w-5xl">
         <div className="flex justify-start space-x-6 text-[#AB3130] mb-4 flex-wrap gap-2 pt-6">
-          <button className="hover:underline">인기도순</button>
-          <button className="hover:underline">낮은가격순</button>
-          <button className="hover:underline">높은가격순</button>
-          <button className="hover:underline">누적판매순</button>
-          <button className="hover:underline">리뷰많은순</button>
-          <button className="hover:underline">평점높은순</button>
+          {sortItems.map((i) => (
+            <button
+              type="button"
+              className="cursor-pointer hover:underline"
+              // onClick={() => setSort("desc")}
+              key={i}
+            >
+              {i}
+            </button>
+          ))}
         </div>
 
         <div className="grid grid-cols-2 gap-6 gap-y-24 md:grid-cols-4 font-[pretendard]">
@@ -99,35 +105,7 @@ const ShoppingHome = () => {
       </section>
       {/* 페이지 네이션 */}
       <footer className="flex py-12 space-x-4">
-        <button
-          onClick={(): void => setProductPage((prev): number => prev - 1)}
-          disabled={productPage === 1}
-          className={`p-2 cursor-pointer ${
-            productPage === 1
-          } ? "text-gray-300 cursor-not-allowed" : "text-[#AB3130]"`}
-        >
-          <img src={LeftArrowIcon} alt="rightArrow" width={10} />
-        </button>
-        {pageNumbers.map((page) => (
-          <button
-            key={page}
-            onClick={() => setProductPage(page)}
-            className={`flex box-border items-center justify-center w-[44px] h-11 text-2xl text-[#AB3130] cursor-pointer py-2 px-3 focus:outline-none ${
-              productPage === page
-                ? "bg-[#AB3130] text-white"
-                : "text-[#AB3130] hover:bg-[#AB3130] hover:text-white"
-            }`}
-          >
-            {page}
-          </button>
-        ))}
-        <button
-          onClick={(): void => setProductPage((prev): number => prev + 1)}
-          className="p-2 cursor-pointer"
-          disabled={productPage === totalPages}
-        >
-          <img src={RightArrowIcon} alt="leftArrow" width={10} />
-        </button>
+        {/* <Pagination page={} /> */}
       </footer>
     </div>
   );

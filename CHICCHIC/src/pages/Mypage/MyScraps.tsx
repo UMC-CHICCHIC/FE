@@ -93,7 +93,7 @@ const MyScraps = () => {
             {scraps.map((perfume, index) => (
               <div 
                 key={`${perfume.id}-${index}`} 
-                className="overflow-hidden cursor-pointer transition-transform duration-200 hover:scale-102"
+                className="overflow-hidden"
                 onClick={() => handleProductClick(perfume.id)}
               >
                 {/* 이미지 */}
@@ -101,7 +101,7 @@ const MyScraps = () => {
                   <img
                     src={perfume.imageUrl}
                     alt={perfume.name}
-                    className="relative aspect-[4/5] w-full overflow-hidden mb-4 bg-gray-200"
+                    className="relative aspect-[4/5] w-full overflow-hidden mb-4 bg-gray-200 transition-transform duration-200 hover:scale-103"
                     onError={(e) => {
                       e.currentTarget.src = "https://dummyimage.com/300x400/ccc/fff&text=No+Image";
                     }}
@@ -122,7 +122,6 @@ const MyScraps = () => {
         )}
       </div>
 
-      {/* 페이지네이션 - 스크랩이 있을 때만 표시 */}
       {!isLoading && scraps.length > 0 && totalPages > 1 && (
         <div className="flex justify-center items-center py-12 space-x-4">
           {/* 이전 페이지 버튼 */}

@@ -102,7 +102,7 @@ export default function MyHome() {
         </ul>
       </div>
       <main className="flex-1 flex flex-col items-center justify-start pt-16 px-8 sm:items-start sm:ml-20">
-        <div className="w-55 h-55 rounded-full flex items-center justify-center mb-6 mt-20 overflow-hidden">
+        <div className="w-55 h-55 rounded-full flex items-center justify-center mb-6 mt-10 overflow-hidden">
           {isProfileImageLoading ? (
             <div className="w-full h-full object-cover rounded-full bg-gray-200 animate-pulse" />
           ) : (

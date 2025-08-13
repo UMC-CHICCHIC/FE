@@ -32,7 +32,7 @@ const Privacy = () => {
     phone: '',
     email: '',
   });
-  const [error, setError] = useState<string | null>(null);
+
   const [saving, setSaving] = useState(false);
 
   const [isResetToDefault, setIsResetToDefault] = useState(false);
@@ -66,7 +66,9 @@ const Privacy = () => {
             email: userData.email || '',
           });
         })
-        .catch(() => {
+        .catch((err) => {
+          console.error("사용자 정보 조회 실패:", err);
+          alert("사용자 정보를 불러오는데 실패했습니다.");
           setFormData({
             nickname: '',
             phone: '',
@@ -121,7 +123,6 @@ const Privacy = () => {
   };
 
   const handleSaveClick = async () => {
-    setError(null);
     setSaving(true);
     try {
       // 사용자 정보 업데이트
@@ -142,18 +143,24 @@ const Privacy = () => {
           await deleteProfileImage();
           setProfileImage(DEFAULT_PROFILE_IMAGE);
         } catch (error) {
-          console.error("프로필 이미지 삭제 실패:", error);
+          console.error("기본 프로필 적용 실패:", error);
+          alert("기본 프로필 적용에 실패했습니다.");
           setProfileImage(DEFAULT_PROFILE_IMAGE);
         }
         setIsProfileImageLoading(false);
       } else if (file) {
         setIsProfileImageLoading(true);
-        const fd = new FormData();
-        fd.append("file", file);
-        const res = await putProfileImage(fd);
+        try {
+          const fd = new FormData();
+          fd.append("file", file);
+          const res = await putProfileImage(fd);
 
-        const newUrl = `${res.data.result}?v=${Date.now()}`;
-        setProfileImage(newUrl);
+          const newUrl = `${res.data.result}?v=${Date.now()}`;
+          setProfileImage(newUrl);
+        } catch (error) {
+          console.error("프로필 이미지 업로드 실패:", error);
+          alert("프로필 이미지 업로드에 실패했습니다.");
+        }
         setIsProfileImageLoading(false);
       }
 
@@ -162,7 +169,8 @@ const Privacy = () => {
       setIsEditing(false);
       
     } catch (err) {
-      setError("회원정보 수정에 실패했습니다.");
+      console.error("회원정보 수정 실패:", err);
+      alert("회원정보 수정에 실패했습니다. 다시 시도해주세요.");
       setIsProfileImageLoading(false);
     } finally {
       setSaving(false);
@@ -181,7 +189,8 @@ const Privacy = () => {
       alert("회원 탈퇴가 완료되었습니다.");
       navigate("/");
     } catch (err) {
-      setError("회원 탈퇴에 실패했습니다.");
+      console.error("회원 탈퇴 실패:", err);
+      alert("회원 탈퇴에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -246,7 +255,7 @@ const Privacy = () => {
           <PrivacySkeleton />
         ) : (
           <>
-            <div className="flex flex-row gap-10 items-center mb-13">
+            <div className="flex flex-row gap-10 items-center mb-10">
               <div className="relative w-32 h-32 mb-4">
                 <div 
                   className="w-32 h-32 rounded-full bg-gray-400 flex items-center justify-center cursor-pointer hover:bg-gray-500 transition-colors relative overflow-hidden"
@@ -367,10 +376,6 @@ const Privacy = () => {
               </div>
             </div>
           </>
-        )}
-        
-        {error && (
-          <div className="text-sm text-red-500 mt-2">{error}</div>
         )}
       </main>
     </div>

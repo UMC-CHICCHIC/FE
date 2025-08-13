@@ -16,29 +16,23 @@ import { axiosInstance } from "./axiosInstance";
 export const getPerfumeCategory = async (
   type?: string
 ): Promise<ResponseProductCategoryDto> => {
-  try {
-    console.log("요청 카테고리", type);
-    const { data } = await axiosInstance.get<ResponseProductCategoryDto>(
-      "/category",
-      {
-        params: type ? { type } : undefined,
-      }
-    );
-    console.log("요청보냄");
-    return data;
-  } catch (e) {
-    console.error("요청 실패", e);
-    throw e;
-  }
+  console.log("요청 카테고리", type);
+  const { data } = await axiosInstance.get<ResponseProductCategoryDto>(
+    "/category",
+    {
+      params: type ? { type } : undefined,
+    }
+  );
+  return data;
 };
 
 // products 파라미터
-export interface GetProductsParams {
+export type GetProductsParams = {
   cat?: number;
   page: number;
   size: number;
   sort?: string | string[]; // 예: "price,asc"
-}
+};
 
 // 향수 카테고리 조회 (인기순, 낮은 가격순, 높은 가격순, 누적판매순, 리뷰많은순, 평점높은순)
 export const getPerfumeList = async ({
@@ -47,41 +41,29 @@ export const getPerfumeList = async ({
   size,
   sort,
 }: GetProductsParams): Promise<ResponseProductListDto> => {
-  try {
-    const { data } = await axiosInstance.get<ResponseProductListDto>(
-      `/products`,
-      {
-        params: {
-          ...(cat ? { cat } : {}),
-          page: Math.max(0, page - 1), // 0-based로 변환
-          size,
-          ...(sort ? { sort } : {}),
-        },
-      }
-    );
-    console.log("요청보냄");
-    return data;
-  } catch (e) {
-    console.error("요청 실패", e);
-    throw e;
-  }
+  const { data } = await axiosInstance.get<ResponseProductListDto>(
+    `/products`,
+    {
+      params: {
+        ...(cat ? { cat } : {}),
+        page: Math.max(0, page - 1), // 0-based로 변환
+        size,
+        ...(sort ? { sort } : {}),
+      },
+    }
+  );
+  return data;
 };
 
 // 상품 상세정보 조회
 export const getPerfumeDetail = async (
   id: number
 ): Promise<ResponseProductDetailDto> => {
-  try {
-    console.log("요청 id", id);
-    const { data } = await axiosInstance.get(`/products/detail/${id}`, {
-      params: id,
-    });
-    console.log("요청보냄");
-    return data;
-  } catch (e) {
-    console.error("요청 실패", e);
-    throw e;
-  }
+  console.log("요청 id", id);
+  const { data } = await axiosInstance.get<ResponseProductDetailDto>(
+    `/products/detail/${id}`
+  );
+  return data;
 };
 
 // 상품 리뷰 조회

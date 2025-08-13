@@ -3,6 +3,8 @@ import SearchIcon from "../../assets/icons/search.svg";
 import SamplePerfumeImg from "../../assets/images/samplePerfumeImg.png";
 import type { PAGINATION_ORDER } from "../../types/enums/category";
 import { Pagination } from "../../components/Pagination";
+import { useNavigate } from "react-router-dom";
+import { useProductStore } from "../../store/useProductStore";
 
 const sortItems = [
   "인기도순",
@@ -16,7 +18,10 @@ const sortItems = [
 const ShoppingHome = () => {
   const [productPage, setProductPage] = useState(1);
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState<PAGINATION_ORDER>("");
+  const [sort, setSort] = useState<PAGINATION_ORDER>("itemRating,desc");
+  const navigate = useNavigate();
+  const { perfumeId, setPerfumeId } = useProductStore();
+  // const {} = use
 
   return (
     <div className="flex flex-col min-h-screen items-center p-4 space-y-8 bg-[#F7F4EF]">
@@ -82,7 +87,13 @@ const ShoppingHome = () => {
         </div>
 
         <div className="grid grid-cols-2 gap-6 gap-y-24 md:grid-cols-4 font-[pretendard]">
-          <div className="flex flex-col items-center">
+          <button
+            className="flex flex-col items-center"
+            onClick={() => {
+              // () => setPerfumeId(perfumeId);
+              // navigate(`/shopping/${product.perfumeId}`);
+            }}
+          >
             <img
               src={SamplePerfumeImg}
               alt="샘풀 향수 30mL"
@@ -92,7 +103,7 @@ const ShoppingHome = () => {
               샘플 향수 30mL
             </div>
             <div className="text-center text-[#AB3130]">130,000 ₩</div>
-          </div>
+          </button>
           {[...Array(20)].map((_, idx) => (
             <div
               key={idx}

@@ -28,7 +28,7 @@ export function useGetProductDetail(id?: number) {
   return useQuery<ResponseProductDetailDto, Error>({
     queryKey: [QUERY_KEY.products, id],
     queryFn: () => getPerfumeDetail(id!),
-    enabled: id !== null,
+    enabled: typeof id === "number",
   });
 }
 

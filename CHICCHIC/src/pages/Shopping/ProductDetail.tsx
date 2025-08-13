@@ -17,6 +17,8 @@ const ProductDetail = () => {
   const [openAccordion, setOpenAccordion] = useState<number | null>(null);
   const { id } = useParams<{ id: string }>();
   const { perfumeId, setPerfumeId } = useProductStore();
+  const { data, isLoading, error } = useGetProductDetail(perfumeId!);
+
   // 더미 노트 이미지
   const notePlaceholders = [note1Img, note2Img, note3Img];
 
@@ -24,8 +26,6 @@ const ProductDetail = () => {
   useEffect(() => {
     if (id) setPerfumeId(Number(id));
   }, [id, setPerfumeId]);
-
-  const { data, isLoading, error } = useGetProductDetail(perfumeId!);
 
   if (isLoading) return <div className="p-6">로딩중…</div>;
 
@@ -45,15 +45,37 @@ const ProductDetail = () => {
     {
       // API 필드 수정 예정
       title: "전성분",
-      content: <div>{data?.result.warnings ?? "정보없음"}</div>,
+      content: (
+        <div>
+          {data?.result.ingredients?.length
+            ? data.result.ingredients.map((item, idx) => (
+                <div key={idx}>{item}</div>
+              ))
+            : "정보없음"}
+        </div>
+      ),
     },
     {
       title: "사용방법",
-      content: <div>{data?.result.usage ?? "정보없음"}</div>,
+      content: (
+        <div>
+          {data?.result.usage?.length
+            ? data.result.usage.map((item, idx) => <div key={idx}>{item}</div>)
+            : "정보없음"}
+        </div>
+      ),
     },
     {
       title: "사용 시 주의사항",
-      content: <div>{data?.result.warnings ?? "정보없음"}</div>,
+      content: (
+        <div>
+          {data?.result.warnings?.length
+            ? data.result.warnings.map((item, idx) => (
+                <div key={idx}>{item}</div>
+              ))
+            : "정보없음"}
+        </div>
+      ),
     },
     {
       title: "제조업자",
@@ -112,7 +134,7 @@ const ProductDetail = () => {
                   <div className="flex-1 h-px bg-[#F7F4EF]" />
                 </div>
                 <div className="flex flex-col items-center justify-center w-full gap-8 md:flex-row">
-                  {data?.result.notes.map((note, idx) => (
+                  {data?.result.topNote.map((note, idx) => (
                     <div
                       key={note.noteId}
                       className="flex flex-col items-center w-60"

@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
 interface ProductState {
-  perfumeId: number | null;
+  perfumeId?: number;
   setPerfumeId: (id: number) => void;
 }
 
 export const useProductStore = create<ProductState>((set) => ({
-  perfumeId: null,
+  perfumeId: undefined,
   setPerfumeId: (id) => set({ perfumeId: id }),
 }));

@@ -28,6 +28,97 @@ const mockComments: ProductReview[] = [
     content: "향이 오래 가는 편인가요?",
     createdAt: "2025-08-10T15:01:00Z",
   },
+  {
+    id: 3,
+    memberNickname: "퍼퓸러버",
+    rating: 4.5,
+    content: "향이 오래 가는 편인가요?",
+    createdAt: "2025-08-10T15:01:00Z",
+  },
+  {
+    id: 4,
+    memberNickname: "퍼퓸러버",
+    rating: 4.5,
+    content: "향이 오래 가는 편인가요?",
+    createdAt: "2025-08-10T15:01:00Z",
+  },
+  {
+    id: 5,
+    memberNickname: "퍼퓸러버",
+    rating: 4.5,
+    content: "향이 오래 가는 편인가요?",
+    createdAt: "2025-08-10T15:01:00Z",
+  },
+  {
+    id: 6,
+    memberNickname: "향덕후",
+    rating: 3.5,
+    content: "저도 이 향수 정말 좋아해요! 특히 봄에 잘 어울려요",
+    createdAt: "2025-08-10T14:23:00Z",
+  },
+  {
+    id: 7,
+    memberNickname: "퍼퓸러버",
+    rating: 4.5,
+    content: "향이 오래 가는 편인가요?",
+    createdAt: "2025-08-10T15:01:00Z",
+  },
+  {
+    id: 8,
+    memberNickname: "퍼퓸러버",
+    rating: 4.5,
+    content: "향이 오래 가는 편인가요?",
+    createdAt: "2025-08-10T15:01:00Z",
+  },
+  {
+    id: 9,
+    memberNickname: "퍼퓸러버",
+    rating: 4.5,
+    content: "향이 오래 가는 편인가요?",
+    createdAt: "2025-08-10T15:01:00Z",
+  },
+  {
+    id: 10,
+    memberNickname: "퍼퓸러버",
+    rating: 4.5,
+    content: "향이 오래 가는 편인가요?",
+    createdAt: "2025-08-10T15:01:00Z",
+  },
+  {
+    id: 11,
+    memberNickname: "향덕후",
+    rating: 3.5,
+    content: "저도 이 향수 정말 좋아해요! 특히 봄에 잘 어울려요",
+    createdAt: "2025-08-10T14:23:00Z",
+  },
+  {
+    id: 12,
+    memberNickname: "퍼퓸러버",
+    rating: 4.5,
+    content: "향이 오래 가는 편인가요?",
+    createdAt: "2025-08-10T15:01:00Z",
+  },
+  {
+    id: 13,
+    memberNickname: "퍼퓸러버",
+    rating: 4.5,
+    content: "향이 오래 가는 편인가요?",
+    createdAt: "2025-08-10T15:01:00Z",
+  },
+  {
+    id: 14,
+    memberNickname: "퍼퓸러버",
+    rating: 4.5,
+    content: "향이 오래 가는 편인가요?",
+    createdAt: "2025-08-10T15:01:00Z",
+  },
+  {
+    id: 15,
+    memberNickname: "퍼퓸러버",
+    rating: 4.5,
+    content: "향이 오래 가는 편인가요?",
+    createdAt: "2025-08-10T15:01:00Z",
+  },
 ];
 
 export const ReviewList = ({ perfumeId, page, size }: ReviewListProps) => {
@@ -103,6 +194,8 @@ export const ReviewList = ({ perfumeId, page, size }: ReviewListProps) => {
         page={presentPage}
         hasNext={hasNext}
         onChange={(newPage) => setPresentPage(newPage)}
+        windowSize={5}
+        // isLoading={isLoading}
       />
     </div>
   );

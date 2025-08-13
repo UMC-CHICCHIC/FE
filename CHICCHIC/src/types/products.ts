@@ -73,14 +73,16 @@ export type ProductDetail = {
   price: number;
   ml: number;
   brand: string;
-  topNote: string;
-  baseNote: string;
-  middleNote: string;
-  averageRation: number;
+  brandUrl?: string;
+  topNote: { noteId: number; name: string }[];
+  middleNote: string | string[]; // 백엔드 통일 전 임시
+  baseNote: string | string[];
+  ingredients: string[];
+  averageRating: number;
   reviewCount: number;
-  notes: Notes[];
-  usage: string[];
-  warnings: string[];
+  imageUrl?: string;
+  usage?: string[];
+  warnings?: string[];
 };
 
 // 상품 상세 Dto

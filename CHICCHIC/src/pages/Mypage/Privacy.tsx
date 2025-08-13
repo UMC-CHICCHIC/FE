@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { Pencil } from "lucide-react";
-import { getUserInfo, putUserInfo, deleteUserInfo, putProfileImage, getProfileImage } from "../../apis/auth";
+import { 
+  getUserInfo, 
+  putUserInfo, 
+  deleteUserInfo, 
+  putProfileImage, 
+  getProfileImage,
+  deleteProfileImage
+} from "../../apis/auth";
 import { useImgUploadStore } from "../../store/useProfileImg";
 import { useAuthStore } from "../../store/useAuthStore";
 import { PrivacySkeleton } from "../../components/skeletons/PrivacySkeleton";
@@ -27,6 +34,8 @@ const Privacy = () => {
   });
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+
+  const [isResetToDefault, setIsResetToDefault] = useState(false);
 
   const { file, previewUrl, setImg, reset } = useImgUploadStore();
   const [profileImage, setProfileImage] = useState<string>(DEFAULT_PROFILE_IMAGE);
@@ -84,7 +93,15 @@ const Privacy = () => {
 
   const handleProfileClick = () => navigate('/mypage');
   const handlePrivacyClick = () => navigate('/mypage/privacy');
-  const handleEditClick = () => setIsEditing(!isEditing);
+  const handleEditClick = () => {
+    setIsEditing(!isEditing);
+    // 편집 취소 시 상태 리셋
+    if (isEditing) {
+      setIsResetToDefault(false);
+      reset();
+    }
+  };
+  
   const handleImageClick = () => {
     const fileInput = document.getElementById('profile-image-input') as HTMLInputElement;
     fileInput?.click();
@@ -92,13 +109,22 @@ const Privacy = () => {
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0];
-    if (f) setImg(f);
+    if (f) {
+      setImg(f);
+      setIsResetToDefault(false);
+    }
+  };
+
+  const handleResetToDefault = () => {
+    setIsResetToDefault(true);
+    reset(); // zustand store의 파일 리셋
   };
 
   const handleSaveClick = async () => {
     setError(null);
     setSaving(true);
     try {
+      // 사용자 정보 업데이트
       await putUserInfo({
         nickname: formData.nickname,
         phoneNumber: formData.phone,
@@ -110,7 +136,17 @@ const Privacy = () => {
         nickname: formData.nickname,
       });
 
-      if (file) {
+      if (isResetToDefault) {
+        setIsProfileImageLoading(true);
+        try {
+          await deleteProfileImage();
+          setProfileImage(DEFAULT_PROFILE_IMAGE);
+        } catch (error) {
+          console.error("프로필 이미지 삭제 실패:", error);
+          setProfileImage(DEFAULT_PROFILE_IMAGE);
+        }
+        setIsProfileImageLoading(false);
+      } else if (file) {
         setIsProfileImageLoading(true);
         const fd = new FormData();
         fd.append("file", file);
@@ -118,11 +154,13 @@ const Privacy = () => {
 
         const newUrl = `${res.data.result}?v=${Date.now()}`;
         setProfileImage(newUrl);
-        reset();
         setIsProfileImageLoading(false);
       }
 
+      reset();
+      setIsResetToDefault(false);
       setIsEditing(false);
+      
     } catch (err) {
       setError("회원정보 수정에 실패했습니다.");
       setIsProfileImageLoading(false);
@@ -149,6 +187,16 @@ const Privacy = () => {
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const getDisplayImage = () => {
+    if (isEditing && isResetToDefault) {
+      return DEFAULT_PROFILE_IMAGE;
+    }
+    if (isEditing && previewUrl) {
+      return previewUrl;
+    }
+    return profileImage;
   };
 
   return (
@@ -198,34 +246,39 @@ const Privacy = () => {
           <PrivacySkeleton />
         ) : (
           <>
-            <div className="relative w-32 h-32 mb-13">
-              <div 
-                className="w-32 h-32 rounded-full bg-gray-400 flex items-center justify-center cursor-pointer hover:bg-gray-500 transition-colors relative overflow-hidden"
-                onClick={isEditing ? handleImageClick : undefined}
-                style={{ cursor: isEditing ? "pointer" : "default" }}
-              >
-                {isProfileImageLoading ? (
-                  <div className="w-full h-full object-cover rounded-full bg-gray-200 animate-pulse" />
-                ) : isEditing && previewUrl ? (
-                  <img 
-                    src={previewUrl} 
-                    alt="Profile Preview" 
-                    className="w-full h-full object-cover rounded-full"
-                  />
-                ) : (
-                  <img 
-                    src={profileImage} 
-                    alt="Profile" 
-                    className="w-full h-full object-cover rounded-full"
-                  />
+            <div className="flex flex-row gap-10 items-center mb-13">
+              <div className="relative w-32 h-32 mb-4">
+                <div 
+                  className="w-32 h-32 rounded-full bg-gray-400 flex items-center justify-center cursor-pointer hover:bg-gray-500 transition-colors relative overflow-hidden"
+                  onClick={isEditing ? handleImageClick : undefined}
+                  style={{ cursor: isEditing ? "pointer" : "default" }}
+                >
+                  {isProfileImageLoading ? (
+                    <div className="w-full h-full object-cover rounded-full bg-gray-200 animate-pulse" />
+                  ) : (
+                    <img 
+                      src={getDisplayImage()}
+                      alt="Profile" 
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  )}
+                </div>
+                {isEditing && (
+                  <button
+                    onClick={handleImageClick}
+                    className="absolute bottom-2.5 right-0 w-8 h-8 bg-[#AB3130] rounded-full flex items-center justify-center hover:bg-[#8b2a25] transition-colors shadow-lg cursor-pointer"
+                  >
+                    <Pencil size={14} className="text-white" />
+                  </button>
                 )}
               </div>
+
               {isEditing && (
                 <button
-                  onClick={handleImageClick}
-                  className="absolute bottom-2.5 right-0 w-8 h-8 bg-[#AB3130] rounded-full flex items-center justify-center hover:bg-[#8b2a25] transition-colors shadow-lg cursor-pointer"
+                  onClick={handleResetToDefault}
+                  className="text-sm text-[#AB3130] border border-[#AB3130] px-4 py-1.5 rounded-full hover:bg-[#EFE8DC] transition-colors bg-transparent"
                 >
-                  <Pencil size={14} className="text-white" />
+                  기본 프로필 적용
                 </button>
               )}
             </div>
@@ -315,6 +368,7 @@ const Privacy = () => {
             </div>
           </>
         )}
+        
         {error && (
           <div className="text-sm text-red-500 mt-2">{error}</div>
         )}

@@ -35,3 +35,12 @@ export const putProfileImage = (formData: FormData) => {
     headers: { "Content-Type": "multipart/form-data" },
   });
 };
+
+export const deleteProfileImage = () => {
+  return axiosInstance.delete<{
+    isSuccess: boolean;
+    code: string;
+    message: string;
+    result: string;
+  }>("/member/profile-image");
+};

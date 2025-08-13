@@ -1,5 +1,12 @@
 import axios from "axios";
-import { getAccessToken, getRefreshToken, setAccessToken, setRefreshToken, clearAuthTokens } from "../utils/authStorage";
+import { 
+  getAccessToken, 
+  getRefreshToken, 
+  setAccessToken, 
+  setRefreshToken, 
+  clearAuthTokens,
+  getRememberMe 
+} from "../utils/authStorage";
 import { useAuthStore } from "../store/useAuthStore";
 
 export const axiosInstance = axios.create({
@@ -13,8 +20,8 @@ axiosInstance.interceptors.request.use(
       "/api/v1/auth/login",
       "/api/v1/auth/signup",
       "/member/reissue",
-      // 필요시 소셜 로그인 등
     ];
+    
     if (noAuthPaths.some((path) => config.url?.includes(path))) {
       return config;
     }
@@ -49,7 +56,6 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // 이미 재발급 중이면 해당 Promise를 기다림
     if (isRefreshing) {
       return refreshPromise?.then(() => axiosInstance(originalRequest));
     }
@@ -66,8 +72,11 @@ axiosInstance.interceptors.response.use(
       const { accessToken: newAT, refreshToken: newRT } = res.data.result ?? res.data;
       if (!newAT) throw new Error("No accessToken from reissue");
 
-      setAccessToken(newAT);
-      if (newRT) setRefreshToken(newRT);
+      // 기존 rememberMe 설정을 유지하여 토큰 저장
+      const rememberMe = getRememberMe();
+      setAccessToken(newAT, rememberMe);
+      if (newRT) setRefreshToken(newRT, rememberMe);
+      
       console.log("재발급 성공, 원요청 재시도");
       return res;
     }).catch((e) => {

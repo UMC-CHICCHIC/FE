@@ -28,7 +28,6 @@ export const deleteUserInfo = () => {
 
 export const getProfileImage = () => {
   return axiosInstance.get<{ result: string }>("/member/profile-image");
-  // result: string (URL)
 };
 
 export const putProfileImage = (formData: FormData) => {

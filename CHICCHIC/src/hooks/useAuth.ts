@@ -1,13 +1,36 @@
+import { useCallback } from "react";
 import { useAuthStore } from "../store/useAuthStore";
-import { getAccessToken, getRefreshToken } from "../utils/authStorage";
+import { clearAuthTokens, getAccessToken, getRefreshToken } from "../utils/authStorage";
 
 export function useAuth() {
-  const isRefreshing = useAuthStore((state) => state.isRefreshing);
+  const {
+    user,
+    isRefreshing,
+    isInitialized,
+    setUser,
+    setIsRefreshing,
+    setIsInitialized,
+    login: storeLogin,
+    logout: storeLogout,
+  } = useAuthStore();
   
-  const accessToken = getAccessToken();
-  const refreshToken = getRefreshToken();
-  
-  const isLoggedIn = !!accessToken || !!refreshToken || isRefreshing;
-  
-  return { isLoggedIn, isRefreshing };
+  const logout = useCallback(() => {
+    clearAuthTokens(); // 토큰 삭제
+    storeLogout(); // 스토어 상태 초기화
+  }, [storeLogout]);
+
+  return {
+    // 상태
+    user,
+    isRefreshing,
+    isInitialized,
+    isLoggedIn: !!getAccessToken() || !!getRefreshToken() || isRefreshing,
+    
+    // 액션
+    login: storeLogin,
+    logout,
+    setUser,
+    setIsRefreshing,
+    setIsInitialized,
+  };
 }

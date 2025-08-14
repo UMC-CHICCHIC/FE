@@ -31,7 +31,7 @@ const PublicDiaryList = () => {
       setLoading(true);
       setError(null);
       const response = await axiosInstance.get<ApiResponse>("/diary/public");
-      
+
       if (response.data.isSuccess) {
         setPosts(response.data.result);
       } else {
@@ -100,10 +100,12 @@ const PublicDiaryList = () => {
                 </div>
               ) : currentPosts.length === 0 ? (
                 <div className="flex justify-center items-center py-20">
-                  <div className="text-gray-500 text-lg">공개 게시글이 없습니다.</div>
+                  <div className="text-gray-500 text-lg">
+                    공개 게시글이 없습니다.
+                  </div>
                 </div>
               ) : (
-                currentPosts.map((post, index) => (
+                currentPosts.map((post) => (
                   <div
                     key={`public-${post.diaryId}`}
                     className="flex justify-between items-center py-6 border-b border-[#AB3130] cursor-pointer hover:bg-[#f5f1ee] transition-colors"

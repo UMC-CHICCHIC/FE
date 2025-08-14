@@ -191,7 +191,7 @@ const PerfumePage = () => {
                   </div>
                 </div>
               ) : (
-                myPosts.map((post, index) => (
+                myPosts.map((post) => (
                   <li
                     key={`diary-${post.diaryId}`}
                     className="ml-[-2rem] flex justify-between items-center py-6 border-b border-[#AB3130]"

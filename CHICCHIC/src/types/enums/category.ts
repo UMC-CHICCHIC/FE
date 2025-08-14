@@ -5,6 +5,8 @@ export type PostCategory = "GIVE" | "RECEIVE";
 export type PerfumeCategory = "PRICE" | "CONCENTRATION";
 
 // 상품 카테고리
-export type SortKey = "price" | "itemRating" | "numSeller";
-export type SortDir = "desc" | "asc";
-export type PAGINATION_ORDER = `${SortKey},${SortDir}`;
+export type PAGINATION_ORDER =
+  | "price,asc"
+  | "price,desc"
+  | "itemRating,desc"
+  | "numSeller,desc";

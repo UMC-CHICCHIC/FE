@@ -18,9 +18,9 @@ export function ProductAccordionItem({
   content,
 }: AccordionItemProps) {
   return (
-    <div className="font-[pretendard] border-t border-[#AB3130] cursor-pointer select-none md:w-[780px] lg:w-[1000px]">
+    <div className="font-[pretendard] border-t border-[#AB3130] cursor-pointer select-none w-full sm:w-[780px] lg:w-[1000px]">
       <div
-        className="flex items-center justify-between py-4 min-w-120"
+        className="flex items-center justify-between py-4 min-w-90"
         onClick={onClick}
       >
         <span className="text-[#AB3130] font-medium text-lg">{title}</span>
@@ -34,7 +34,7 @@ export function ProductAccordionItem({
       </div>
 
       {open && (
-        <div className="pb-6 text-[#AB3130] flex flex-col gap-2">
+        <div className="pb-6 text-[#AB3130] max-w-80 sm:max-w-none flex flex-col gap-2">
           {notes?.length
             ? notes.map((note, idx) => <div key={idx}>{note.name}</div>)
             : content}

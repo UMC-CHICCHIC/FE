@@ -22,7 +22,7 @@ export function PaginationProducts({
   const w = Math.max(1, windowSize);
 
   const pageNumbers = useMemo(() => {
-    const tp = Math.max(1, totalPages);
+    const tp = Math.max(0, totalPages);
     const half = Math.floor(w / 2);
     const start = Math.max(1, Math.min(page - half, tp - w + 1));
     const end = Math.min(tp, start + w - 1);

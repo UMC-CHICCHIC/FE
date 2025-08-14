@@ -6,6 +6,7 @@ import type {
   ResponseUpdateReviewDto,
 } from "../types/perfumes";
 import type {
+  GetProductsParams,
   ResponseProductCategoryDto,
   ResponseProductDetailDto,
   ResponseProductListDto,
@@ -26,31 +27,25 @@ export const getPerfumeCategory = async (
   return data;
 };
 
-// products 파라미터
-export type GetProductsParams = {
-  cat?: number;
-  page: number;
-  size: number;
-  sort?: string | string[]; // 예: "price,asc"
-};
-
 // 향수 카테고리 조회 (인기순, 낮은 가격순, 높은 가격순, 누적판매순, 리뷰많은순, 평점높은순)
-export const getPerfumeList = async ({
-  cat,
-  page,
-  size,
-  sort,
-}: GetProductsParams): Promise<ResponseProductListDto> => {
+export const getPerfumeList = async (
+  p: GetProductsParams
+): Promise<ResponseProductListDto> => {
+  const params = new URLSearchParams();
+
+  if (p.cat !== undefined) params.set("cat", String(p.cat));
+  if (p.page !== undefined) params.set("page", String(p.page));
+  if (p.size !== undefined) params.set("size", String(p.size));
+
+  // sort 중복 제거
+  if (p.sort) {
+    const sortValues = Array.isArray(p.sort) ? p.sort : [p.sort];
+    const uniqueSort = Array.from(new Set(sortValues));
+    uniqueSort.forEach((s) => params.append("sort", s));
+  }
+
   const { data } = await axiosInstance.get<ResponseProductListDto>(
-    `/products`,
-    {
-      params: {
-        ...(cat ? { cat } : {}),
-        page: Math.max(0, page - 1), // 0-based로 변환
-        size,
-        ...(sort ? { sort } : {}),
-      },
-    }
+    `/products?${params.toString()}`
   );
   return data;
 };

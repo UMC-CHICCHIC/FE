@@ -5,9 +5,9 @@ import {
   getPerfumeDetail,
   getPerfumeList,
   getProductReview,
-  type GetProductsParams,
 } from "../../apis/products";
 import type {
+  GetProductsParams,
   ResponseProductCategoryDto,
   ResponseProductDetailDto,
 } from "../../types/products";
@@ -45,8 +45,8 @@ export function useGetProductReview(perfumeId: number, page = 1, size = 10) {
 export function useGetProductList(params: GetProductsParams) {
   return useQuery({
     queryKey: [QUERY_KEY.products, params],
-    queryFn: () => getPerfumeList,
-    staleTime: 1000 * 60 * 3,
+    queryFn: () => getPerfumeList(params),
     placeholderData: keepPreviousData,
+    staleTime: 1000 * 60 * 3,
   });
 }

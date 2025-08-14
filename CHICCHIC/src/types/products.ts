@@ -1,5 +1,5 @@
 import type { CommonResponse } from "./common";
-import type { PerfumeCategory } from "./enums/category";
+import type { PAGINATION_ORDER, PerfumeCategory } from "./enums/category";
 
 // /products 리스트
 export type Product = {
@@ -48,6 +48,13 @@ export type ResponseProductListDto = CommonResponse<{
   empty: boolean;
 }>;
 
+export interface GetProductsParams {
+  page: number; // UI: 1-base
+  size: number; // 개수 (ex. 16)
+  sort?: PAGINATION_ORDER | PAGINATION_ORDER[];
+  cat?: number;
+}
+
 // /category 카테고리 목록 조회
 export type ProductCategory = {
   categoryId: number;
@@ -80,7 +87,7 @@ export type ProductDetail = {
   ingredients: string[];
   averageRating: number;
   reviewCount: number;
-  imageUrl?: string;
+  ImageUrl?: string;
   usage?: string[];
   warnings?: string[];
 };

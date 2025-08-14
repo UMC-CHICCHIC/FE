@@ -3,8 +3,8 @@ import kebab from "../../assets/icons/kebab.svg";
 import { GetStarRating } from "./getStarRating";
 import type { ProductReview, Rating } from "../../types/perfumes";
 import { ReivewTimeFormat } from "../../utils/dateTimeFormat";
-import { Pagination } from "../Pagination";
 import { useState } from "react";
+import { Pagination } from "../Pagination";
 
 interface ReviewListProps {
   perfumeId: number;
@@ -151,7 +151,7 @@ export const ReviewList = ({ perfumeId, page, size }: ReviewListProps) => {
   //   );
   // }
   return (
-    <div className="flex flex-col gap-6 items-center font-[pretendard]">
+    <div className="flex flex-col m-4 gap-6 items-center font-[pretendard]">
       {/* data.map으로 변경예정 */}
       {mockComments.map((review) => (
         <div
@@ -173,7 +173,7 @@ export const ReviewList = ({ perfumeId, page, size }: ReviewListProps) => {
                 </p>
               )}
             </div>
-            <div className="flex flex-col items-end gap-4 text-[#AB3130]">
+            <div className="flex flex-col w-40 items-end gap-4 text-[#AB3130]">
               <span className="text-sm sm:text-[20px] font-light">
                 {ReivewTimeFormat(review.createdAt)}
               </span>

@@ -6,7 +6,7 @@ import { useAuthStore } from "../../store/useAuthStore";
 
 const DEFAULT_PROFILE_IMAGE = "https://aws-chicchic-bucket.s3.ap-northeast-2.amazonaws.com/default-profile.png";
 
-export default function MyHome() {
+export default function Profile() {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
@@ -59,11 +59,11 @@ export default function MyHome() {
         setIsProfileImageLoading(false);
       });
   }, [user, setUser]);
-  
-  if (!isLoggedIn()) {
-    navigate("/login");
-    return null;
-  }
+
+if (!isLoggedIn()) {
+  return null; // 이동 전까지 화면에 아무것도 안 보이게
+}
+
 
   const handleProfileClick = () => navigate("/mypage");
   const handlePrivacyClick = () => navigate("/mypage/privacy");

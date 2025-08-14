@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import login from "../assets/images/login-image.png";
+import loginimg from "../assets/images/login-image.png";
 import google from "../assets/images/google-logo.png";
 import kakao from "../assets/images/kakao-logo.png";
 import naver from "../assets/images/naver-logo.png";
 import { postLogin } from "../apis/auth";
-import { setAccessToken, setRefreshToken } from "../utils/authStorage";
+import { saveAuthTokens } from "../utils/authStorage";
+import { useAuth } from "../hooks/useAuth";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,40 +15,44 @@ const Login = () => {
     password: "",
   });
   const [rememberMe, setRememberMe] = useState(false);
-
-  // 에러 상태 추가
   const [loginError, setLoginError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { login } = useAuth();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
-    setLoginError(null); // 입력 시 에러 초기화
+    setLoginError(null);
   };
 
   const handleLogin = async () => {
     setLoginError(null);
+    setIsLoading(true);
+
     try {
       const response = await postLogin({
         email: formData.email,
         password: formData.password,
       });
 
-      const { accessToken, refreshToken } = response.data.result;
+      const { accessToken, refreshToken, user } = response.data.result;
+      saveAuthTokens(accessToken, refreshToken, rememberMe);
 
-      setAccessToken(accessToken);
-      setRefreshToken(refreshToken);
+      login(user);
 
       navigate("/");
     } catch (error: any) {
       setLoginError("아이디 또는 비밀번호가 올바르지 않습니다.");
       console.error("로그인 에러:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSignup = () => {
-    // 회원가입 페이지로 이동
     console.log("Navigate to signup");
     navigate("/signup");
   };
@@ -106,12 +111,13 @@ const Login = () => {
           </div>
 
           <div className="flex items-center justify-between mb-4 sm:mb-8">
-            <label className="flex items-center text-[#AB3130] text-xs sm:text-sm">
+            <label className="flex items-center text-[#AB3130] text-xs sm:text-sm cursor-pointer">
               <input
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="mr-2 w-3 h-3 sm:w-4 sm:h-4 text-[#AB3130] bg-transparent border-2 border-[#AB3130] rounded-full focus:ring-[#AB3130] focus:ring-2 checked:bg-[#AB3130] checked:border-[#AB3130]"
+                disabled={isLoading}
+                className="mr-2 w-3 h-3 sm:w-4 sm:h-4 text-[#AB3130] bg-transparent border-2 border-[#AB3130] rounded-full focus:ring-[#AB3130] focus:ring-2 checked:bg-[#AB3130] checked:border-[#AB3130] disabled:opacity-50"
               />
               로그인 상태 유지
             </label>
@@ -135,7 +141,7 @@ const Login = () => {
           <div className="mb-8 space-y-2 sm:space-y-3 sm:mb-12">
             <button
               onClick={handleLogin}
-              className="font-crimson w-full bg-[#AB3130] text-white py-2 sm:py-3 rounded-full hover:bg-[#8b2a25] transition-colors font-normal cursor-pointer text-sm sm:text-lg"
+              className="font-crimson w-full bg-[#AB3130] text-white py-2 sm:py-3 rounded-full hover:bg-[#8b2a25] transition-colors font-normal cursor-pointer text-sm sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Log-in
             </button>
@@ -195,7 +201,7 @@ const Login = () => {
       <div className="flex items-center justify-center flex-1 bg-gradient-to-br from-pink-50 to-purple-50">
         <div className="relative w-full h-full overflow-hidden">
           <img
-            src={login}
+            src={loginimg}
             alt="Login background"
             className="object-cover w-full h-full"
           />

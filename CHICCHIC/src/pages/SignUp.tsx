@@ -86,6 +86,18 @@ export default function Signup() {
       if (axios.isAxiosError(err)) {
         const resData = err.response?.data;
 
+        if (
+          resData?.result &&
+          typeof resData.result === "string" &&
+          resData.result.includes("Duplicate entry") &&
+          resData.result.includes("nickname")
+        ) {
+          setFieldErrors({
+            nickname: "이미 사용 중인 닉네임입니다.",
+          });
+          return;
+        }
+
         // 필드별 에러
         if (resData?.result) {
           const errors = resData.result;

@@ -2,33 +2,51 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useLogout } from "../../utils/useLogout";
 import { getUserInfo, getProfileImage } from "../../apis/auth";
+import { useAuthStore } from "../../store/useAuthStore";
 
 const DEFAULT_PROFILE_IMAGE = "https://aws-chicchic-bucket.s3.ap-northeast-2.amazonaws.com/default-profile.png";
 
-export default function MyHome() {
+export default function Profile() {
   const location = useLocation();
   const navigate = useNavigate();
   const currentPath = location.pathname;
   const logout = useLogout();
 
-  const [userNickname, setUserNickname] = useState("(닉네임)");
-  const [isLoading, setIsLoading] = useState(true);
+  // zustand 전역 상태 사용
+  const { user, setUser, isLoggedIn } = useAuthStore();
+
+  const [isUserInfoLoading, setIsUserInfoLoading] = useState(true);
+  const [isProfileImageLoading, setIsProfileImageLoading] = useState(true);
   const [profileImage, setProfileImage] = useState<string>(DEFAULT_PROFILE_IMAGE);
 
+  // 전역 상태에서 닉네임 가져오기
+  const userNickname = user?.nickname || "(닉네임)";
+
   useEffect(() => {
-    getUserInfo()
-      .then((res) => {
-        if (res.data?.result?.nickname) {
-          setUserNickname(res.data.result.nickname);
-        }
-      })
-      .catch(() => {
-        setUserNickname("(닉네임)");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-      
+    if (!user || !user.nickname) {
+      getUserInfo()
+        .then((res) => {
+          if (res.data?.result) {
+            const userData = res.data.result;
+            setUser({
+              email: userData.email,
+              phoneNumber: userData.phoneNumber || "",
+              nickname: userData.nickname,
+            });
+          }
+        })
+        .catch(() => {
+          console.error("사용자 정보를 불러올 수 없습니다.");
+        })
+        .finally(() => {
+          setIsUserInfoLoading(false);
+        });
+    } else {
+      setIsUserInfoLoading(false);
+    }
+
+    // 프로필 이미지는 별도의 api에서 처리하기 때문에 따로
+    setIsProfileImageLoading(true);
     getProfileImage()
       .then((res) => {
         const url = res.data.result;
@@ -36,8 +54,16 @@ export default function MyHome() {
       })
       .catch(() => {
         setProfileImage(DEFAULT_PROFILE_IMAGE);
+      })
+      .finally(() => {
+        setIsProfileImageLoading(false);
       });
-  }, []);
+  }, [user, setUser]);
+
+if (!isLoggedIn()) {
+  return null; // 이동 전까지 화면에 아무것도 안 보이게
+}
+
 
   const handleProfileClick = () => navigate("/mypage");
   const handlePrivacyClick = () => navigate("/mypage/privacy");
@@ -75,24 +101,21 @@ export default function MyHome() {
           </li>
         </ul>
       </div>
-
-      {/* 내용 영역 */}
       <main className="flex-1 flex flex-col items-center justify-start pt-16 px-8 sm:items-start sm:ml-20">
-        {/* 프로필 이미지 */}
-        <div className="w-55 h-55 rounded-full flex items-center justify-center mb-6 mt-20 overflow-hidden">
-          {isLoading ? (
+        <div className="w-55 h-55 rounded-full flex items-center justify-center mb-6 mt-10 overflow-hidden">
+          {isProfileImageLoading ? (
             <div className="w-full h-full object-cover rounded-full bg-gray-200 animate-pulse" />
           ) : (
             <img
-            src={profileImage}
-            alt="Profile"
-            className="w-full h-full object-cover rounded-full"/>
+              src={profileImage} 
+              alt="Profile"
+              className="w-full h-full object-cover rounded-full"
+            />
           )}
         </div>
 
-        {/* 닉네임 영역 + Skeleton UI */}
         <div className="text-3xl mt-5 font-semibold mb-2 text-center sm:text-left">
-          {isLoading ? (
+          {isUserInfoLoading ? (
             <div className="w-60 h-10 bg-gray-200 animate-pulse rounded-md" />
           ) : (
             `안녕하세요, ${userNickname}님!`

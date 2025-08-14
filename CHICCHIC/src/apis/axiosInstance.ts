@@ -1,29 +1,27 @@
 import axios from "axios";
-import { getAccessToken } from "../utils/authStorage";
-//import axios { type InternalAxiosRequestConfig } from "axios";
+import { 
+  getAccessToken, 
+  getRefreshToken, 
+  setAccessToken, 
+  setRefreshToken, 
+  clearAuthTokens,
+  getRememberMe 
+} from "../utils/authStorage";
+import { useAuthStore } from "../store/useAuthStore";
 
-// retry 플래그
-// interface RetryableAxiosRequestConfig extends InternalAxiosRequestConfig {
-//   _retry?: boolean;
-// }
-
-// 전역 변수로 refresh 요청의 Promise를 저장해서 중복 요청을 방지
-//let refreshPromise: Promise<string> | null = null;
-
-// 모든 요청에 백엔드 주소 붙여줌
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_SERVER_API_URL, // env 파일
+  baseURL: import.meta.env.VITE_SERVER_API_URL,
   withCredentials: true,
 });
 
-// 모든 요청 전에 accessToken을 Authorization 헤더에 추가
 axiosInstance.interceptors.request.use(
   (config) => {
     const noAuthPaths = [
       "/api/v1/auth/login",
       "/api/v1/auth/signup",
-      // 필요시 소셜 로그인 등
+      "/member/reissue",
     ];
+    
     if (noAuthPaths.some((path) => config.url?.includes(path))) {
       return config;
     }
@@ -36,4 +34,68 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => Promise.reject(error)
+);
+
+let isRefreshing = false;
+let refreshPromise: Promise<any> | null = null;
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response?.status !== 401 || originalRequest._retry) {
+      return Promise.reject(error);
+    }
+
+    originalRequest._retry = true;
+    const refreshToken = getRefreshToken();
+
+    if (!refreshToken) {
+      clearAuthTokens();
+      return Promise.reject(error);
+    }
+
+    if (isRefreshing) {
+      return refreshPromise?.then(() => axiosInstance(originalRequest));
+    }
+
+    isRefreshing = true;
+    useAuthStore.getState().setIsRefreshing(true);
+    console.log("재발급 시작");
+
+    refreshPromise = axios.post(
+      `${import.meta.env.VITE_SERVER_API_URL}/member/reissue`,
+      { refreshToken }
+    ).then((res) => {
+      console.log("재발급 응답:", res.data);
+      const { accessToken: newAT, refreshToken: newRT } = res.data.result ?? res.data;
+      if (!newAT) throw new Error("No accessToken from reissue");
+
+      // 기존 rememberMe 설정을 유지하여 토큰 저장
+      const rememberMe = getRememberMe();
+      setAccessToken(newAT, rememberMe);
+      if (newRT) setRefreshToken(newRT, rememberMe);
+      
+      console.log("재발급 성공, 원요청 재시도");
+      return res;
+    }).catch((e) => {
+      console.error("재발급 실패", e);
+      clearAuthTokens();
+      throw e;
+    }).finally(() => {
+      isRefreshing = false;
+      refreshPromise = null;
+      useAuthStore.getState().setIsRefreshing(false);
+      console.log("재발급 끝");
+    });
+
+    try {
+      await refreshPromise;
+      originalRequest.headers.Authorization = `Bearer ${getAccessToken()}`;
+      return axiosInstance(originalRequest);
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
 );

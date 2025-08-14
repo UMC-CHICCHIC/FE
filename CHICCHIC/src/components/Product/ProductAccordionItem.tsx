@@ -20,14 +20,15 @@ export function ProductAccordionItem({
   return (
     <div className="font-[pretendard] border-t border-[#AB3130] cursor-pointer select-none w-full sm:w-[780px] lg:w-[1000px]">
       <div
-        className="flex items-center justify-between py-4 min-w-90"
+        className="flex items-center justify-between min-w-90"
         onClick={onClick}
       >
-        <span className="text-[#AB3130] font-medium text-lg">{title}</span>
+        <span className="text-[#AB3130] font-medium text-lg md:text-[28px]">
+          {title}
+        </span>
         <img
-          width={44}
           src={ArrowIcon}
-          className={`transition-transform duration-300 ${
+          className={`transition-transform duration-300 w-10 h-12 md:w-14 md:h-20 ${
             open ? "" : "rotate-180"
           }`}
         />

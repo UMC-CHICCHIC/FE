@@ -137,29 +137,22 @@ export const updateProductReview = async (
 };
 
 // 상품 스크랩 추가
-export const createScrap = async (
+export const postScrap = async (
   productId: number
 ): Promise<ResponseScrapDto> => {
-  try {
-    console.log("스크랩 추가 응답 성공", productId);
-    const { data } = await axiosInstance.post<ResponseScrapDto>(
-      `/scrap/${productId}`
-    );
-    return data;
-  } catch (e) {
-    console.error("스크랩 추가 응답 실패", e);
-    throw e;
-  }
+  const { data } = await axiosInstance.post<ResponseScrapDto>(
+    `/scrap/${productId}`
+  );
+
+  return data;
 };
 
 // 상품 스크랩 삭제
-export const deleteScrap = async (productId: number) => {
-  try {
-    console.log("스크랩 삭제 응답 성공", productId);
-    const { data } = await axiosInstance.delete(`/scrap/${productId}`);
-    return data;
-  } catch (e) {
-    console.error("스크랩 삭제 응답 실패", e);
-    throw e;
-  }
+export const deleteScrap = async (
+  productId: number
+): Promise<ResponseScrapDto> => {
+  const { data } = await axiosInstance.delete<ResponseScrapDto>(
+    `/scrap/${productId}`
+  );
+  return data;
 };

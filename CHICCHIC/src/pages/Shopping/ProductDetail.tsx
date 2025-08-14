@@ -7,7 +7,7 @@ import { ProductAccordionItem } from "../../components/Product/ProductAccordionI
 import BookmarkIcon from "../../assets/icons/Bookmark.svg";
 import { useProductStore } from "../../store/useProductStore";
 import { useGetProductDetail } from "../../hooks/queries/useGetProduct";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ReviewForm from "../../components/Product/ReviewForm";
 import { ReviewList } from "../../components/Product/ReviewList";
 
@@ -87,10 +87,10 @@ const ProductDetail = () => {
           <div className="flex flex-col sm:flex-row sm:px-20">
             <img
               src={data?.result.ImageUrl}
-              className="pr-10 max-w-[595px] max-h-[691px] "
+              className="pr-10 max-w-[595px] ml-10 max-h-[691px] "
               alt="ImageUrl"
             />
-            <div className="flex flex-col justify-center mb-10 sm:mb-30">
+            <div className="flex flex-col justify-center mb-10">
               <div className="items-center sm:mx-15">
                 <div className="mx-5 sm:m-5 mt-2 sm:mt-0 text-base sm:text-[40px] text-[#AB3130]">
                   {data?.result.brand}
@@ -102,7 +102,7 @@ const ProductDetail = () => {
               <div className="flex flex-col sm:gap-10 mx-5 sm:mx-20 font-[pretendard] font-medium text-xl sm:text-[28px]">
                 <div className="flex items-center">
                   <span className="text-[#66191F]">용량</span>
-                  <span className="ml-9.5 border-l border-[#66191F] h-5" />
+                  <span className="ml-9.5 sm:ml-10 border-l border-[#66191F] h-5" />
                   <span className="ml-2 text-[#AB3130]">
                     {data?.result.ml}mL
                   </span>
@@ -116,7 +116,7 @@ const ProductDetail = () => {
                 </div>
                 <div className="flex items-center">
                   <span className="text-[#66191F]">가격</span>
-                  <span className="ml-9.5 border-l border-[#66191F] h-5" />
+                  <span className="sm:ml-10 ml-9.5 border-l border-[#66191F] h-5" />
                   <span className="ml-2 text-[#AB3130]">
                     {data?.result.price.toLocaleString()} ₩
                   </span>
@@ -135,17 +135,17 @@ const ProductDetail = () => {
                   </div>
                   <div className="flex-1 h-px bg-[#F7F4EF]" />
                 </div>
-                <div className="flex flex-col items-center justify-center text-[#F7F4EF] w-full text-[32px] gap-8 md:flex-row">
+                <div className="flex flex-col items-center justify-center text-[#F7F4EF] w-full text-[32px] gap-16 md:flex-row md:items-start">
                   {/* Top Note */}
                   {data?.result.topNote.map((note) => (
                     <div
                       key={note.noteId}
-                      className="flex flex-col items-center max-w-[345px]"
+                      className="flex flex-col items-center text-center w-[345px]"
                     >
                       <img
                         src={note1Img}
                         alt={note1Img}
-                        className="w-full max-h-[232px] object-cover bg-[#F7F4EF]"
+                        className="w-full max-h-[232px] object-cover"
                       />
                       <div className="mt-4 tracking-wide" key={note.name}>
                         {note.name}
@@ -153,11 +153,11 @@ const ProductDetail = () => {
                     </div>
                   ))}
                   {/* Middle Note */}
-                  <div className="flex flex-col items-center w-[345px]">
+                  <div className="flex flex-col items-center text-center w-[345px]">
                     <img
                       src={note2Img}
                       alt={note2Img}
-                      className="w-full h-[232px] object-cover bg-[#F7F4EF]"
+                      className="w-full max-h-[232px] object-cover flex-none"
                     />
                     <div className="tracking-wide">
                       {data?.result.middleNote}
@@ -168,7 +168,7 @@ const ProductDetail = () => {
                     <img
                       src={note3Img}
                       alt={note3Img}
-                      className="w-full h-[232px] object-cover bg-[#F7F4EF]"
+                      className="w-full max-h-[232px] object-cover"
                     />
                     <div className="tracking-wide">{data?.result.baseNote}</div>
                   </div>
@@ -182,16 +182,22 @@ const ProductDetail = () => {
       )}
       {/* 스크랩 및 홈페이지 라우팅 버튼 */}
       <div className="flex flex-col items-center justify-center w-full max-w-5xl gap-2 py-12 mx-auto md:flex-row">
-        <button className="flex flex-1 w-full hover:bg-[#AB3130]/10 items-center justify-center gap-4 border border-[#AB3130] text-[#AB3130] rounded-full py-2 px-8 text-xl sm:text-[32px] font-[pretendard] cursor-pointer">
-          <img src={BookmarkIcon} width={22} alt="스크랩" />
+        <button className="flex flex-1 w-full hover:bg-[#AB3130]/10 items-center justify-center gap-2 sm:gap-4 border border-[#AB3130] text-[#AB3130] rounded-full py-2 px-8 text-xl sm:text-[32px] font-[pretendard] cursor-pointer">
+          <img
+            src={BookmarkIcon}
+            className="sm:w-[22px] sm:h-[28.7px] w-6 h-6"
+            alt="스크랩"
+          />
           스크랩
         </button>
-        <Link
-          to={`/${data?.result.brandUrl}`}
+        <button
           className="flex flex-1 items-center justify-center hover:bg-[#66191F] bg-[#AB3130] text-[#F7F4EF] rounded-full py-2 px-8 text-xl sm:text-[32px] w-full font-[pretendard] font-light cursor-pointer"
+          onClick={() =>
+            (window.location.href = `https://${data?.result.brandUrl}`)
+          }
         >
           공식 홈페이지 바로가기
-        </Link>
+        </button>
       </div>
       {/* 향수 디테일 및 리뷰 */}
       <div className="flex w-full h-12 mt-24 sm:h-16">

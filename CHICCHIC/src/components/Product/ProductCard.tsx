@@ -24,15 +24,17 @@ export function ProductCard({
       className="flex flex-col items-center"
       onClick={() => onClick?.(id)}
     >
-      <img
-        src={imageUrl}
-        alt={name}
-        className="object-cover rounded shadow max-w-[260px] max-h-[300px] cursor-pointer hover:scale-120"
-        loading="lazy" // 이미지 로딩 UX 향상
-      />
+      <div className="overflow-hidden max-w-[260px] max-h-[300px]">
+        <img
+          src={imageUrl}
+          alt={name}
+          className="object-cover max-w-[260px] max-h-[300px] transition-transform duration-300 shadow cursor-pointer hover:scale-110 active:scale-105"
+          loading="lazy" // 이미지 로딩 UX 향상
+        />
+      </div>
       <div className="flex flex-col gap-1 mt-2 text-[#AB3130] text-lg font-semibold text-center">
         <p>{brand}</p>
-        <p>{name}</p>
+        <p className="cursor-pointer hover:underline">{name}</p>
         <p>{ml}mL</p>
       </div>
 

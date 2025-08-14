@@ -11,7 +11,6 @@ interface ProductGridProps {
   isLoading?: boolean;
   pageSize?: number;
   onItemClick?: (id: number) => void;
-  columns?: number; // 열 수
 }
 
 export const ProductGrid = memo(function ProductGrid({
@@ -19,9 +18,8 @@ export const ProductGrid = memo(function ProductGrid({
   isLoading = false,
   pageSize = 16,
   onItemClick,
-  columns = 4, // (기본 4 = 4x4)
 }: ProductGridProps) {
-  const gridCols = `grid grid-cols-4 md:grid-cols-${columns} gap-40 gap-y-24 font-[pretendard]`;
+  const gridCols = `grid grid-cols-2 md:grid-cols-4 gap-40 gap-y-24 font-[pretendard]`;
 
   if (!isLoading && items.length === 0) {
     return (

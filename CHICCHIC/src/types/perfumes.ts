@@ -44,7 +44,7 @@ export type Scrap = {
 };
 
 // 스크랩 추가 및 삭제 응답
-export type ResponseScrapDto = CommonResponse<"">;
+export type ResponseScrapDto = CommonResponse<Record<string, never>>;
 
 // 상품 리뷰 삭제 응답
 export type ResponseDeleteReviewDto = CommonResponse<Record<string, never>>;

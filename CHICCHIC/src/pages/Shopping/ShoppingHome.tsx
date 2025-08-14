@@ -130,7 +130,6 @@ const ShoppingHome = () => {
           }))}
           isLoading={isLoading}
           pageSize={16}
-          columns={4}
           onItemClick={(id) => {
             setPerfumeId(id);
             navigate(`/shopping/${id}`);

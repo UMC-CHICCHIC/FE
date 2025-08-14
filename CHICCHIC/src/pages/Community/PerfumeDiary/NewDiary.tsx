@@ -30,7 +30,7 @@ const NewDiary = () => {
             </span>
           </div>
         </section>
-        <NewDiaryComponent />
+        <NewDiaryComponent isPublic={isPublic} />
       </div>
     </div>
   );

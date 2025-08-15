@@ -3,8 +3,8 @@ import type { PostCategory } from "../../types/enums/category";
 import {
   getPerfumeDetail,
   getProductReview,
-  getPerfumeList,
   getCategories,
+  getPerfumeList,
 } from "../../apis/products";
 import type {
   GetProductsParams,

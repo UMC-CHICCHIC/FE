@@ -241,7 +241,7 @@ const ProductDetail = () => {
         ) : (
           <>
             <ReviewForm perfumeId={perfumeId!} />
-            <ReviewList perfumeId={perfumeId!} page={1} size={10} />
+            <ReviewList perfumeId={perfumeId!} size={10} />
           </>
         )}
       </div>

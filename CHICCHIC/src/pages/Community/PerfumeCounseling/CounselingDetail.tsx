@@ -35,7 +35,7 @@ const CounselingDetail = () => {
         <div className="flex py-8 border-b">
           <img
             className="w-20 h-20 rounded-full"
-            src={preivewUrl ?? "/profile.png"}
+            src={preivewUrl!}
             alt="profile"
           />
           <div className="flex flex-col items-start justify-center gap-2 pl-4">

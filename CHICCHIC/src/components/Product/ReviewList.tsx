@@ -2,7 +2,7 @@ import { useGetProductReview } from "../../hooks/queries/useGetProduct";
 import kebab from "../../assets/icons/kebab.svg";
 import { GetStarRating } from "./getStarRating";
 import type { ProductReview, Rating } from "../../types/perfumes";
-import { ReivewTimeFormat } from "../../utils/dateTimeFormat";
+import { ReviewTimeFormat } from "../../utils/dateTimeFormat";
 import { useState } from "react";
 import { Pagination } from "../Pagination";
 
@@ -175,7 +175,7 @@ export const ReviewList = ({ perfumeId, page, size }: ReviewListProps) => {
             </div>
             <div className="flex flex-col w-40 items-end gap-4 text-[#AB3130]">
               <span className="text-sm sm:text-[20px] font-light">
-                {ReivewTimeFormat(review.createdAt)}
+                {ReviewTimeFormat(review.createdAt)}
               </span>
               <button className="flex flex-col items-center justify-center">
                 <img

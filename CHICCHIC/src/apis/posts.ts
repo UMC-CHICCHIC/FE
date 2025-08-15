@@ -34,30 +34,19 @@ export const getConsultPostList = async (
 export const getConsultPostDetail = async (
   consultPostId: number
 ): Promise<ResponseConsultDetailDto> => {
-  try {
-    console.log("게시글 상세", consultPostId);
-    const { data } = await axiosInstance.get<ResponseConsultDetailDto>(
-      `/consult-posts/${consultPostId}`
-    );
-    console.log("요청보냄");
-    return data;
-  } catch (e) {
-    console.error("요청 실패", e);
-    throw e;
-  }
+  const { data } = await axiosInstance.get<ResponseConsultDetailDto>(
+    `/consult-posts/${consultPostId}`
+  );
+  console.log("요청보냄");
+  return data;
 };
 
 // 향수 추천 상담소 게시글 포스트
 export const createConsultPost = async (
   body: RequestCreatePostDto
 ): Promise<ResponseConsultCreateDto> => {
-  try {
-    const { data } = await axiosInstance.post("/consult-posts", body);
-    return data;
-  } catch (e) {
-    console.error("게시글 작성 에러", e);
-    throw e;
-  }
+  const { data } = await axiosInstance.post("/consult-posts", body);
+  return data;
 };
 
 // 이미지 업로드 유틸
@@ -65,15 +54,10 @@ const upLoadImg = async (
   file: File,
   endpoint: string
 ): Promise<ResponseUploadImg> => {
-  try {
-    const formData = new FormData();
-    formData.append("file", file);
-    const { data } = await axiosInstance.post(endpoint, formData);
-    return data;
-  } catch (e) {
-    console.error("이미지 업로드 실패", e);
-    throw e;
-  }
+  const formData = new FormData();
+  formData.append("file", file);
+  const { data } = await axiosInstance.post(endpoint, formData);
+  return data;
 };
 
 // 게시글 포스트에 대한 이미지 업로드

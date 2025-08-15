@@ -5,6 +5,11 @@ import arrowUp from "../../../assets/icons/arrowUp.svg";
 import { useGetConsultDetail } from "../../../hooks/queries/useGetConsultPost";
 import { useCounselingStore } from "../../../store/useConsultPost";
 import { DateTimeFormat } from "../../../utils/dateTimeFormat";
+import { useQueryClient } from "@tanstack/react-query";
+import { useCreateConsultComment } from "../../../hooks/mutations/useCreateComment";
+import ConsultCommentsSection from "../../../components/Counseling/CommentSection";
+import { QUERY_KEY } from "../../../constants/key";
+import { createConsultReply } from "../../../apis/comment";
 
 const CounselingDetail = () => {
   // const [comment, setComment] = useState("");
@@ -14,6 +19,8 @@ const CounselingDetail = () => {
   const { consultPostId } = useCounselingStore();
   const { data } = useGetConsultDetail(consultPostId!);
   const [openReply, setOpenReply] = useState(true);
+  const qc = useQueryClient();
+  const createComment = useCreateConsultComment(consultPostId!);
 
   const handleReplyClick = () => {
     setOpenReply((prev) => !prev);
@@ -44,12 +51,24 @@ const CounselingDetail = () => {
           </div>
         </div>
         <div className="pt-6 border-b">
-          <img src={data?.result.imageUrl} alt="uploadedImg" />
+          {data?.result.imageUrl && (
+            <img src={data.result.imageUrl} alt="uploadedImg" />
+          )}
           <p className="pt-8 pb-20">{data?.result.content}</p>
         </div>
+        <ConsultCommentsSection
+          consultPostId={consultPostId!}
+          onSubmitComment={({ content }) => createComment.mutate({ content })}
+          onSubmitReply={async ({ groupId, content }) => {
+            await createConsultReply(consultPostId!, groupId, { content });
+            await qc.invalidateQueries({
+              queryKey: [QUERY_KEY.consultComments, consultPostId],
+            });
+          }}
+        />
         {/* 댓글란 */}
         <section>
-          <p className="pt-8 font-medium">댓글 1</p>
+          <p className="pt-8 font-medium">댓글 </p>
           <div className="flex py-8 border-b">
             <img className="w-12 h-12" src={"/profile.png"} alt="" />
             <div className="flex flex-col w-full pl-10">

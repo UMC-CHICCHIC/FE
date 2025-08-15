@@ -36,6 +36,40 @@ export type RequestCreatePostDto = {
   imageUrl: string;
 };
 
+// 추천 게시글 댓글
+export type Consult = {
+  memberId: number;
+  nickname: string;
+  content: string;
+  hierarchy: number;
+  order: number;
+  group: number;
+  dateTime: string;
+};
+
+// 한 부모 댓글과 그에 속한 답글들
+export type ConsultCommentGroup = {
+  groupId: number;
+  parent: Consult;
+  replies: Consult[];
+};
+
+// 댓글, 대댓글 Post 요청
+export type RequestConsultCommentDto = {
+  content: string;
+};
+
+// 댓글 Get 응답
+export type ResponseConsultCommentsDto = CommonResponse<{
+  content: ConsultCommentGroup[];
+}>;
+
+// 댓글, 대댓글 Post 응답
+export type ResponseConsultReplyDto = CommonResponse<{
+  commentId: number;
+  groupId: number;
+}>;
+
 // /consult-posts에 대한 GetResponseDto
 export type ResponseConsultListDto = PaginatedResponse<ConsultPost[]>;
 

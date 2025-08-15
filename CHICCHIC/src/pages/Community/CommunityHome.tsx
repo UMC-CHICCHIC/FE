@@ -1,15 +1,17 @@
 import CommunityMainImage from "/communityMain.svg";
 import RightArrow from "../../assets/icons/arrowRight.svg";
-import SamplePerfumeImg2 from "../../assets/images/samplePerfumeImg2.svg";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { perfumeStoryMock } from "../../mocks/perfumeStroyMock";
-import { useGetConsultDetail } from "../../hooks/queries/useGetConsultPost";
+import { useGetConsultHome } from "../../hooks/queries/useGetConsultPost";
 import { useCounselingStore } from "../../store/useConsultPost";
+import { usePostFilter } from "../../store/usePostFilter";
 
 const CommunityHome = () => {
-  const { consultPostId } = useCounselingStore();
-  const { data } = useGetConsultDetail(consultPostId);
+  const { setCategory } = usePostFilter();
+  const { setConsultPostId } = useCounselingStore();
+  const { data } = useGetConsultHome();
   const navigate = useNavigate();
+
   return (
     <>
       <section className="relative w-full pt-[136px] h-[80vh]">
@@ -68,49 +70,62 @@ const CommunityHome = () => {
           <div className="flex flex-col justify-center border border-[#AB3130] h-64 rounded-md">
             <div className="flex p-8">
               <img
-                src={SamplePerfumeImg2}
-                width={120}
-                className="mr-4"
+                src={data?.result.receivePost.imageUrl}
+                className="mr-4 max-w-[178px] max-h-[172px]"
                 alt=""
               />
               <div className="flex flex-col text-xl gap-4 text-[#AB3130]">
-                <p className="font-bold">제목</p>
-                <p className="font-light">향수 추천 받고싶어요!</p>
+                <p className="font-bold">{data?.result.receivePost.title}</p>
+                <p className="font-light">{data?.result.receivePost.content}</p>
               </div>
             </div>
             <div className="flex justify-center">
               <button
                 type="button"
                 className="border rounded-full p-2 w-[200px] bg-[#AB3130] hover:bg-[#66191F] text-[#F7F4EF] transition-colors cursor-pointer"
+                onClick={() => {
+                  if (!data?.result.receivePost.consultPostId) return;
+                  setConsultPostId(
+                    data?.result.receivePost.consultPostId as number
+                  );
+                  setCategory("RECEIVE");
+                  navigate(
+                    `/community/recommendation/list/${data?.result.receivePost.consultPostId}`
+                  );
+                }}
               >
-                <Link
-                  to={`/community/recommendation/list/${data?.result.consultPostId}`}
-                >
-                  View Post
-                </Link>
+                View Post
               </button>
             </div>
           </div>
           <div className="flex flex-col justify-center border border-[#AB3130] h-64 rounded-md">
             <div className="flex p-8">
               <img
-                src={SamplePerfumeImg2}
+                src={data?.result.givePost.imageUrl}
                 width={120}
                 className="mr-4"
                 alt=""
               />
               <div className="flex flex-col gap-4 text-xl text-[#AB3130]">
-                <p className="font-bold">제목</p>
-                <p className="font-light">향수 추천 받고싶어요!</p>
+                <p className="font-bold">{data?.result.givePost.title}</p>
+                <p className="font-light">{data?.result.givePost.content}</p>
               </div>
             </div>
             <div className="flex justify-center">
-              <button className="border rounded-full p-2 w-[200px] cursor-pointer bg-[#AB3130] hover:bg-[#66191F] transition-colors text-[#F7F4EF]">
-                <Link
-                  to={`/community/recommendation/list/${data?.result.consultPostId}`}
-                >
-                  View Post
-                </Link>
+              <button
+                className="border rounded-full p-2 w-[200px] cursor-pointer bg-[#AB3130] hover:bg-[#66191F] transition-colors text-[#F7F4EF]"
+                onClick={() => {
+                  if (!data?.result.givePost.consultPostId) return;
+                  setConsultPostId(
+                    data?.result.givePost.consultPostId as number
+                  );
+                  setCategory("GIVE");
+                  navigate(
+                    `/community/recommendation/list/${data?.result.givePost.consultPostId}`
+                  );
+                }}
+              >
+                View Post
               </button>
             </div>
           </div>

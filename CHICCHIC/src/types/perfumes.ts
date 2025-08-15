@@ -45,7 +45,7 @@ export type Scrap = {
 };
 
 // 스크랩 추가 및 삭제 응답
-export type ResponseScrapDto = CommonResponse<"">;
+export type ResponseScrapDto = CommonResponse<Record<string, never>>;
 
 // 스크랩 조회 응답
 export type ResponseScrapListDto = CommonResponse<Scrap[]>;

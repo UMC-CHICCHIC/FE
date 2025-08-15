@@ -1,6 +1,6 @@
 import { ArrowLeft } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { perfumes } from "../../types/perfumetypes";
 
 // 타입 정의는 향수 추천 로직에서 사용할 때 필요시 추가
@@ -9,6 +9,8 @@ export default function Test() {
   const [step, setStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleNext = () => {
     if (step < 7) {
@@ -69,17 +71,17 @@ export default function Test() {
           </h2>
 
           {/* 5개의 향수 세로 나열 */}
-          <div className="flex flex-col gap-4 max-w-2xl mx-auto mb-8">
+          <div className="flex flex-col max-w-2xl gap-4 mx-auto mb-8">
             {perfumes.slice(0, 5).map((perfume, index) => (
               <div
                 key={index}
                 className="bg-white rounded-2xl p-6 shadow-lg border border-[#AB3130]/10 flex items-center gap-6"
               >
-                <div className="w-32 h-32 flex-shrink-0 flex items-center justify-center">
+                <div className="flex items-center justify-center flex-shrink-0 w-32 h-32">
                   <img
                     src={perfume.imageUrl || "/samplePerfumeImg.png"}
                     alt={`${perfume.brand} ${perfume.name}`}
-                    className="w-full h-full object-contain rounded-xl"
+                    className="object-contain w-full h-full rounded-xl"
                   />
                 </div>
                 <div className="flex-1 text-center">
@@ -93,7 +95,10 @@ export default function Test() {
                     {perfume.notes?.slice(0, 3).join(", ") ||
                       "notenotenotenotenotenotenote"}
                   </p>
-                  <button className="py-2 px-6 rounded-full border border-[#AB3130]/50 text-[#AB3130] text-sm hover:bg-[#AB3130]/10 transition-colors">
+                  <button
+                    className="py-2 px-6 rounded-full border cursor-pointer border-[#AB3130]/50 text-[#AB3130] text-sm hover:bg-[#AB3130]/10 transition-colors"
+                    onClick={() => navigate(`/shopping/:perfumeId`)}
+                  >
                     상세 페이지 이동
                   </button>
                 </div>
@@ -101,7 +106,7 @@ export default function Test() {
             ))}
           </div>
 
-          <div className="flex flex-col justify-center gap-4 sm:flex-row max-w-md mx-auto">
+          <div className="flex flex-col justify-center max-w-md gap-4 mx-auto sm:flex-row">
             <Link
               to="/personal-perfume-test"
               className="w-full sm:w-auto text-center py-3 px-6 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
@@ -139,7 +144,7 @@ export default function Test() {
               </p>
               <p className="text-[#AB3130]/80">CHICCHIC이 추천 해드릴게요!</p>
             </div>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+            <div className="flex flex-col justify-center max-w-md gap-4 mx-auto sm:flex-row">
               <button
                 onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
@@ -157,7 +162,7 @@ export default function Test() {
             <p className="text-lg text-[#AB3130]/80 mb-8">
               평소 어떤 성별 계열의 향수를 선호하시나요?
             </p>
-            <div className="flex flex-col max-w-md mx-auto gap-4">
+            <div className="flex flex-col max-w-md gap-4 mx-auto">
               <button
                 onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
@@ -193,7 +198,7 @@ export default function Test() {
             <p className="text-lg text-[#AB3130]/80 mb-8">
               어느 정도의 지속력을 원하시나요?
             </p>
-            <div className="flex flex-col max-w-md mx-auto gap-4">
+            <div className="flex flex-col max-w-md gap-4 mx-auto">
               <button
                 onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
@@ -229,7 +234,7 @@ export default function Test() {
             <p className="text-lg text-[#AB3130]/80 mb-8">
               어느 계열의 향수가 가장 끌리시나요?
             </p>
-            <div className="flex flex-col max-w-md mx-auto gap-4">
+            <div className="flex flex-col max-w-md gap-4 mx-auto">
               <button
                 onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
@@ -265,7 +270,7 @@ export default function Test() {
             <p className="text-lg text-[#AB3130]/80 mb-8">
               향수를 뿌린지 일정 시간이 지난 후 남는 잔향은 어떤게 좋으신가요?
             </p>
-            <div className="flex flex-col max-w-md mx-auto gap-4">
+            <div className="flex flex-col max-w-md gap-4 mx-auto">
               <button
                 onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
@@ -301,7 +306,7 @@ export default function Test() {
             <p className="text-lg text-[#AB3130]/80 mb-8">
               평소 어떤 향을 가장 좋아하시나요?
             </p>
-            <div className="flex flex-col max-w-md mx-auto gap-4">
+            <div className="flex flex-col max-w-md gap-4 mx-auto">
               <button
                 onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
@@ -337,7 +342,7 @@ export default function Test() {
             <p className="text-lg text-[#AB3130]/80 mb-8">
               앞의 질문과 이어 평소 어떤 향을 가장 좋아하시나요?
             </p>
-            <div className="flex flex-col max-w-md mx-auto gap-4">
+            <div className="flex flex-col max-w-md gap-4 mx-auto">
               <button
                 onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
@@ -373,7 +378,7 @@ export default function Test() {
             <p className="text-lg text-[#AB3130]/80 mb-8">
               아래의 향 중 본인의 취향이 있으신가요?
             </p>
-            <div className="flex flex-col max-w-md mx-auto gap-4">
+            <div className="flex flex-col max-w-md gap-4 mx-auto">
               <button
                 onClick={handleSelect}
                 className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"

@@ -1,11 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
-import type { PostCategory } from "../../types/enums/postCategory";
+import type { PostCategory } from "../../types/enums/category";
 import type {
   ResponseConsultDetailDto,
   ResponseConsultListDto,
+  ResponseConsultPreviewDto,
 } from "../../types/post";
 import { QUERY_KEY } from "../../constants/key";
-import { getConsultPostDetail, getConsultPostList } from "../../apis/posts";
+import {
+  getConsultPostDetail,
+  getConsultPostList,
+  getConsultPostPreview,
+} from "../../apis/posts";
 
 // 추천 상담소 페이지 게시글 리스트
 export const useGetConsultPost = (
@@ -22,10 +27,20 @@ export const useGetConsultPost = (
 };
 
 // 추천 상담소 페이지 게시글 디테일
-export const useGetConsultDetail = (consultPostId: number | null) => {
+export const useGetConsultDetail = (consultPostId: number | undefined) => {
   return useQuery<ResponseConsultDetailDto, Error>({
     queryKey: [QUERY_KEY.consultPosts, consultPostId],
-    queryFn: () => getConsultPostDetail(consultPostId!),
+    queryFn: () => getConsultPostDetail(consultPostId as number),
     enabled: !!consultPostId,
+    staleTime: 60_000,
+  });
+};
+
+// 추천 상담소 페이지 게시글 미리보기
+export const useGetConsultHome = () => {
+  return useQuery<ResponseConsultPreviewDto, Error>({
+    queryKey: [QUERY_KEY.consultPosts, "home"],
+    queryFn: getConsultPostPreview,
+    staleTime: 1000 * 60,
   });
 };

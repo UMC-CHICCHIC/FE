@@ -1,52 +1,61 @@
+import type { PostCategory } from "../types/enums/category";
 import type {
-  ProductReview,
   RequestProductReviewDto,
   ResponseProductReviewDto,
   ResponseScrapDto,
-  ResponseUpdateReviewDto,
   ResponseScrapListDto,
+  ResponseUpdateReviewDto,
 } from "../types/perfumes";
 import type {
-  ResponseProductCategoryDto,
+  GetProductsParams,
+  ProductCategory,
   ResponseProductDetailDto,
+  ResponseProductListDto,
 } from "../types/products";
 import { axiosInstance } from "./axiosInstance";
 
-// 향수 카테고리 조회 (노트, 가격대, 발향률)
-export const getPerfumeCategory = async (
-  type?: string
-): Promise<ResponseProductCategoryDto> => {
-  try {
-    console.log("요청 카테고리", type);
-    const { data } = await axiosInstance.get<ResponseProductCategoryDto>(
-      "/category",
-      {
-        params: type ? { type } : undefined,
-      }
-    );
-    console.log("요청보냄");
-    return data;
-  } catch (e) {
-    console.error("요청 실패", e);
-    throw e;
+// 향수 카테고리 조회 (가격대, 발향률)
+export const getCategories = async (
+  type?: PostCategory
+): Promise<ProductCategory[]> => {
+  const { data } = await axiosInstance.get<ProductCategory[]>("/categories", {
+    params: type ? { type } : undefined,
+  });
+  return data;
+};
+
+// 향수 카테고리 조회 (인기순, 낮은 가격순, 높은 가격순, 누적판매순, 리뷰많은순, 평점높은순)
+export const getPerfumeList = async (
+  p: GetProductsParams
+): Promise<ResponseProductListDto> => {
+  const params = new URLSearchParams();
+
+  if (p.cat !== undefined) params.set("cat", String(p.cat));
+  if (p.page !== undefined) params.set("page", String(p.page));
+  if (p.size !== undefined) params.set("size", String(p.size));
+
+  // sort 중복 제거
+  if (p.sort) {
+    const sortValues = Array.isArray(p.sort) ? p.sort : [p.sort];
+    const uniqueSort = Array.from(new Set(sortValues));
+    uniqueSort.forEach((s) => params.append("sort", s));
   }
+
+  const { data } = await axiosInstance.get<ResponseProductListDto>(
+    `/products?${params.toString()}`
+  );
+  return data;
 };
 
 // 상품 상세정보 조회
 export const getPerfumeDetail = async (
   id: number
 ): Promise<ResponseProductDetailDto> => {
-  try {
-    console.log("요청 id", id);
-    const { data } = await axiosInstance.get(`/products/detail/${id}`, {
-      params: id,
-    });
-    console.log("요청보냄");
-    return data;
-  } catch (e) {
-    console.error("요청 실패", e);
-    throw e;
-  }
+  console.log("요청 id", id);
+  const { data } = await axiosInstance.get<ResponseProductDetailDto>(
+    `/products/detail/${id}`
+  );
+  return data;
 };
 
 // 상품 리뷰 조회
@@ -54,7 +63,7 @@ export const getProductReview = async (
   perfumeId: number,
   page = 1,
   size = 10
-): Promise<ProductReview[]> => {
+): Promise<ResponseProductReviewDto> => {
   try {
     console.log("요청 params", perfumeId, page, size);
     const { data } = await axiosInstance.get<ResponseProductReviewDto>(
@@ -63,7 +72,7 @@ export const getProductReview = async (
         params: { page, size },
       }
     );
-    return data.result ?? [];
+    return data ?? [];
   } catch (e) {
     console.error("요청 실패", e);
     throw e;
@@ -138,29 +147,29 @@ export const getScrapList = async (): Promise<ResponseScrapListDto> => {
 };
 
 // 상품 스크랩 추가
-export const createScrap = async (
+// export const createScrap = async (
+//   productId: number
+// ): Promise<ResponseScrapDto> => {
+
+// };
+
+// 상품 스크랩 추가
+export const postScrap = async (
   productId: number
 ): Promise<ResponseScrapDto> => {
-  try {
-    console.log("스크랩 추가 응답 성공", productId);
-    const { data } = await axiosInstance.post<ResponseScrapDto>(
-      `/scrap/${productId}`
-    );
-    return data;
-  } catch (e) {
-    console.error("스크랩 추가 응답 실패", e);
-    throw e;
-  }
+  const { data } = await axiosInstance.post<ResponseScrapDto>(
+    `/scrap/${productId}`
+  );
+
+  return data;
 };
 
 // 상품 스크랩 삭제
-export const deleteScrap = async (productId: number) => {
-  try {
-    console.log("스크랩 삭제 응답 성공", productId);
-    const { data } = await axiosInstance.delete(`/scrap/${productId}`);
-    return data;
-  } catch (e) {
-    console.error("스크랩 삭제 응답 실패", e);
-    throw e;
-  }
+export const deleteScrap = async (
+  productId: number
+): Promise<ResponseScrapDto> => {
+  const { data } = await axiosInstance.delete<ResponseScrapDto>(
+    `/scrap/${productId}`
+  );
+  return data;
 };

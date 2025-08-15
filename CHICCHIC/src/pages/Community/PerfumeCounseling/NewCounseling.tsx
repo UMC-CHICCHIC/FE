@@ -3,7 +3,7 @@ import { ImgUploader } from "../../../components/Community/ImgUploader";
 import { useImgUploadStore } from "../../../store/useImgUploadStore";
 import { X } from "lucide-react";
 import { useCreateConsultPost } from "../../../hooks/mutations/useCreatePost";
-import type { PostCategory } from "../../../types/enums/postCategory";
+import type { PostCategory } from "../../../types/enums/category";
 import { useNavigate } from "react-router-dom";
 
 const NewCounseling = () => {
@@ -96,7 +96,6 @@ const NewCounseling = () => {
             className="items-center w-full py-6 px-8 bg-transparent text-xl border border-[#AB3130] rounded-[15px] placeholder:opacity-50 placeholder:text-xl focus:outline-[#AB3130]"
           />
         </section>
-
         {/* Content 입력 */}
         <label className="block text-4xl font-semibold mb-[15px] font-[crimsonText]">
           Content
@@ -123,7 +122,7 @@ const NewCounseling = () => {
             rows={20}
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="w-full px-8 py-6 text-xl bg-transparent focus:outline-[#AB3130] resize-none rounded-[15px]"
+            className="w-full px-8 py-6 focus:outline-none text-xl bg-transparent resize-none rounded-[15px]"
           />
           <div className="w-full -mt-[6px] py-[12px] border-t border-[#AB3130]">
             <ImgUploader type="post" />

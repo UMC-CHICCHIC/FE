@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { PerfumeCard } from './perfume-card';
-import type { Perfume } from '../../types/perfumes';
+import { useEffect, useState } from "react";
+import { PerfumeCard } from "./perfume-card";
+import type { Perfume } from "../../types/perfumes";
 
 // API 응답에 대한 타입 정의
 interface ApiPerfume {
@@ -21,11 +21,13 @@ export function PerfumeGrid() {
     const fetchPopularPerfumes = async () => {
       try {
         const response = await fetch(
-          'https://be-chicchicenvironments.up.railway.app/home/popular-products',
+          `${import.meta.env.VITE_SERVER_API_URL}/home/popular-products`
         );
         if (!response.ok) {
-          console.error('API 요청 실패:', response);
-          throw new Error(`향수 정보를 불러오는데 실패했습니다. (상태 코드: ${response.status})`);
+          console.error("API 요청 실패:", response);
+          throw new Error(
+            `향수 정보를 불러오는데 실패했습니다. (상태 코드: ${response.status})`
+          );
         }
         const data = await response.json();
 
@@ -33,24 +35,26 @@ export function PerfumeGrid() {
         const perfumeList: ApiPerfume[] = data.result;
 
         if (!Array.isArray(perfumeList)) {
-          throw new Error('API 응답 형식이 올바르지 않습니다 (배열이 아님).');
+          throw new Error("API 응답 형식이 올바르지 않습니다 (배열이 아님).");
         }
 
         // API 데이터를 PerfumeCard가 사용하는 Perfume 타입으로 변환
-        const formattedPerfumes: Perfume[] = perfumeList.slice(0, 4).map((p) => ({
-          id: p.id,
-          name: p.name,
-          brand: '브랜드 정보 없음', // API에 브랜드 정보가 없으므로 기본값 설정
-          imageUrl: 'https://placehold.co/400x500.png', // API에 이미지 URL이 없으므로 Placeholder 사용
-          description: `Middle: ${p.middleNote}, Base: ${p.baseNote}`,
-          purchaseUrl: '#',
-          notes: [p.middleNote, p.baseNote],
-          price: p.price,
-        }));
+        const formattedPerfumes: Perfume[] = perfumeList
+          .slice(0, 4)
+          .map((p) => ({
+            id: p.id,
+            name: p.name,
+            brand: "브랜드 정보 없음", // API에 브랜드 정보가 없으므로 기본값 설정
+            imageUrl: "https://placehold.co/400x500.png", // API에 이미지 URL이 없으므로 Placeholder 사용
+            description: `Middle: ${p.middleNote}, Base: ${p.baseNote}`,
+            purchaseUrl: "#",
+            notes: [p.middleNote, p.baseNote],
+            price: p.price,
+          }));
 
         setPerfumes(formattedPerfumes);
       } catch (e) {
-        console.error('향수 정보를 불러오는 중 오류 발생:', e); // 콘솔에 에러 로그 추가
+        console.error("향수 정보를 불러오는 중 오류 발생:", e); // 콘솔에 에러 로그 추가
         setError(e as Error);
       } finally {
         setIsLoading(false);
@@ -64,7 +68,9 @@ export function PerfumeGrid() {
     // 스켈레톤 UI와 함께 로딩 메시지를 표시합니다.
     return (
       <div>
-        <p className="mb-4 text-center text-gray-500">인기 상품을 불러오는 중입니다...</p>
+        <p className="mb-4 text-center text-gray-500">
+          인기 상품을 불러오는 중입니다...
+        </p>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, index) => (
             <div key={index} className="flex flex-col group">

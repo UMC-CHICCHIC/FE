@@ -1,73 +1,71 @@
+// /produts API 필드 totalPages 존재
 import { useMemo } from "react";
 import LeftArrowIcon from "../assets/icons/arrowLeft.svg";
 import RightArrowIcon from "../assets/icons/arrowRight.svg";
 
-interface PaginationProps {
+interface Props {
   page: number; // 현재 페이지(1-base)
-  hasNext: boolean; // 다음 페이지 존재 여부 (data.length === size)
+  totalPages: number;
   onChange: (next: number) => void; // 페이지 변경
-  windowSize?: number; // 최근 몇 개 페이지 번호를 보여줄지(기본 5)
-  lookAhead?: number; // 앞으로 몇 페이지를 미리 보여줄지 (기본 1)
+  windowSize?: number;
   isLoading?: boolean;
 }
 
-export function Pagination({
+export function PaginationProducts({
   page,
-  hasNext,
+  totalPages,
   onChange,
-  windowSize = 5, // 기본 5로 설정
-  lookAhead = 1,
+  windowSize = 5, // 최근 몇 개 페이지 번호를 보여줄지(기본 5)
   isLoading = false,
-}: PaginationProps) {
+}: Props) {
+  // 현재 페이지를 중심으로 windowSize만큼 슬라이딩 윈도우 구성
+  const tp = Math.max(1, totalPages);
+  const current = Math.min(Math.max(1, page), tp);
   const w = Math.max(1, windowSize);
-  const forward = hasNext ? Math.max(0, lookAhead) : 0;
 
   const pageNumbers = useMemo(() => {
-    const start = Math.max(1, page - (w - 1));
-    const end = page + forward; // ex) page=1, hasNext=true → 1..2
+    const half = Math.floor(w / 2);
+    const start = Math.max(1, Math.min(current - half, tp - w + 1));
+    const end = Math.min(tp, start + w - 1);
     const arr: number[] = [];
     for (let p = start; p <= end; p++) arr.push(p);
     return arr;
-  }, [page, w, forward]);
+  }, [current, tp, w]);
 
   const canPrev = page > 1 && !isLoading;
-  const canNext = hasNext && !isLoading;
+  const canNext = page < tp && !isLoading;
 
   const go = (n: number) => {
     if (isLoading) return;
-    if (n < 1) return;
-    if (n === page) return;
-    onChange(n);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const next = Math.min(Math.max(1, n), tp);
+    if (next !== current) onChange(next);
   };
-
-  // 페이지가 1이고 다음도 없으면 숨김
-  if (page === 1 && !hasNext) return null;
 
   return (
     <nav className="flex items-center gap-2">
       {/* 이전 */}
       <button
         type="button"
-        onClick={() => go(page - 1)}
+        onClick={() => go(current - 1)}
         className="p-2 cursor-pointer disabled:opacity-40"
         disabled={!canPrev}
-        aria-label="previous page"
       >
         <img src={LeftArrowIcon} alt="이전" width={10} />
       </button>
 
-      {/* 페이지 번호들 */}
+      {/* 페이지 번호 */}
       {pageNumbers.map((p) => (
         <button
           key={p}
-          onClick={() => go(p)}
-          className={`flex box-border items-center justify-center w-[44px] h-11 text-2xl cursor-pointer py-2 px-3 focus:outline-none ${
-            p === page
+          onClick={() => {
+            go(p);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          className={`flex items-center justify-center w-[44px] h-11 text-2xl py-2 px-3 focus:outline-none ${
+            p === current
               ? "bg-[#AB3130] text-white"
               : "text-[#AB3130] hover:bg-[#AB3130] hover:text-white"
           }`}
-          aria-current={p === page ? "page" : undefined}
           disabled={isLoading}
         >
           {p}
@@ -77,10 +75,9 @@ export function Pagination({
       {/* 다음 */}
       <button
         type="button"
-        onClick={() => go(page + 1)}
+        onClick={() => go(current + 1)}
         className="p-2 cursor-pointer disabled:opacity-40"
         disabled={!canNext}
-        aria-label="next page"
       >
         <img src={RightArrowIcon} alt="다음" width={10} />
       </button>

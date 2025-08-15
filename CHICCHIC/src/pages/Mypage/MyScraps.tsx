@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getScrapList } from '../../apis/products';
-import type { Scrap } from '../../types/perfumes';
-import ArrowLeft from '../../assets/icons/arrowLeft.svg';
-import ArrowRight from '../../assets/icons/arrowRight.svg';
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { getScrapList } from "../../apis/products";
+import type { Scrap } from "../../types/perfumes";
+import ArrowLeft from "../../assets/icons/arrowLeft.svg";
+import ArrowRight from "../../assets/icons/arrowRight.svg";
 
 const itemsPerPage = 16;
 
@@ -19,7 +19,7 @@ const MyScraps = () => {
   const totalPages = Math.ceil(allScraps.length / itemsPerPage);
   const pageGroupSize = 5;
   const currentGroup = Math.ceil(page / pageGroupSize);
-  
+
   const startPage = (currentGroup - 1) * pageGroupSize + 1;
   const endPage = Math.min(currentGroup * pageGroupSize, totalPages);
 
@@ -27,15 +27,15 @@ const MyScraps = () => {
     try {
       setIsLoading(true);
       const response = await getScrapList();
-      
+
       if (response.isSuccess) {
         setAllScraps(response.result);
       } else {
-        console.error('스크랩 목록 조회 실패:', response.message);
+        console.error("스크랩 목록 조회 실패:", response.message);
         setAllScraps([]);
       }
     } catch (error) {
-      console.error('스크랩 목록 조회 에러:', error);
+      console.error("스크랩 목록 조회 에러:", error);
       setAllScraps([]);
     } finally {
       setIsLoading(false);
@@ -63,37 +63,41 @@ const MyScraps = () => {
   return (
     <div className="min-h-screen bg-[#66191F] pt-15 pb-20 text-[#F7F4EF] px-3 sm:px-3">
       <div className="text-center mb-13 mt-13">
-        <h2 className="text-5xl mb-8">MY SCRAP</h2>
+        <h2 className="mb-8 text-5xl">MY SCRAP</h2>
         <div className="w-15 h-px bg-[#F7F4EF] mx-auto mb-7 opacity-50"></div>
         <p className="text-lg sm:text-xl font-extralight">
           원하는 향수를 스크랩하고 한 눈에 확인해보세요.
         </p>
       </div>
 
-      <div className="w-full max-w-screen-2xl mx-auto">
+      <div className="w-full mx-auto max-w-screen-2xl">
         {isLoading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
             {Array.from({ length: 8 }).map((_, index) => (
               <div key={index} className="overflow-hidden">
                 <div className="relative aspect-[4/5] w-full overflow-hidden mb-4 bg-gray-200 animate-pulse"></div>
                 <div className="p-2 pt-4 pb-6">
-                  <div className="h-5 bg-gray-300 animate-pulse mb-2 rounded"></div>
-                  <div className="h-6 bg-gray-300 animate-pulse mb-2 rounded"></div>
-                  <div className="h-5 bg-gray-300 animate-pulse rounded"></div>
+                  <div className="h-5 mb-2 bg-gray-300 rounded animate-pulse"></div>
+                  <div className="h-6 mb-2 bg-gray-300 rounded animate-pulse"></div>
+                  <div className="h-5 bg-gray-300 rounded animate-pulse"></div>
                 </div>
               </div>
             ))}
           </div>
         ) : scraps.length === 0 ? (
-          <div className="text-center py-20">
-            <p className="text-xl text-[#F7F4EF] opacity-70 mb-4">아직 스크랩한 향수가 없습니다.</p>
-            <p className="text-base text-[#F7F4EF] opacity-50">마음에 드는 향수를 스크랩해보세요!</p>
+          <div className="py-20 text-center">
+            <p className="text-xl text-[#F7F4EF] opacity-70 mb-4">
+              아직 스크랩한 향수가 없습니다.
+            </p>
+            <p className="text-base text-[#F7F4EF] opacity-50">
+              마음에 드는 향수를 스크랩해보세요!
+            </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
             {scraps.map((perfume, index) => (
-              <div 
-                key={`${perfume.id}-${index}`} 
+              <div
+                key={`${perfume.id}-${index}`}
                 className="overflow-hidden"
                 onClick={() => handleProductClick(perfume.id)}
               >
@@ -104,18 +108,27 @@ const MyScraps = () => {
                     alt={perfume.name}
                     className="relative aspect-[4/5] w-full overflow-hidden mb-4 bg-gray-200 transition-transform duration-200 hover:scale-103"
                     onError={(e) => {
-                      e.currentTarget.src = "https://dummyimage.com/300x400/ccc/fff&text=No+Image";
+                      e.currentTarget.src =
+                        "https://dummyimage.com/300x400/ccc/fff&text=No+Image";
                     }}
                   />
                 </div>
                 {/* 텍스트 */}
                 <div className="p-2 pt-4 pb-5 text-left">
-                  <div className="text-lg mb-1 font-extralight">{perfume.brand}</div>
-                  <div className="sm:flex sm:justify-between">
-                    <div className="text-2xl font-semibold mb-2 line-clamp-2">{perfume.name}</div>
-                    <div className="text-lg font-extralight">{perfume.ml}ml</div>
+                  <div className="mb-1 text-lg font-extralight">
+                    {perfume.brand}
                   </div>
-                  <div className="text-lg font-extralight mt-2">{formatPrice(perfume.price)}</div>
+                  <div className="sm:flex sm:justify-between">
+                    <div className="mb-2 text-2xl font-semibold line-clamp-2">
+                      {perfume.name}
+                    </div>
+                    <div className="text-lg font-extralight">
+                      {perfume.ml}ml
+                    </div>
+                  </div>
+                  <div className="mt-2 text-lg font-extralight">
+                    {formatPrice(perfume.price)}
+                  </div>
                 </div>
               </div>
             ))}
@@ -124,7 +137,7 @@ const MyScraps = () => {
       </div>
 
       {!isLoading && scraps.length > 0 && totalPages > 1 && (
-        <div className="flex justify-center items-center py-12 space-x-4">
+        <div className="flex items-center justify-center py-12 space-x-4">
           {/* 이전 페이지 버튼 */}
           <button
             onClick={() => setPage(Math.max(1, page - 1))}
@@ -135,10 +148,12 @@ const MyScraps = () => {
                 : "hover:bg-white/10 cursor-pointer"
             }`}
           >
-            <img 
-              src={ArrowLeft} 
-              alt="Previous page" 
-              className={`w-8 h-8 brightness-0 invert ${page === 1 ? 'opacity-40' : ''}`}
+            <img
+              src={ArrowLeft}
+              alt="Previous page"
+              className={`w-8 h-8 brightness-0 invert ${
+                page === 1 ? "opacity-40" : ""
+              }`}
             />
           </button>
 
@@ -169,10 +184,12 @@ const MyScraps = () => {
                 : "hover:bg-white/10 cursor-pointer"
             }`}
           >
-            <img 
-              src={ArrowRight} 
-              alt="Next page" 
-              className={`w-8 h-8 brightness-0 invert ${page === totalPages ? 'opacity-40' : ''}`}
+            <img
+              src={ArrowRight}
+              alt="Next page"
+              className={`w-8 h-8 brightness-0 invert ${
+                page === totalPages ? "opacity-40" : ""
+              }`}
             />
           </button>
         </div>

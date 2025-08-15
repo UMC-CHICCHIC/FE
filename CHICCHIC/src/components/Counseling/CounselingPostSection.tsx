@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { usePostFilter } from "../../store/usePostFilter";
-import type { PostCategory } from "../../types/enums/postCategory";
+import type { PostCategory } from "../../types/enums/category";
 import SkeletonPostCard from "../skeletons/SkeletonPostCard";
 import { useGetConsultPost } from "../../hooks/queries/useGetConsultPost";
 import { useCounselingStore } from "../../store/useConsultPost";
@@ -40,7 +40,7 @@ const PostSection = ({ category }: PostSectionProps) => {
                       className="object-cover rounded-xl w-30 h-26 sm:w-[224px] sm:h-[177px]"
                     />
                   ) : (
-                    <div className="h-24 bg-gray-300 w-30 rounded-xl"></div>
+                    <div className="w-[224px] bg-gray-200 h-[177px] rounded-xl"></div>
                   )}
                   <div className="flex flex-col gap-8 sm:gap-10">
                     <button

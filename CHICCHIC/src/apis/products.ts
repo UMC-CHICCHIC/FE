@@ -5,6 +5,7 @@ import type {
   ResponseScrapDto,
   ResponseScrapListDto,
   ResponseUpdateReviewDto,
+  ResponseScrapListDto,
 } from "../types/perfumes";
 import type {
   GetProductsParams,
@@ -24,6 +25,7 @@ export const getCategories = async (
   return data;
 };
 
+<<<<<<< HEAD
 // 향수 카테고리 조회 (인기순, 낮은 가격순, 높은 가격순, 누적판매순, 리뷰많은순, 평점높은순)
 export const getPerfumeList = async (
   p: GetProductsParams
@@ -47,6 +49,8 @@ export const getPerfumeList = async (
   return data;
 };
 
+=======
+>>>>>>> develop
 // 상품 상세정보 조회
 export const getPerfumeDetail = async (
   id: number
@@ -135,6 +139,24 @@ export const updateProductReview = async (
 
 // 스크랩 목록 조회
 export const getScrapList = async (): Promise<ResponseScrapListDto> => {
+<<<<<<< HEAD
+=======
+  try {
+    console.log("스크랩 목록 조회 요청");
+    const { data } = await axiosInstance.get<ResponseScrapListDto>("/scrap");
+    console.log("스크랩 목록 조회 성공", data);
+    return data;
+  } catch (e) {
+    console.error("스크랩 목록 조회 실패", e);
+    throw e;
+  }
+};
+
+// 상품 스크랩 추가
+export const createScrap = async (
+  productId: number
+): Promise<ResponseScrapDto> => {
+>>>>>>> develop
   try {
     console.log("스크랩 목록 조회 요청");
     const { data } = await axiosInstance.get<ResponseScrapListDto>("/scrap");

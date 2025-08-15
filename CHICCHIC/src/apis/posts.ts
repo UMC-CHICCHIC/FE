@@ -5,6 +5,8 @@ import type {
   RequestCreatePostDto,
   ResponseConsultCreateDto,
   ResponseConsultDetailDto,
+  ResponseConsultPostPrevDto,
+  ResponseConsultPreviewDto,
 } from "../types/post";
 import type { ResponseUploadImg } from "../types/img";
 
@@ -29,6 +31,26 @@ export const getConsultPostList = async (
     throw e;
   }
 };
+
+// 향수 추천 상담소 게시글 미리보기
+export const getConsultPostPreview =
+  async (): Promise<ResponseConsultPreviewDto> => {
+    const { data } = await axiosInstance.get<ResponseConsultPreviewDto>(
+      `/consult-posts/preview`
+    );
+    console.log("요청보냄");
+    return data;
+  };
+
+// 향수 추천 상담소 게시글 홈
+export const getConsultPostHome =
+  async (): Promise<ResponseConsultPostPrevDto> => {
+    const { data } = await axiosInstance.get<ResponseConsultPostPrevDto>(
+      `/consult-posts/home`
+    );
+    console.log("요청보냄");
+    return data;
+  };
 
 // 향수 추천 상담소 게시글 상세
 export const getConsultPostDetail = async (

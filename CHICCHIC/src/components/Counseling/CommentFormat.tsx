@@ -26,7 +26,7 @@ export function CommentFormat({ placeholder = "댓글 달기", onSubmit }: Props
             await onSubmit(value);
             setValue("");
           }
-          if (isLoggedIn) {
+          if (!isLoggedIn) {
             alert("로그인이 필요한 서비스입니다.");
             navigate("/login");
             return;
@@ -37,7 +37,7 @@ export function CommentFormat({ placeholder = "댓글 달기", onSubmit }: Props
         className="p-2 pr-3"
         onClick={async () => {
           if (!value.trim()) {
-            if (isLoggedIn) {
+            if (!isLoggedIn) {
               console.log("버튼 눌림");
               alert("로그인이 필요한 서비스입니다.");
               navigate("/login");

@@ -3,6 +3,7 @@ import type {
   RequestProductReviewDto,
   ResponseProductReviewDto,
   ResponseScrapDto,
+  ResponseScrapListDto,
   ResponseUpdateReviewDto,
 } from "../types/perfumes";
 import type {
@@ -132,6 +133,19 @@ export const updateProductReview = async (
     return data;
   } catch (e) {
     console.error("수정 요청 실패", e);
+    throw e;
+  }
+};
+
+// 스크랩 목록 조회
+export const getScrapList = async (): Promise<ResponseScrapListDto> => {
+  try {
+    console.log("스크랩 목록 조회 요청");
+    const { data } = await axiosInstance.get<ResponseScrapListDto>("/scrap");
+    console.log("스크랩 목록 조회 성공", data);
+    return data;
+  } catch (e) {
+    console.error("스크랩 목록 조회 실패", e);
     throw e;
   }
 };

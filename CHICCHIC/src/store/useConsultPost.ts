@@ -14,7 +14,7 @@ export const useCounselingStore = create<CounselingStore>()(
       setConsultPostId: (id) => set({ consultPostId: id }),
     }),
     {
-      name: LOCAL_STORAGE_KEY.conselingStore,
+      name: LOCAL_STORAGE_KEY.counselingStore,
     }
   )
 );

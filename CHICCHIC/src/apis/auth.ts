@@ -28,11 +28,19 @@ export const deleteUserInfo = () => {
 
 export const getProfileImage = () => {
   return axiosInstance.get<{ result: string }>("/member/profile-image");
-  // result: string (URL)
 };
 
 export const putProfileImage = (formData: FormData) => {
   return axiosInstance.put<{ result: string }>("/member/profile-image", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
+};
+
+export const deleteProfileImage = () => {
+  return axiosInstance.delete<{
+    isSuccess: boolean;
+    code: string;
+    message: string;
+    result: string;
+  }>("/member/profile-image");
 };

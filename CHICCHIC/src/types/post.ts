@@ -78,9 +78,15 @@ export type ResponseConsultCreateDto = CommonResponse<ConsultPost>;
 
 // /consult-posts/home에 대한 ResponseDto
 export type ResponseConsultPostPrevDto = CommonResponse<{
-  receivePost: ConsultPostPrev;
-  givePost: ConsultPostPrev;
+  receivePost: ConsultPostPrev[];
+  givePost: ConsultPostPrev[];
 }>;
 
 // /consult-posts/{consultPostId}에 대한 ResponseDto
 export type ResponseConsultDetailDto = CommonResponse<ConsultPost>;
+
+// /consult-posts/preivew에 대한 ResponseDto
+export type ResponseConsultPreviewDto = CommonResponse<{
+  receivePost: ConsultPostPrev;
+  givePost: ConsultPostPrev;
+}>;

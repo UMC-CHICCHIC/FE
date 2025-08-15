@@ -1,64 +1,67 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "../../../apis/axiosInstance";
 
-interface Post {
-  imageUrl?: string;
-  profileImage?: string;
+interface DiaryPost {
+  diaryId: number;
   title: string;
-  author: string;
-  date: string;
+  nickname: string;
+  createdAt: string;
+  imageUrl: string | null;
+}
+
+interface ApiResponse {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: DiaryPost[];
 }
 
 const PerfumePage = () => {
   const navigate = useNavigate();
+  const [publicPosts, setPublicPosts] = useState<DiaryPost[]>([]);
+  const [myPosts, setMyPosts] = useState<DiaryPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [myLoading, setMyLoading] = useState(true);
 
-  // 샘플 데이터
-  const publicPosts: Post[] = [
-    {
-      imageUrl: "/sample-image.png",
-      title: "공개 게시글 제목 1",
-      author: "닉네임",
-      profileImage: "/profile.png",
-      date: "2025.07.11.",
-    },
-    {
-      imageUrl: "/sample-image.png",
-      title: "공개 게시글 제목 2",
-      author: "닉네임",
-      profileImage: "/profile.png",
-      date: "2025.07.12.",
-    },
-    {
-      imageUrl: "/sample-image.png",
-      title: "공개 게시글 제목 3",
-      author: "닉네임",
-      profileImage: "/profile.png",
-      date: "2025.07.13.",
-    },
-  ];
+  // 공개 게시글 API 데이터 가져오기 (최신 3개만)
+  const fetchPublicDiaries = async () => {
+    try {
+      setLoading(true);
+      const response = await axiosInstance.get<ApiResponse>("/diary/public");
 
-  const myDiaryPosts: Post[] = [
-    {
-      imageUrl: "/sample-image.png",
-      title: "일기 제목 1",
-      author: "닉네임",
-      profileImage: "/profile.png",
-      date: "2025.07.19.",
-    },
-    {
-      imageUrl: "/sample-image.png",
-      title: "일기 제목 2",
-      author: "닉네임",
-      profileImage: "/profile.png",
-      date: "2025.07.20.",
-    },
-    {
-      imageUrl: "/sample-image.png",
-      title: "일기 제목 3",
-      author: "닉네임",
-      profileImage: "/profile.png",
-      date: "2025.07.21.",
-    },
-  ];
+      if (response.data.isSuccess) {
+        // 최신 3개만 가져오기
+        setPublicPosts(response.data.result.slice(0, 3));
+      }
+    } catch (err) {
+      console.error("공개 게시글 API 에러:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 나의 일기 API 데이터 가져오기 (최신 3개만)
+  const fetchMyDiaries = async () => {
+    try {
+      setMyLoading(true);
+      const response = await axiosInstance.get<ApiResponse>("/diary/my");
+
+      if (response.data.isSuccess) {
+        // 최신 3개만 가져오기
+        setMyPosts(response.data.result.slice(0, 3));
+      }
+    } catch (err) {
+      console.error("나의 일기 API 에러:", err);
+    } finally {
+      setMyLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPublicDiaries();
+    fetchMyDiaries();
+  }, []); // 컴포넌트 마운트 시에만 데이터 로드
 
   const handlePublicDiaryClick = () => {
     navigate("/community/diary/public-diary");
@@ -66,6 +69,14 @@ const PerfumePage = () => {
 
   const handleMyDiaryClick = () => {
     navigate("/community/diary/my-diary");
+  };
+
+  const handleNewDiaryButton = () => {
+    navigate("/community/diary/new");
+  };
+
+  const handlePostClick = (diaryId: number) => {
+    navigate(`/community/diary/public-diary/${diaryId}`);
   };
 
   return (
@@ -78,7 +89,10 @@ const PerfumePage = () => {
             <br />
             다른 이들의 향기로 완성된 이야기까지 함께 들여다볼 수 있어요.
           </h2>
-          <button className="bg-[#AB3130] text-[#FFFFFF] px-[1.5rem] py-[0.75rem] text-[20px] border-none rounded-full">
+          <button
+            onClick={handleNewDiaryButton}
+            className="bg-[#AB3130] cursor-pointer text-[#FFFFFF] px-[1.5rem] py-[0.75rem] text-[20px] border-none rounded-full"
+          >
             새 일기 작성하기
           </button>
         </div>
@@ -101,47 +115,54 @@ const PerfumePage = () => {
               </button>
             </div>
             <ul>
-              {publicPosts.map((post, index) => (
-                <li
-                  key={`public-${index}`}
-                  className="ml-[-2rem] flex justify-between items-center py-6 border-b border-[#AB3130]"
-                >
-                  <div className="flex items-center my-[1.5rem]">
-                    {post.imageUrl ? (
-                      <img
-                        src={post.imageUrl}
-                        alt={post.title}
-                        className="w-[10rem] h-[8rem] object-cover rounded-[20px]"
-                      />
-                    ) : (
-                      <div className="w-[10rem] h-[8rem] bg-[#F0F0F0] object-cover border-none rounded-[20px]"></div>
-                    )}
-                    <div>
-                      <h3 className="font-semibold text-[#AB3130] text-[1.5rem] mb-2 ml-[0.5rem]">
-                        {post.title}
-                      </h3>
-                      <div className="flex items-center text-sm ml-[0.5rem] text-gray-700">
-                        {post.profileImage ? (
+              {loading ? (
+                <div className="flex justify-center items-center py-10">
+                  <div className="text-[#AB3130] text-lg">로딩 중...</div>
+                </div>
+              ) : publicPosts.length === 0 ? (
+                <div className="flex justify-center items-center py-10">
+                  <div className="text-gray-500 text-lg">
+                    공개 게시글이 없습니다.
+                  </div>
+                </div>
+              ) : (
+                publicPosts.map((post) => (
+                  <li
+                    key={`public-${post.diaryId}`}
+                    className="ml-[-2rem] flex justify-between items-center py-6 border-b border-[#AB3130] cursor-pointer hover:bg-[#f5f1ee] transition-colors"
+                    onClick={() => handlePostClick(post.diaryId)}
+                  >
+                    <div className="flex items-center my-[1.5rem]">
+                      {post.imageUrl ? (
+                        <img
+                          src={post.imageUrl}
+                          alt={post.title}
+                          className="w-[10rem] h-[8rem] object-cover rounded-[20px]"
+                        />
+                      ) : (
+                        <div className="w-[10rem] h-[8rem] bg-[#F0F0F0] object-cover border-none rounded-[20px]"></div>
+                      )}
+                      <div>
+                        <h3 className="font-semibold text-[#AB3130] text-[1.5rem] mb-2 ml-[0.5rem]">
+                          {post.title}
+                        </h3>
+                        <div className="flex items-center text-sm ml-[0.5rem] text-gray-700">
                           <img
-                            src={post.profileImage}
-                            alt={post.title}
-                            className="w-[2rem] h-[2rem] object-cover rounded-[999px]"
-                          />
-                        ) : (
-                          <img
-                            src="url('/profile.png')"
+                            src="/profile.png"
                             alt="Profile"
                             className="w-[2rem] h-[2rem] object-cover rounded-[999px]"
                           />
-                        )}
-                        <div className="ml-[0.5rem]">{post.author}</div>
+                          <div className="ml-[0.5rem]">{post.nickname}</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  {/* 오른쪽: 날짜 */}
-                  <span className="text-sm text-gray-600">{post.date}</span>
-                </li>
-              ))}
+                    {/* 오른쪽: 날짜 */}
+                    <span className="text-sm text-gray-600">
+                      {post.createdAt}
+                    </span>
+                  </li>
+                ))
+              )}
             </ul>
           </section>
 
@@ -159,46 +180,52 @@ const PerfumePage = () => {
               </button>
             </div>
             <ul>
-              {myDiaryPosts.map((post, index) => (
-                <li
-                  key={`diary-${index}`}
-                  className="ml-[-2rem] flex justify-between items-center py-6 border-b border-[#AB3130]"
-                >
-                  <div className="flex items-center my-[1.5rem]">
-                    {post.imageUrl ? (
-                      <img
-                        src={post.imageUrl}
-                        alt={post.title}
-                        className="w-[10rem] h-[8rem] object-cover rounded-[20px]"
-                      />
-                    ) : (
-                      <div className="w-[10rem] h-[8rem] bg-[#F0F0F0] object-cover border-none rounded-[20px]"></div>
-                    )}
-                    <div>
-                      <h3 className="font-semibold text-[#AB3130] text-[1.5rem] mb-2 ml-[0.5rem]">
-                        {post.title}
-                      </h3>
-                      <div className="flex items-center text-sm ml-[0.5rem] text-gray-700">
-                        {post.profileImage ? (
-                          <img
-                            src={post.profileImage}
-                            alt={post.title}
-                            className="w-[2rem] h-[2rem] object-cover rounded-[999px]"
-                          />
-                        ) : (
+              {myLoading ? (
+                <div className="flex justify-center items-center py-10">
+                  <div className="text-[#AB3130] text-lg">로딩 중...</div>
+                </div>
+              ) : myPosts.length === 0 ? (
+                <div className="flex justify-center items-center py-10">
+                  <div className="text-gray-500 text-lg">
+                    나의 일기가 없습니다.
+                  </div>
+                </div>
+              ) : (
+                myPosts.map((post) => (
+                  <li
+                    key={`diary-${post.diaryId}`}
+                    className="ml-[-2rem] flex justify-between items-center py-6 border-b border-[#AB3130]"
+                  >
+                    <div className="flex items-center my-[1.5rem]">
+                      {post.imageUrl ? (
+                        <img
+                          src={post.imageUrl}
+                          alt={post.title}
+                          className="w-[10rem] h-[8rem] object-cover rounded-[20px]"
+                        />
+                      ) : (
+                        <div className="w-[10rem] h-[8rem] bg-[#F0F0F0] object-cover border-none rounded-[20px]"></div>
+                      )}
+                      <div>
+                        <h3 className="font-semibold text-[#AB3130] text-[1.5rem] mb-2 ml-[0.5rem]">
+                          {post.title}
+                        </h3>
+                        <div className="flex items-center text-sm ml-[0.5rem] text-gray-700">
                           <img
                             src="/profile.png"
                             alt="Profile"
                             className="w-[2rem] h-[2rem] object-cover rounded-[999px]"
                           />
-                        )}
-                        <div className="ml-[0.5rem]">{post.author}</div>
+                          <div className="ml-[0.5rem]">{post.nickname}</div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <span className="text-sm text-gray-600">{post.date}</span>
-                </li>
-              ))}
+                    <span className="text-sm text-gray-600">
+                      {post.createdAt}
+                    </span>
+                  </li>
+                ))
+              )}
             </ul>
           </section>
         </main>

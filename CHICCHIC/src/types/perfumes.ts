@@ -41,10 +41,14 @@ export type Scrap = {
   concentration: string;
   price: number;
   itemRating: number;
+  imageUrl: string;
 };
 
 // 스크랩 추가 및 삭제 응답
 export type ResponseScrapDto = CommonResponse<Record<string, never>>;
+
+// 스크랩 조회 응답
+export type ResponseScrapListDto = CommonResponse<Scrap[]>;
 
 // 상품 리뷰 삭제 응답
 export type ResponseDeleteReviewDto = CommonResponse<Record<string, never>>;

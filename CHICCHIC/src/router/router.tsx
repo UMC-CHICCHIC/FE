@@ -28,6 +28,7 @@ import PerfumeStoryLongevity from "../pages/Community/PerfumeStory/PerfumeStoryL
 import PerfumeStoryNote from "../pages/Community/PerfumeStory/PerfumeStoryNote.tsx";
 import MyDiaryList from "../pages/Community/PerfumeDiary/MyDiaryList.tsx";
 import PublicDiaryList from "../pages/Community/PerfumeDiary/PublicDiaryList.tsx";
+import DiaryDetail from "../pages/Community/PerfumeDiary/DiaryDetail.tsx";
 import PopularPerfumeId from "../pages/PopularPerfume/PopularPerfumeId";
 import Brand from "../pages/Brand/Brand";
 
@@ -64,7 +65,19 @@ const publicRoutes: RouteObject[] = [
               { index: true, element: <DiaryHome /> }, // /community/diary
               { path: "new", element: <NewDiary /> }, // /community/diary/new
               { path: "my-diary", element: <MyDiaryList /> }, // /community/diary/my-diary
-              { path: "public-diary", element: <PublicDiaryList /> }, // /community/diary/public-diary
+              {
+                path: "public-diary",
+                children: [
+                  {
+                    index: true,
+                    element: <PublicDiaryList />,
+                  },
+                  {
+                    path: ":postId",
+                    element: <DiaryDetail />,
+                  },
+                ],
+              }, // /community/diary/public-diary
             ],
           },
           {

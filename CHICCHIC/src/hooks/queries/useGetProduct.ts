@@ -1,27 +1,28 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import type { PerfumeCategory } from "../../types/enums/category";
+import type { PostCategory } from "../../types/enums/category";
 import {
-  getPerfumeCategory,
   getPerfumeDetail,
-  getPerfumeList,
   getProductReview,
+  getPerfumeList,
+  getCategories,
 } from "../../apis/products";
 import type {
   GetProductsParams,
-  ResponseProductCategoryDto,
+  ProductCategory,
   ResponseProductDetailDto,
 } from "../../types/products";
 import { QUERY_KEY } from "../../constants/key";
 import type { ProductReview } from "../../types/perfumes";
 
 // 향수 상품 카테고리 (노트, 가격대, 발향률)
-export function useGetProductCategory(type: PerfumeCategory) {
-  return useQuery<ResponseProductCategoryDto, Error>({
-    queryKey: [QUERY_KEY.categories, type],
-    queryFn: () => getPerfumeCategory(type),
-    staleTime: 1000 * 60 * 3,
+export const useGetCategories = (type?: PostCategory) => {
+  return useQuery<ProductCategory[], Error>({
+    queryKey: [QUERY_KEY.categories, type ?? "ALL"],
+    queryFn: () => getCategories(type),
+    staleTime: 5 * 60 * 1000, // 5분
+    gcTime: 30 * 60 * 1000,
   });
-}
+};
 
 // 향수 상품 상세
 export function useGetProductDetail(id?: number) {
@@ -36,11 +37,13 @@ export function useGetProductDetail(id?: number) {
 export function useGetProductReview(perfumeId: number, page = 1, size = 10) {
   return useQuery<ProductReview[], Error>({
     queryKey: [QUERY_KEY.perfumes, perfumeId, page, size],
-    queryFn: () => getProductReview(perfumeId, page, size),
+    queryFn: async () => {
+      const res = await getProductReview(perfumeId, page, size);
+      return res.result ?? []; // 배열만 반환
+    },
     staleTime: 1000 * 60,
   });
 }
-
 // 향수 상품 리스트 조회
 export function useGetProductList(params: GetProductsParams) {
   return useQuery({

@@ -1,5 +1,5 @@
+import type { PostCategory } from "../types/enums/category";
 import type {
-  ProductReview,
   RequestProductReviewDto,
   ResponseProductReviewDto,
   ResponseScrapDto,
@@ -8,23 +8,19 @@ import type {
 } from "../types/perfumes";
 import type {
   GetProductsParams,
-  ResponseProductCategoryDto,
+  ProductCategory,
   ResponseProductDetailDto,
   ResponseProductListDto,
 } from "../types/products";
 import { axiosInstance } from "./axiosInstance";
 
 // 향수 카테고리 조회 (가격대, 발향률)
-export const getPerfumeCategory = async (
-  type?: string
-): Promise<ResponseProductCategoryDto> => {
-  console.log("요청 카테고리", type);
-  const { data } = await axiosInstance.get<ResponseProductCategoryDto>(
-    "/category",
-    {
-      params: type ? { type } : undefined,
-    }
-  );
+export const getCategories = async (
+  type?: PostCategory
+): Promise<ProductCategory[]> => {
+  const { data } = await axiosInstance.get<ProductCategory[]>("/categories", {
+    params: type ? { type } : undefined,
+  });
   return data;
 };
 
@@ -67,7 +63,7 @@ export const getProductReview = async (
   perfumeId: number,
   page = 1,
   size = 10
-): Promise<ProductReview[]> => {
+): Promise<ResponseProductReviewDto> => {
   try {
     console.log("요청 params", perfumeId, page, size);
     const { data } = await axiosInstance.get<ResponseProductReviewDto>(
@@ -76,7 +72,7 @@ export const getProductReview = async (
         params: { page, size },
       }
     );
-    return data.result ?? [];
+    return data ?? [];
   } catch (e) {
     console.error("요청 실패", e);
     throw e;

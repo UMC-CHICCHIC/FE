@@ -85,6 +85,43 @@ export type ResponseConsultPostPrevDto = CommonResponse<{
 // /consult-posts/{consultPostId}에 대한 ResponseDto
 export type ResponseConsultDetailDto = CommonResponse<ConsultPost>;
 
+// 일기 게시글 정보
+export type DiaryPost = {
+  id: number;
+  title: string;
+  content: string;
+  nickName: string;
+  imageUrl?: string;
+  createdAt: string;
+  isPublic: boolean;
+};
+
+// /diary/{id}에 대한 ResponseDto
+export type ResponseDiaryDetailDto = CommonResponse<DiaryPost>;
+
+// 일기 댓글 작성 요청
+export type RequestCreateDiaryCommentDto = {
+  content: string;
+};
+
+// 일기 댓글 작성 응답
+export type ResponseCreateDiaryCommentDto = CommonResponse<{
+  id: number;
+  content: string;
+  createdAt: string;
+}>;
+
+// 일기 댓글 정보
+export type DiaryComment = {
+  id: number;
+  content: string;
+  nickName: string;
+  createdAt: string;
+};
+
+// 일기 댓글 목록 조회 응답
+export type ResponseDiaryCommentsDto = CommonResponse<DiaryComment[]>;
+
 // /consult-posts/preivew에 대한 ResponseDto
 export type ResponseConsultPreviewDto = CommonResponse<{
   receivePost: ConsultPostPrev;

@@ -57,9 +57,23 @@ const Login = () => {
     navigate("/signup");
   };
 
+  // 소셜 로그인 처리
   const handleSocialLogin = (provider: string) => {
-    // 간편로그인 로직 (현재는 버튼 역할만)
-    console.log(`${provider} login`);
+    const baseUrl = import.meta.env.VITE_SERVER_API_URL;
+
+    switch (provider) {
+      case "google":
+        window.location.href = `${baseUrl}/oauth2/authorization/google`;
+        break;
+      case "kakao":
+        window.location.href = `${baseUrl}/oauth2/authorization/kakao`;
+        break;
+      case "naver":
+        window.location.href = `${baseUrl}/oauth2/authorization/naver`;
+        break;
+      default:
+        console.log(`${provider} login not implemented`);
+    }
   };
 
   const handleFindId = () => {
@@ -117,8 +131,24 @@ const Login = () => {
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
                 disabled={isLoading}
-                className="mr-2 w-3 h-3 sm:w-4 sm:h-4 text-[#AB3130] bg-transparent border-2 border-[#AB3130] rounded-full focus:ring-[#AB3130] focus:ring-2 checked:bg-[#AB3130] checked:border-[#AB3130] disabled:opacity-50"
+                className="hidden"
               />
+              <span
+                className={`
+                  mr-2 w-3 h-3 sm:w-4 sm:h-4
+                  border-1 border-[#AB3130] rounded-full
+                  flex items-center justify-center
+                  transition-colors duration-200
+                  ${rememberMe ? "bg-[#AB3130]" : "bg-transparent"}
+                  ${isLoading ? "opacity-50" : ""}
+                `}
+              >
+                {rememberMe && (
+                  <span
+                    className="block w-1 h-2 border-b-2 border-r-2 border-white rotate-45"
+                  />
+                )}
+              </span>
               로그인 상태 유지
             </label>
             <div className="flex space-x-1 sm:space-x-2">
@@ -141,6 +171,7 @@ const Login = () => {
           <div className="mb-8 space-y-2 sm:space-y-3 sm:mb-12">
             <button
               onClick={handleLogin}
+              disabled={isLoading}
               className="font-crimson w-full bg-[#AB3130] text-white py-2 sm:py-3 rounded-full hover:bg-[#8b2a25] transition-colors font-normal cursor-pointer text-sm sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Log-in

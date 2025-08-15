@@ -5,6 +5,10 @@ import type {
   RequestCreatePostDto,
   ResponseConsultCreateDto,
   ResponseConsultDetailDto,
+  ResponseDiaryDetailDto,
+  RequestCreateDiaryCommentDto,
+  ResponseCreateDiaryCommentDto,
+  ResponseDiaryCommentsDto,
   ResponseConsultPostPrevDto,
   ResponseConsultPreviewDto,
 } from "../types/post";
@@ -89,4 +93,51 @@ export const uploadPostImg = (file: File) => {
 // 프로필 아바타 설정에 대한 이미지 업로드
 export const uploadProfileImg = (file: File) => {
   return upLoadImg(file, "/users/me");
+};
+
+// 일기 게시글 상세 조회
+export const getDiaryDetail = async (
+  diaryId: number
+): Promise<ResponseDiaryDetailDto> => {
+  try {
+    const { data } = await axiosInstance.get<ResponseDiaryDetailDto>(
+      `/diary/${diaryId}`
+    );
+    return data;
+  } catch (e) {
+    console.error("일기 상세 조회 실패", e);
+    throw e;
+  }
+};
+
+// 일기 댓글 목록 조회
+export const getDiaryComments = async (
+  diaryId: number
+): Promise<ResponseDiaryCommentsDto> => {
+  try {
+    const { data } = await axiosInstance.get<ResponseDiaryCommentsDto>(
+      `/diary/${diaryId}/comments`
+    );
+    return data;
+  } catch (e) {
+    console.error("댓글 목록 조회 실패", e);
+    throw e;
+  }
+};
+
+// 일기 댓글 작성
+export const createDiaryComment = async (
+  diaryId: number,
+  body: RequestCreateDiaryCommentDto
+): Promise<ResponseCreateDiaryCommentDto> => {
+  try {
+    const { data } = await axiosInstance.post<ResponseCreateDiaryCommentDto>(
+      `/diary/${diaryId}/comments`,
+      body
+    );
+    return data;
+  } catch (e) {
+    console.error("댓글 작성 실패", e);
+    throw e;
+  }
 };

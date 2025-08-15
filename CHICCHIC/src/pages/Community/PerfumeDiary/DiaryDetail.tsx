@@ -1,7 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { usePostFilter } from "../../../store/usePostFilter";
-import { POST_CATEGORY } from "../../../types/post";
+import {
+  POST_CATEGORY,
+  type DiaryPost,
+  type DiaryComment,
+} from "../../../types/post";
+import {
+  getDiaryDetail,
+  createDiaryComment,
+  getDiaryComments,
+} from "../../../apis/posts";
 import arrowUp from "../../../assets/icons/arrowUp.svg";
 
 const DiaryDetail = () => {
@@ -9,21 +18,84 @@ const DiaryDetail = () => {
   const { category } = usePostFilter();
   const select = POST_CATEGORY[category];
   const [openReply, setOpenReply] = useState(false);
+  const [diaryData, setDiaryData] = useState<DiaryPost | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [comment, setComment] = useState("");
+  const [commentLoading, setCommentLoading] = useState(false);
+  const [comments, setComments] = useState<DiaryComment[]>([]);
+  const [commentsLoading, setCommentsLoading] = useState(true);
 
-  // 샘플 데이터 - 실제로는 API를 통해 postId로 데이터를 가져와야 함
-  const samplePost = {
-    id: postId,
-    title: `일기 제목 ${postId}`,
-    author: "닉네임",
-    date: "2025.07.01.",
-    content: "나의 일기장 내용입니다. 이곳에 실제 일기 내용이 들어갑니다.",
-    imageUrl: "/sample-image.png",
-    profileImage: "/profile.png"
+  const fetchComments = async () => {
+    if (!postId) return;
+
+    try {
+      setCommentsLoading(true);
+      const response = await getDiaryComments(Number(postId));
+      setComments(response.result);
+    } catch (err) {
+      console.error("댓글 목록 조회 실패:", err);
+    } finally {
+      setCommentsLoading(false);
+    }
   };
+
+  useEffect(() => {
+    const fetchDiaryDetail = async () => {
+      if (!postId) return;
+
+      try {
+        setLoading(true);
+        const response = await getDiaryDetail(Number(postId));
+        setDiaryData(response.result);
+      } catch (err) {
+        console.error("일기 상세 조회 실패:", err);
+        setError("일기를 불러오는데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDiaryDetail();
+    fetchComments();
+  }, [postId]);
 
   const handleReplyClick = () => {
     setOpenReply((prev) => !prev);
   };
+
+  const handleCommentSubmit = async () => {
+    if (!comment.trim() || !postId || commentLoading) return;
+
+    try {
+      setCommentLoading(true);
+      await createDiaryComment(Number(postId), { content: comment });
+      setComment("");
+      // 댓글 작성 후 댓글 목록 새로고침
+      await fetchComments();
+    } catch (err) {
+      console.error("댓글 작성 실패:", err);
+      alert("댓글 작성에 실패했습니다.");
+    } finally {
+      setCommentLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="max-w-6xl px-4 sm:text-xl mx-auto text-[#AB3130] font-[pretendard] flex justify-center items-center min-h-screen">
+        <div>로딩 중...</div>
+      </div>
+    );
+  }
+
+  if (error || !diaryData) {
+    return (
+      <div className="max-w-6xl px-4 sm:text-xl mx-auto text-[#AB3130] font-[pretendard] flex justify-center items-center min-h-screen">
+        <div>{error || "일기를 찾을 수 없습니다."}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl px-4 sm:text-xl mx-auto text-[#AB3130] font-[pretendard]">
@@ -36,61 +108,65 @@ const DiaryDetail = () => {
       {/* 작성 게시물 상세정보 */}
       <section>
         <span className="text-2xl font-medium sm:text-4xl ">
-          {samplePost.title}
+          {diaryData.title}
         </span>
         <div className="flex py-8 border-b">
-          <img
-            className="max-w-20 max-h-20"
-            src={samplePost.profileImage}
-            alt="profile"
-          />
+          <img className="max-w-20 max-h-20" src="/profile.png" alt="profile" />
           <div className="flex flex-col items-center justify-center gap-2 pl-4">
-            <span>{samplePost.author}</span>
-            <span>{samplePost.date}</span>
+            <span>{diaryData.nickName}</span>
+            <span>{diaryData.createdAt}</span>
           </div>
         </div>
         <div className="pt-6 border-b">
-          <img src={samplePost.imageUrl} alt="" />
-          <p className="pt-8 pb-20">{samplePost.content}</p>
+          {diaryData.imageUrl && <img src={diaryData.imageUrl} alt="" />}
+          <p className="pt-8 pb-20">{diaryData.content}</p>
         </div>
         {/* 댓글란 */}
         <section>
-          <p className="pt-8 font-medium">댓글 1</p>
-          <div className="flex py-8 border-b">
-            <img className="w-12 h-12" src={"/profile.png"} alt="" />
-            <div className="flex flex-col w-full pl-10">
-              <p>닉네임</p>
-              <p className="py-4">일기장 확인</p>
-              <div className="text-[#66191F] space-x-8 text-sm pb-2">
-                <span>2025.07.01. 19:48</span>
-                <button
-                  type="button"
-                  className="cursor-pointer hover:underline"
-                  onClick={() => handleReplyClick()}
-                >
-                  {openReply ? "답글쓰기" : "답글닫기"}
-                </button>
-              </div>
-              {!openReply && (
-                // 답글 입력창
-                <div className="flex items-center border border-[#AB3130] rounded-xl bg-transparent">
-                  <input
-                    type="text"
-                    placeholder="답글 쓰기"
-                    className="flex-1 px-4 bg-transparent sm:p-4 focus:outline-none"
-                  />
-                  <button className="p-2 pr-3 cursor-pointer">
-                    <img
-                      className="bg-[#AB3130] border rounded-full p-1 hover:bg-[#872b2b] w-full"
-                      src={arrowUp}
-                      alt="arrowUp"
-                      width={35}
-                    />
-                  </button>
+          <p className="pt-8 font-medium">댓글 {comments.length}</p>
+          {commentsLoading ? (
+            <div className="py-8">댓글을 불러오는 중...</div>
+          ) : comments.length > 0 ? (
+            comments.map((commentItem) => (
+              <div key={commentItem.id} className="flex py-8 border-b">
+                <img className="w-12 h-12" src={"/profile.png"} alt="" />
+                <div className="flex flex-col w-full pl-10">
+                  <p>{commentItem.nickName}</p>
+                  <p className="py-4">{commentItem.content}</p>
+                  <div className="text-[#66191F] space-x-8 text-sm pb-2">
+                    <span>{commentItem.createdAt}</span>
+                    <button
+                      type="button"
+                      className="cursor-pointer hover:underline"
+                      onClick={() => handleReplyClick()}
+                    >
+                      {openReply ? "답글쓰기" : "답글닫기"}
+                    </button>
+                  </div>
+                  {!openReply && (
+                    // 답글 입력창
+                    <div className="flex items-center border border-[#AB3130] rounded-xl bg-transparent">
+                      <input
+                        type="text"
+                        placeholder="답글 쓰기"
+                        className="flex-1 px-4 bg-transparent sm:p-4 focus:outline-none"
+                      />
+                      <button className="p-2 pr-3 cursor-pointer">
+                        <img
+                          className="bg-[#AB3130] border rounded-full p-1 hover:bg-[#872b2b] w-full"
+                          src={arrowUp}
+                          alt="arrowUp"
+                          width={35}
+                        />
+                      </button>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          </div>
+              </div>
+            ))
+          ) : (
+            <div className="py-8 text-gray-500">아직 댓글이 없습니다.</div>
+          )}
         </section>
         {/* 댓글 입력창 */}
         <div className="flex items-center border border-[#AB3130] rounded-xl bg-transparent my-15">
@@ -98,10 +174,21 @@ const DiaryDetail = () => {
             className="flex-1 p-4 focus:outline-none"
             type="text"
             placeholder="댓글 달기"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            disabled={commentLoading}
           />
-          <button className="p-2 pr-3">
+          <button
+            className="p-2 pr-3"
+            onClick={handleCommentSubmit}
+            disabled={commentLoading || !comment.trim()}
+          >
             <img
-              className="bg-[#AB3130] border rounded-full p-1 cursor-pointer hover:bg-[#872b2b] w-full"
+              className={`border rounded-full p-1 w-full ${
+                commentLoading || !comment.trim()
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-[#AB3130] cursor-pointer hover:bg-[#872b2b]"
+              }`}
               src={arrowUp}
               alt="arrowUp"
               width={35}

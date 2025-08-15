@@ -131,8 +131,24 @@ const Login = () => {
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
                 disabled={isLoading}
-                className="mr-2 w-3 h-3 sm:w-4 sm:h-4 text-[#AB3130] bg-transparent border-2 border-[#AB3130] rounded-full focus:ring-[#AB3130] focus:ring-2 checked:bg-[#AB3130] checked:border-[#AB3130] disabled:opacity-50"
+                className="hidden"
               />
+              <span
+                className={`
+                  mr-2 w-3 h-3 sm:w-4 sm:h-4
+                  border-2 border-[#AB3130] rounded-full
+                  flex items-center justify-center
+                  transition-colors duration-200
+                  ${rememberMe ? "bg-[#AB3130]" : "bg-transparent"}
+                  ${isLoading ? "opacity-50" : ""}
+                `}
+              >
+                {rememberMe && (
+                  <span
+                    className="block w-1 h-2 border-b-2 border-r-2 border-white rotate-45"
+                  />
+                )}
+              </span>
               로그인 상태 유지
             </label>
             <div className="flex space-x-1 sm:space-x-2">

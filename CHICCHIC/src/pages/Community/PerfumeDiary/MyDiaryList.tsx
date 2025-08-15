@@ -1,93 +1,65 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BsCheckCircleFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "../../../apis/axiosInstance";
 
 const MyDiaryList = () => {
-  interface Post {
-    imageUrl?: string;
-    profileImage?: string;
+  interface DiaryPost {
+    diaryId: number;
     title: string;
-    author: string;
-    date: string;
+    nickname: string;
+    createdAt: string;
+    imageUrl: string | null;
     isPublic?: boolean;
   }
 
-  // 페이지네이션 상태
+  interface ApiResponse {
+    isSuccess: boolean;
+    code: string;
+    message: string;
+    result: DiaryPost[];
+  }
+
+  // 상태 관리
+  const [posts, setPosts] = useState<DiaryPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 5;
 
-  const publicPosts: Post[] = [
-    {
-      imageUrl: "/sample-image.png",
-      title: "제목제목제목제목",
-      author: "닉네임",
-      profileImage: "/profile.png",
-      date: "2025.07.01.",
-      isPublic: true,
-    },
-    {
-      imageUrl: "/sample-image.png",
-      title: "제목제목제목제목",
-      author: "닉네임",
-      profileImage: "/profile.png",
-      date: "2025.07.01.",
-      isPublic: false,
-    },
-    {
-      imageUrl: "/sample-image.png",
-      title: "제목제목제목제목",
-      author: "닉네임",
-      profileImage: "/profile.png",
-      date: "2025.07.01.",
-      isPublic: true,
-    },
-    {
-      imageUrl: "/sample-image.png",
-      title: "제목제목제목제목",
-      author: "닉네임",
-      profileImage: "/profile.png",
-      date: "2025.07.01.",
-      isPublic: true,
-    },
-    {
-      imageUrl: "/sample-image.png",
-      title: "제목제목제목제목",
-      author: "닉네임",
-      profileImage: "/profile.png",
-      date: "2025.07.01.",
-      isPublic: true,
-    },
-    {
-      imageUrl: "/sample-image.png",
-      title: "제목제목제목제목",
-      author: "닉네임",
-      profileImage: "/profile.png",
-      date: "2025.07.01.",
-      isPublic: true,
-    },
-    {
-      imageUrl: "/sample-image.png",
-      title: "제목제목제목제목",
-      author: "닉네임",
-      profileImage: "/profile.png",
-      date: "2025.07.01.",
-      isPublic: true,
-    },
-    {
-      imageUrl: "/sample-image.png",
-      title: "제목제목제목제목",
-      author: "닉네임",
-      profileImage: "/profile.png",
-      date: "2025.07.01.",
-      isPublic: true,
-    },
-  ];
+  // API 데이터 가져오기
+  const fetchMyDiaries = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await axiosInstance.get<ApiResponse>("/diary/my");
+
+      if (response.data.isSuccess) {
+        const postsWithPublicStatus = response.data.result.map((post) => ({
+          ...post,
+          isPublic: post.isPublic !== undefined ? post.isPublic : true, // 기본값 true로 설정
+        }));
+        setPosts(postsWithPublicStatus);
+      } else {
+        setError("데이터를 불러오는데 실패했습니다.");
+      }
+    } catch (err) {
+      console.error("나의 일기 API 에러:", err);
+      setError("데이터를 불러오는데 실패했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMyDiaries();
+  }, []);
 
   // 페이지네이션 계산
-  const totalPages = Math.ceil(publicPosts.length / postsPerPage);
+  const totalPages = Math.ceil(posts.length / postsPerPage);
   const startIndex = (currentPage - 1) * postsPerPage;
   const endIndex = startIndex + postsPerPage;
-  const currentPosts = publicPosts.slice(startIndex, endIndex);
+  const currentPosts = posts.slice(startIndex, endIndex);
 
   // 페이지 변경 핸들러
   const handlePageChange = (page: number) => {
@@ -119,66 +91,74 @@ const MyDiaryList = () => {
 
             {/* 게시글 목록 */}
             <div className="space-y-0">
-              {currentPosts.map((post, index) => (
-                <div
-                  key={`public-${startIndex + index}`}
-                  className="flex justify-between items-center py-6 border-b border-[#AB3130]"
-                >
-                  <div className="flex items-center">
-                    {/* 이미지 */}
-                    {post.imageUrl ? (
-                      <img
-                        src={post.imageUrl}
-                        alt={post.title}
-                        className="w-[10rem] h-[8rem] object-cover rounded-[20px] flex-shrink-0"
-                      />
-                    ) : (
-                      <div className="w-[10rem] h-[8rem] bg-[#F0F0F0] rounded-[20px] flex-shrink-0"></div>
-                    )}
-
-                    {/* 텍스트 정보 */}
-                    <div className="ml-6 flex-1">
-                      <h3 className="font-semibold text-[#AB3130] text-[1.5rem] mb-1">
-                        {post.title}
-                      </h3>
-                      <div className="mb-[1rem] flex">
-                        <span className="font-medium text-[#AB3130]">
-                          게시글 공개여부
-                        </span>
-                        <BsCheckCircleFill
-                          className={`w-[20px] h-[20px] ml-[1rem] ${
-                            post.isPublic ? "text-[#AB3130]" : "text-gray-300"
-                          }`}
+              {loading ? (
+                <div className="flex justify-center items-center py-20">
+                  <div className="text-[#AB3130] text-lg">로딩 중...</div>
+                </div>
+              ) : error ? (
+                <div className="flex justify-center items-center py-20">
+                  <div className="text-red-500 text-lg">{error}</div>
+                </div>
+              ) : currentPosts.length === 0 ? (
+                <div className="flex justify-center items-center py-20">
+                  <div className="text-gray-500 text-lg">
+                    나의 일기가 없습니다.
+                  </div>
+                </div>
+              ) : (
+                currentPosts.map((post) => (
+                  <div
+                    key={`my-diary-${post.diaryId}`}
+                    className="flex justify-between items-center py-6 border-b border-[#AB3130]"
+                  >
+                    <div className="flex items-center">
+                      {/* 이미지 */}
+                      {post.imageUrl ? (
+                        <img
+                          src={post.imageUrl}
+                          alt={post.title}
+                          className="w-[10rem] h-[8rem] object-cover rounded-[20px] flex-shrink-0"
                         />
-                        <span className="ml-[0.5rem] text-[#AB3130]">
-                          {post.isPublic ? "공개" : "비공개"}
-                        </span>
-                      </div>
-                      <div className="flex items-center text-sm text-gray-700 mb-2">
-                        {post.profileImage ? (
-                          <img
-                            src={post.profileImage}
-                            alt="Profile"
-                            className="w-[2rem] h-[2rem] object-cover rounded-full flex-shrink-0"
+                      ) : (
+                        <div className="w-[10rem] h-[8rem] bg-[#F0F0F0] rounded-[20px] flex-shrink-0"></div>
+                      )}
+
+                      {/* 텍스트 정보 */}
+                      <div className="ml-6 flex-1">
+                        <h3 className="font-semibold text-[#AB3130] text-[1.5rem] mb-1">
+                          {post.title}
+                        </h3>
+                        <div className="mb-[1rem] flex">
+                          <span className="font-medium text-[#AB3130]">
+                            게시글 공개여부
+                          </span>
+                          <BsCheckCircleFill
+                            className={`w-[20px] h-[20px] ml-[1rem] ${
+                              post.isPublic ? "text-[#AB3130]" : "text-gray-300"
+                            }`}
                           />
-                        ) : (
+                          <span className="ml-[0.5rem] text-[#AB3130]">
+                            {post.isPublic ? "공개" : "비공개"}
+                          </span>
+                        </div>
+                        <div className="flex items-center text-sm text-gray-700 mb-2">
                           <img
                             src="/profile.png"
                             alt="Profile"
                             className="w-[2rem] h-[2rem] object-cover rounded-full flex-shrink-0"
                           />
-                        )}
-                        <span className="ml-2">{post.author}</span>
+                          <span className="ml-2">{post.nickname}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* 날짜 */}
-                  <span className="text-sm text-gray-600 flex-shrink-0">
-                    {post.date}
-                  </span>
-                </div>
-              ))}
+                    {/* 날짜 */}
+                    <span className="text-sm text-gray-600 flex-shrink-0">
+                      {post.createdAt}
+                    </span>
+                  </div>
+                ))
+              )}
             </div>
           </section>
 

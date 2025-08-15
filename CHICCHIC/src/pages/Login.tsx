@@ -136,7 +136,7 @@ const Login = () => {
               <span
                 className={`
                   mr-2 w-3 h-3 sm:w-4 sm:h-4
-                  border-2 border-[#AB3130] rounded-full
+                  border-1 border-[#AB3130] rounded-full
                   flex items-center justify-center
                   transition-colors duration-200
                   ${rememberMe ? "bg-[#AB3130]" : "bg-transparent"}

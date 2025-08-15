@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
 import { useNavigate } from 'react-router-dom';
 import { getScrapList } from '../../apis/products';
 import type { Scrap } from '../../types/perfumes';
+import ArrowLeft from '../../assets/icons/arrowLeft.svg';
+import ArrowRight from '../../assets/icons/arrowRight.svg';
 
 const itemsPerPage = 16;
 
@@ -128,23 +129,26 @@ const MyScraps = () => {
           <button
             onClick={() => setPage(Math.max(1, page - 1))}
             disabled={page === 1}
-            className={`p-2 cursor-pointer items-center justify-center transition-all ${
+            className={`p-2 flex items-center justify-center transition-all ${
               page === 1
-                ? "text-white/40 cursor-not-allowed"
-                : "text-white hover:bg-white/10"
+                ? "opacity-40 cursor-not-allowed"
+                : "hover:bg-white/10 cursor-pointer"
             }`}
           >
-            <IoChevronBack size={32} />
+            <img 
+              src={ArrowLeft} 
+              alt="Previous page" 
+              className={`w-8 h-8 brightness-0 invert ${page === 1 ? 'opacity-40' : ''}`}
+            />
           </button>
 
-          {/* 페이지 번호 */}
           {Array.from({ length: endPage - startPage + 1 }, (_, idx) => {
             const pageNumber = startPage + idx;
             return (
               <button
                 key={pageNumber}
                 onClick={() => setPage(pageNumber)}
-                className={`flex box-border items-center justify-center w-[44px] h-11 text-2xl cursor-pointer py-2 px-3 focus:outline-none ${
+                className={`flex box-border items-center justify-center w-[44px] h-11 text-2xl cursor-pointer py-2 px-3 focus:outline-none transition-all ${
                   page === pageNumber
                     ? "bg-[#F7F4EF] text-[#AB3130]"
                     : "text-[#F7F4EF] hover:bg-[#F7F4EF] hover:text-[#AB3130]"
@@ -159,13 +163,17 @@ const MyScraps = () => {
           <button
             onClick={() => setPage(Math.min(totalPages, page + 1))}
             disabled={page === totalPages}
-            className={`w-10 h-10 flex items-center justify-center transition-all ${
+            className={`p-2 flex items-center justify-center transition-all ${
               page === totalPages
-                ? "text-white/40 cursor-not-allowed"
-                : "text-white hover:bg-white/10"
+                ? "opacity-40 cursor-not-allowed"
+                : "hover:bg-white/10 cursor-pointer"
             }`}
           >
-            <IoChevronForward size={32} />
+            <img 
+              src={ArrowRight} 
+              alt="Next page" 
+              className={`w-8 h-8 brightness-0 invert ${page === totalPages ? 'opacity-40' : ''}`}
+            />
           </button>
         </div>
       )}

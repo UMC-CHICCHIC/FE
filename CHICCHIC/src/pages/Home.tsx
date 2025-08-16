@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useAuth } from "../hooks/useAuth";
 import { PerfumeGrid } from "../components/PersonalPerfumeTest/perfume-grid";
 import mainlogo2 from "../assets/images/main-logo.png";
 import mainpage from "../assets/images/mainpage.png";
 import { perfumeStoryMock } from "../mocks/perfumeStroyMock";
 
 export default function Home() {
-  // 인증 상태 확인 (실제로는 Context나 상태관리에서 가져옴)
-  const isAuthenticated = false; // 실제 로그인 상태로 변경
+  // 로그인 여부: useAuth 훅 사용 (서버 검증 포함)
+  const { isLoggedIn, loading: authLoading } = useAuth();
+  const isAuthenticated = isLoggedIn;
   
   // 로딩 상태 관리
   const [isLoading, setIsLoading] = useState(true);
@@ -17,41 +19,58 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 150); // 150ms 후 로딩 완료
+    }, 150);
 
     return () => clearTimeout(timer);
   }, []);
 
+  const storyDetails: Record<string, { summary: string; teaser: string }> = {
+    "ancient-egypt": {
+      summary:
+        "향유와 수지로 만든 초기 향수는 신에게 바치는 공물과 일상 의식에서 사용됐어요.",
+      teaser:
+        "이집트의 제조법은 그리스·로마로 전해져 오늘날 향수 문화의 시작점이 되었습니다.",
+    },
+    "perfume-vs-eau": {
+      summary:
+        "퍼퓸, 오드퍼퓸, EDT는 향료 농도와 지속력이 달라요. 표기만 보고도 차이를 이해할 수 있어요.",
+      teaser:
+        "상황과 취향에 맞게 농도를 고르는 법을 간단한 기준으로 정리했습니다.",
+    },
+    "perfume-longevity": {
+      summary:
+        "오래가는 향이 항상 좋은 건 아닙니다. 계절·피부타입·공간에 따라 적절한 지속력이 달라집니다.",
+      teaser:
+        "나에게 맞는 잔향 길이를 선택하는 체크포인트를 알아보세요.",
+    },
+  };
+
+  const storySubtitles: Record<string, string> = {
+    "ancient-egypt": "향수의 기원과 의식에서의 쓰임",
+    "perfume-vs-eau": "부향률 차이와 선택 가이드",
+    "perfume-longevity": "나에게 맞는 지속력 고르는 법",
+  };
+
   // 로딩 중일 때 스켈레톤 UI 표시
-  if (isLoading) {
+  if (isLoading || authLoading) {
     return (
       <div className="flex flex-col min-h-screen">
         <main className="flex-grow">
-          {/* Hero Section 스켈레톤 */}
           <section className="bg-[#66191F] text-white min-h-screen flex items-center relative overflow-hidden">
             <div className="container relative z-30 px-4 mx-auto sm:px-6 lg:px-8">
               <div className="flex md:translate-x-8 md:-translate-y-10">
                 <div className="w-full py-16 text-center md:w-1/2 md:text-left">
-                  {/* 로고 스켈레톤 */}
                   <div className="w-48 h-48 md:w-60 md:h-60 bg-gray-300/20 rounded-lg mx-auto md:mx-0 md:-ml-20 mb-4 animate-pulse"></div>
-                  
-                  {/* 텍스트 스켈레톤 */}
                   <div className="space-y-4 mb-6">
                     <div className="h-8 bg-gray-300/20 rounded-md w-3/4 mx-auto md:mx-0 animate-pulse"></div>
                     <div className="h-8 bg-gray-300/20 rounded-md w-2/3 mx-auto md:mx-0 animate-pulse"></div>
                     <div className="h-8 bg-gray-300/20 rounded-md w-1/2 mx-auto md:mx-0 animate-pulse"></div>
                   </div>
-                  
-                  {/* 메인 타이틀 스켈레톤 */}
                   <div className="h-20 bg-gray-300/20 rounded-md w-full mb-6 animate-pulse"></div>
-                  
-                  {/* 설명 텍스트 스켈레톤 */}
                   <div className="space-y-2 mb-8">
                     <div className="h-6 bg-gray-300/20 rounded-md w-full animate-pulse"></div>
                     <div className="h-6 bg-gray-300/20 rounded-md w-4/5 animate-pulse"></div>
                   </div>
-                  
-                  {/* 버튼 스켈레톤 */}
                   <div className="flex flex-col items-center justify-center gap-4 sm:flex-row md:justify-start">
                     <div className="h-12 bg-gray-300/20 rounded-md w-48 animate-pulse"></div>
                     <div className="h-12 bg-gray-300/20 rounded-md w-48 animate-pulse"></div>
@@ -59,8 +78,6 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            
-            {/* 로딩 스피너 중앙 배치 */}
             <div className="absolute inset-0 flex items-center justify-center z-40">
               <div className="text-white text-center">
                 <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
@@ -68,8 +85,6 @@ export default function Home() {
               </div>
             </div>
           </section>
-
-          {/* Popular Products Section 스켈레톤 */}
           <section className="py-16 bg-[#F8F5F2]">
             <div className="container px-4 mx-auto">
               <div className="flex items-center justify-between mb-8">
@@ -79,8 +94,6 @@ export default function Home() {
                 </div>
                 <div className="h-6 bg-gray-300 rounded-md w-32 animate-pulse"></div>
               </div>
-              
-              {/* 상품 그리드 스켈레톤 */}
               <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
                 {Array.from({ length: 4 }).map((_, index) => (
                   <div key={index} className="flex flex-col group">
@@ -95,16 +108,12 @@ export default function Home() {
               </div>
             </div>
           </section>
-
-          {/* Personal Perfume Section 스켈레톤 */}
           <section className="py-16 bg-[#F8F5F2]">
             <div className="container px-4 mx-auto">
               <div className="mb-8">
                 <div className="h-10 bg-gray-300 rounded-md w-72 mb-2 animate-pulse"></div>
                 <div className="h-6 bg-gray-300 rounded-md w-96 animate-pulse"></div>
               </div>
-              
-              {/* 콘텐츠 영역 스켈레톤 */}
               <div className="max-w-4xl mx-auto bg-white border-2 border-gray-300 rounded-lg p-10">
                 <div className="text-center space-y-6">
                   <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto animate-pulse"></div>
@@ -118,8 +127,6 @@ export default function Home() {
               </div>
             </div>
           </section>
-
-          {/* Perfume Story Section 스켈레톤 */}
           <section className="pt-8 pb-16 bg-[#F8F5F2]">
             <div className="container px-4 mx-auto">
               <div className="flex items-center justify-between pt-12 mb-8 border-t border-gray-300">
@@ -154,9 +161,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-grow">
-        {/* --- Hero Section --- */}
         <section className="bg-[#66191F] text-white min-h-screen flex items-center relative overflow-hidden">
-          {/* 배경 이미지 레이어 */}
           <img
             src={mainpage}
             alt="CHICCHIC perfume bottle"
@@ -165,7 +170,6 @@ export default function Home() {
 
           <div className="container relative z-30 px-4 mx-auto sm:px-6 lg:px-8">
             <div className="flex md:translate-x-8 md:-translate-y-10">
-              {/* 왼쪽 텍스트 영역 */}
               <div className="w-full py-16 text-center md:w-1/2 md:text-left">
                 <img
                   src={mainlogo2}
@@ -176,8 +180,6 @@ export default function Home() {
                       "brightness(0) saturate(100%) invert(29%) sepia(72%) saturate(1347%) hue-rotate(330deg) brightness(91%) contrast(94%)",
                   }}
                 />
-
-                {/* 텍스트 영역 */}
                 <div className="space-y-2 ">
                   <h2 className="text-2xl md:text-3xl font-light text-[#AB3130]">
                     How to reveal yourself
@@ -377,11 +379,14 @@ export default function Home() {
                   <h3 className="text-2xl font-headline font-bold text-[#AB3130] mb-4">
                     {perfumeStoryMock.posts[0].title} {perfumeStoryMock.posts[0].description}
                   </h3>
+                  <p className="text-lg font-semibold text-[#AB3130] mb-2">
+                    {storySubtitles[perfumeStoryMock.posts[0].id]}
+                  </p>
                   <p className="mb-2 text-muted-foreground">
-                    {perfumeStoryMock.posts[0].description}
+                    {storyDetails[perfumeStoryMock.posts[0].id]?.summary}
                   </p>
                   <p className="text-muted-foreground">
-                    {perfumeStoryMock.posts[0].description}
+                    {storyDetails[perfumeStoryMock.posts[0].id]?.teaser}
                   </p>
                 </div>
               </div>
@@ -401,11 +406,14 @@ export default function Home() {
                   <h3 className="text-2xl font-headline font-bold text-[#AB3130] mb-4">
                     {perfumeStoryMock.posts[1].title} {perfumeStoryMock.posts[1].description}
                   </h3>
+                  <p className="text-lg font-semibold text-[#AB3130] mb-2">
+                    {storySubtitles[perfumeStoryMock.posts[1].id]}
+                  </p>
                   <p className="mb-2 text-muted-foreground">
-                    {perfumeStoryMock.posts[1].description}
+                    {storyDetails[perfumeStoryMock.posts[1].id]?.summary}
                   </p>
                   <p className="text-muted-foreground">
-                    {perfumeStoryMock.posts[1].description}
+                    {storyDetails[perfumeStoryMock.posts[1].id]?.teaser}
                   </p>
                 </div>
               </div>
@@ -425,11 +433,14 @@ export default function Home() {
                   <h3 className="text-2xl font-headline font-bold text-[#AB3130] mb-4">
                     {perfumeStoryMock.posts[2].title} {perfumeStoryMock.posts[2].description}
                   </h3>
+                  <p className="text-lg font-semibold text-[#AB3130] mb-2">
+                    {storySubtitles[perfumeStoryMock.posts[2].id]}
+                  </p>
                   <p className="mb-2 text-muted-foreground">
-                    {perfumeStoryMock.posts[2].description}
+                    {storyDetails[perfumeStoryMock.posts[2].id]?.summary}
                   </p>
                   <p className="text-muted-foreground">
-                    {perfumeStoryMock.posts[2].description}
+                    {storyDetails[perfumeStoryMock.posts[2].id]?.teaser}
                   </p>
                 </div>
               </div>

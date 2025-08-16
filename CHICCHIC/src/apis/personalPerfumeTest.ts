@@ -2,6 +2,8 @@ import { axiosInstance } from "./axiosInstance";
 import type {
   PerfumeTestAnswers,
   SavePerfumeTestAnswersDto,
+  RecommendationRequestDto,
+  RecommendationResponseDto,
 } from "../types/personalPerfumeTest";
 
 // 로그인 토큰 유효성 체크: 사용자 정보 API로 확인
@@ -31,4 +33,14 @@ export const savePerfumeTestAnswers = async (
     body
   );
   return { success: Boolean(data?.success) };
+};
+
+export const getPerfumeRecommendations = async (
+  body: RecommendationRequestDto
+): Promise<RecommendationResponseDto> => {
+  const { data } = await axiosInstance.post<RecommendationResponseDto>(
+  "/test",
+    body
+  );
+  return data;
 };

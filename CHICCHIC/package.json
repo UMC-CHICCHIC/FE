@@ -27,8 +27,8 @@
     "@iconify/react": "^6.0.0",
     "@tailwindcss/postcss": "^4.1.11",
     "@types/node": "^24.2.1",
-    "@types/react": "^19.1.8",
-    "@types/react-dom": "^19.1.6",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^4.5.2",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.29.0",
@@ -39,6 +39,7 @@
     "tailwindcss": "^4.1.11",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.34.1",
+    "vercel": "^45.0.9",
     "vite": "^7.0.3"
   }
 }

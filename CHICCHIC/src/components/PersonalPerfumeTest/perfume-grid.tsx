@@ -1,15 +1,24 @@
-import { useEffect, useState } from "react";
-import { PerfumeCard } from "./perfume-card";
-import type { Perfume } from "../../types/perfumes";
+import { useEffect, useState } from 'react';
+import { PerfumeCard } from './perfume-card';
+import { popularPerfumesMock } from '../../mocks/popularPerfumes';
+import { axiosInstance } from '../../apis/axiosInstance';
+import type { Perfume } from '../../types/perfumes';
 
 // API 응답에 대한 타입 정의
+interface TopNote {
+  noteId: number;
+  name: string;
+}
+
 interface ApiPerfume {
   id: number;
   name: string;
+  topNote: TopNote[];
   baseNote: string;
   middleNote: string;
   price: number;
   itemRating: number;
+  imageUrl: string;
 }
 
 export function PerfumeGrid() {
@@ -20,16 +29,14 @@ export function PerfumeGrid() {
   useEffect(() => {
     const fetchPopularPerfumes = async () => {
       try {
-        const response = await fetch(
-          `${import.meta.env.VITE_SERVER_API_URL}/home/popular-products`
-        );
-        if (!response.ok) {
-          console.error("API 요청 실패:", response);
-          throw new Error(
-            `향수 정보를 불러오는데 실패했습니다. (상태 코드: ${response.status})`
-          );
+        // Mock 데이터를 사용할지 여부를 설정합니다.
+        const useMock = false;
+        if (useMock) {
+          setPerfumes(popularPerfumesMock);
+          return;
         }
-        const data = await response.json();
+
+  const { data } = await axiosInstance.get('/home/popular-products');
 
         // API 응답이 객체이고 result 속성에 배열이 담겨있습니다.
         const perfumeList: ApiPerfume[] = data.result;
@@ -39,18 +46,16 @@ export function PerfumeGrid() {
         }
 
         // API 데이터를 PerfumeCard가 사용하는 Perfume 타입으로 변환
-        const formattedPerfumes: Perfume[] = perfumeList
-          .slice(0, 4)
-          .map((p) => ({
-            id: p.id,
-            name: p.name,
-            brand: "브랜드 정보 없음", // API에 브랜드 정보가 없으므로 기본값 설정
-            imageUrl: "https://placehold.co/400x500.png", // API에 이미지 URL이 없으므로 Placeholder 사용
-            description: `Middle: ${p.middleNote}, Base: ${p.baseNote}`,
-            purchaseUrl: "#",
-            notes: [p.middleNote, p.baseNote],
-            price: p.price,
-          }));
+        const formattedPerfumes: Perfume[] = perfumeList.slice(0, 4).map((p) => ({
+          id: p.id,
+          name: p.name,
+          brand: '브랜드 정보 없음', // API에 브랜드 정보가 없으므로 기본값 설정
+          imageUrl: p.imageUrl, // API에서 제공하는 이미지 URL 사용
+          description: `Middle: ${p.middleNote}, Base: ${p.baseNote}`,
+          purchaseUrl: '#',
+          notes: [p.middleNote, p.baseNote],
+          price: p.price,
+        }));
 
         setPerfumes(formattedPerfumes);
       } catch (e) {

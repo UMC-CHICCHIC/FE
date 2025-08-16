@@ -1,5 +1,5 @@
 import { Outlet, useLocation, Navigate } from "react-router-dom";
-import { memo, useMemo, Suspense } from "react";
+import { Suspense } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import CommunityTabBar from "../components/Community/CommunityTabBar";
@@ -11,30 +11,25 @@ interface BaseLayoutProps {
   protectedRoute?: boolean;
 }
 
-const BaseLayout = memo(({ protectedRoute = false }: BaseLayoutProps) => {
-  const { isLoggedIn, isRefreshing } = useAuth();
+const BaseLayout = ({ protectedRoute = false }: BaseLayoutProps) => {
+  const { isLoggedIn, isRefreshing, isInitialized } = useAuth();
   const location = useLocation();
 
-  const isCommunityPage = useMemo(
-    () => location.pathname.startsWith("/community"),
-    [location.pathname]
-  );
+  const isCommunityPage = location.pathname.startsWith("/community");
 
-  const authGuard = useMemo(() => {
-    if (!protectedRoute) return null;
+  // 토큰 검증/갱신 중 간단한 스피너 로딩
+  if (protectedRoute && (!isInitialized || isRefreshing)) {
+    return (
+      <div className="bg-[#F7F4EF] min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#AB3130]" />
+      </div>
+    );
+  }
 
-    if (isRefreshing) {
-      return <LoadingSkeleton />;
-    }
-
-    if (!isLoggedIn) {
-      return <Navigate to="/login" state={{ from: location }} replace />;
-    }
-
-    return null;
-  }, [protectedRoute, isRefreshing, isLoggedIn, location]);
-
-  if (authGuard) return authGuard;
+  if (protectedRoute && !isLoggedIn) {
+    const fromPath = `${location.pathname}${location.search ?? ""}`;
+    return <Navigate to="/login" state={{ from: fromPath }} replace />;
+  }
 
   return (
     <div className="bg-[#F7F4EF] min-h-screen flex flex-col">
@@ -49,7 +44,7 @@ const BaseLayout = memo(({ protectedRoute = false }: BaseLayoutProps) => {
       <Footer />
     </div>
   );
-});
+};
 
 BaseLayout.displayName = "BaseLayout";
 

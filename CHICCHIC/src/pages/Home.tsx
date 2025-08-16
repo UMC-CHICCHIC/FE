@@ -8,14 +8,11 @@ import mainpage from "../assets/images/mainpage.png";
 import { perfumeStoryMock } from "../mocks/perfumeStroyMock";
 
 export default function Home() {
-  // 로그인 여부: useAuth 훅 사용 (서버 검증 포함)
   const { isLoggedIn, loading: authLoading } = useAuth();
   const isAuthenticated = isLoggedIn;
   
-  // 로딩 상태 관리
   const [isLoading, setIsLoading] = useState(true);
 
-  // 컴포넌트 마운트 시 로딩 시뮬레이션
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);

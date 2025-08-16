@@ -224,14 +224,14 @@ export default function Test() {
       case 0:
         return (
           <div className="w-full text-center">
-            <h1 className="text-4xl font-headline font-bold text-[#AB3130] mb-4">
+            <h1 className="text-4xl font-headline font-semibold text-[#AB3130] mb-4 mt-10">
               Personal Perfume Test
             </h1>
-            <p className="text-lg text-[#AB3130] mb-8">
+            <p className="text-lg text-[#AB3130] mb-10">
               퍼스널 향수 추천 테스트
             </p>
-            <div className="w-50 h-0.5 bg-[#AB3130] mx-auto mb-8 sm:w-100"></div>
-            <div className="max-w-md mx-auto mb-8 space-y-2">
+            <div className="w-50 h-px bg-[#AB3130] mx-auto mb-10 sm:w-100"></div>
+            <div className="max-w-md mx-auto mb-10 space-y-2">
               <p className="text-[#AB3130]/80">
                 무슨 향수가 나에게 어울리는지 잘 모르겠다면
               </p>
@@ -240,10 +240,10 @@ export default function Test() {
               </p>
               <p className="text-[#AB3130]/80">CHICCHIC이 추천 해드릴게요!</p>
             </div>
-            <div className="flex flex-col justify-center max-w-md gap-4 mx-auto sm:flex-row">
+            <div className="mt-12 justify-center max-w-md gap-4 mx-auto">
               <button
                 onClick={handleStart}
-                className="w-full text-center px-6 py-3 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
+                className="text-center px-10 py-2 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
               >
                 테스트 시작하기
               </button>
@@ -509,9 +509,9 @@ export default function Test() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-pink-200 via-pink-100 to-orange-100">
-      <main className="container flex items-start justify-center flex-grow px-4 py-8 mx-auto">
-        <div className="bg-[#F4F4EF] p-8 sm:p-12 rounded-2xl shadow-2xl border border-[#AB3130]/10 w-full max-w-3xl">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-[#F7F4EF]/100 via-[#D88EA7]/70 to-[#EAC6D0]/50">
+      <main className="container flex items-start justify-center flex-grow px-4 py-20 mx-auto">
+        <div className="bg-[#F4F4EF]/80 backdrop-blur-md p-8 sm:p-12 rounded-2xl shadow-2xl border-2 border-[#E8BCBB] w-full max-w-3xl">
           {/* Progress Bar */}
           {step > 0 && step <= 7 && !showResults && !isLoading && (
             <div className="mb-6">

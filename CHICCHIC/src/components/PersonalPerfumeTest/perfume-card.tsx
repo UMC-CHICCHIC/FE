@@ -17,7 +17,7 @@ export function PerfumeCard({ perfume }: PerfumeCardProps) {
         <img
           src={perfume.imageUrl}
           alt={perfume.name}
-          className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
+          className="relative aspect-[4/5] w-full overflow-hidden mb-4 bg-gray-200 transition-transform duration-200 hover:scale-103"
           style={{ aspectRatio: "4/5" }}
           data-ai-hint="perfume bottle"
         />

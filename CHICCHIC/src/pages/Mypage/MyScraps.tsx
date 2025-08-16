@@ -94,7 +94,7 @@ const MyScraps = () => {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 cursor-pointer">
             {scraps.map((perfume, index) => (
               <div
                 key={`${perfume.id}-${index}`}
@@ -119,7 +119,7 @@ const MyScraps = () => {
                     {perfume.brand}
                   </div>
                   <div className="sm:flex sm:justify-between">
-                    <div className="mb-2 text-2xl font-semibold line-clamp-2">
+                    <div className="mb-2 text-2xl font-semibold line-clamp-2 hover:underline">
                       {perfume.name}
                     </div>
                     <div className="text-lg font-extralight">

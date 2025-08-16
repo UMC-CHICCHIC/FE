@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import popularproducts from '../../assets/images/popularproducts.png';
+import { axiosInstance } from '../../apis/axiosInstance';
 
-// API 응답에 대한 타입 정의
 interface TopNote {
   noteId: number;
   name: string;
@@ -27,21 +27,13 @@ const PopularPerfumeId: React.FC = () => {
   useEffect(() => {
     const fetchPopularPerfumes = async () => {
       try {
-        const response = await fetch(
-          'https://be-chicchicenvironments.up.railway.app/home/popular-products',
-        );
-        if (!response.ok) {
-          throw new Error(`향수 정보를 불러오는데 실패했습니다. (상태 코드: ${response.status})`);
-        }
-        const data = await response.json();
-        
-        // API 응답이 객체이고 result 속성에 배열이 담겨있습니다.
+        const { data } = await axiosInstance.get('/home/popular-products');
         const perfumeList: ApiPerfume[] = data.result;
-        
+
         if (!Array.isArray(perfumeList)) {
           throw new Error('API 응답 형식이 올바르지 않습니다 (배열이 아님).');
         }
-        
+
         setPerfumes(perfumeList);
       } catch (e) {
         console.error('향수 정보를 불러오는 중 오류 발생:', e);

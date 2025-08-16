@@ -4,10 +4,11 @@ import { useState, useEffect } from "react";
 import { PerfumeGrid } from "../components/PersonalPerfumeTest/perfume-grid";
 import mainlogo2 from "../assets/images/main-logo.png";
 import mainpage from "../assets/images/mainpage.png";
+import { perfumeStoryMock } from "../mocks/perfumeStroyMock";
 
 export default function Home() {
   // 인증 상태 확인 (실제로는 Context나 상태관리에서 가져옴)
-  const isAuthenticated = true; // 실제 로그인 상태로 변경
+  const isAuthenticated = false; // 실제 로그인 상태로 변경
   
   // 로딩 상태 관리
   const [isLoading, setIsLoading] = useState(true);
@@ -328,7 +329,7 @@ export default function Home() {
                     </span>
                   </p>
                   <Link
-                    to="/personal-perfume/test"
+                    to="/login"
                     className="bg-[#AB3130] text-white px-6 py-3 md:px-8 md:py-4 lg:px-10 lg:py-4 xl:px-12 xl:py-5 rounded-full hover:bg-[#8B2829] transition-colors font-semibold inline-block text-base md:text-lg lg:text-xl xl:text-2xl"
                   >
                     퍼스널 향수 추천 테스트 진행하기
@@ -352,7 +353,7 @@ export default function Home() {
                 </p>
               </div>
               <Link
-                to="/PerfumeStory"
+                to="/community/story"
                 className="text-[#AB3130] font-semibold flex items-center gap-1 text-xl"
               >
                 <span>향수 이야기에서 더 다양한 소식 확인하기</span>
@@ -364,9 +365,9 @@ export default function Home() {
               <div className="flex flex-col items-center gap-8 md:flex-row md:gap-12">
                 <div className="w-full md:w-1/2">
                   <img
-                    src="https://placehold.co/600x400.png"
+                    src={perfumeStoryMock.posts[0].imageUrl}
                     data-ai-hint="ancient egypt perfume"
-                    alt="History of perfume in ancient Egypt"
+                    alt={perfumeStoryMock.posts[0].imageAlt}
                     width={600}
                     height={400}
                     className="object-cover w-full rounded-lg"
@@ -374,13 +375,13 @@ export default function Home() {
                 </div>
                 <div className="w-full text-left md:w-1/2">
                   <h3 className="text-2xl font-headline font-bold text-[#AB3130] mb-4">
-                    신들의 향기, 고대 이집트에서 시작된 향수의 역사
+                    {perfumeStoryMock.posts[0].title} {perfumeStoryMock.posts[0].description}
                   </h3>
                   <p className="mb-2 text-muted-foreground">
-                    내용요약내용요약내용요약내용요약내용요약내용요약내용요약
+                    {perfumeStoryMock.posts[0].description}
                   </p>
                   <p className="text-muted-foreground">
-                    내용요약내용요약내용요약내용요약내용요약내용요약내용요약
+                    {perfumeStoryMock.posts[0].description}
                   </p>
                 </div>
               </div>
@@ -388,9 +389,9 @@ export default function Home() {
               <div className="flex flex-col items-center gap-8 md:flex-row md:gap-12">
                 <div className="w-full md:w-1/2">
                   <img
-                    src="https://placehold.co/600x400.png"
+                    src={perfumeStoryMock.posts[1].imageUrl}
                     data-ai-hint="ancient egypt perfume"
-                    alt="History of perfume in ancient Egypt"
+                    alt={perfumeStoryMock.posts[1].imageAlt}
                     width={600}
                     height={400}
                     className="object-cover w-full rounded-lg"
@@ -398,13 +399,13 @@ export default function Home() {
                 </div>
                 <div className="w-full text-left md:w-1/2">
                   <h3 className="text-2xl font-headline font-bold text-[#AB3130] mb-4">
-                    제목제목
+                    {perfumeStoryMock.posts[1].title} {perfumeStoryMock.posts[1].description}
                   </h3>
                   <p className="mb-2 text-muted-foreground">
-                    내용요약내용요약내용요약내용요약내용요약내용요약내용요약
+                    {perfumeStoryMock.posts[1].description}
                   </p>
                   <p className="text-muted-foreground">
-                    내용요약내용요약내용요약내용요약내용요약내용요약내용요약
+                    {perfumeStoryMock.posts[1].description}
                   </p>
                 </div>
               </div>
@@ -412,9 +413,9 @@ export default function Home() {
               <div className="flex flex-col items-center gap-8 md:flex-row md:gap-12">
                 <div className="w-full md:w-1/2">
                   <img
-                    src="https://placehold.co/600x400.png"
+                    src={perfumeStoryMock.posts[2].imageUrl}
                     data-ai-hint="perfume bottle art"
-                    alt="Perfume story placeholder"
+                    alt={perfumeStoryMock.posts[2].imageAlt}
                     width={600}
                     height={400}
                     className="object-cover w-full bg-gray-300 rounded-lg"
@@ -422,13 +423,13 @@ export default function Home() {
                 </div>
                 <div className="w-full text-left md:w-1/2">
                   <h3 className="text-2xl font-headline font-bold text-[#AB3130] mb-4">
-                    제목제목제목제목
+                    {perfumeStoryMock.posts[2].title} {perfumeStoryMock.posts[2].description}
                   </h3>
                   <p className="mb-2 text-muted-foreground">
-                    내용요약내용요약내용요약내용요약내용요약내용요약내용요약
+                    {perfumeStoryMock.posts[2].description}
                   </p>
                   <p className="text-muted-foreground">
-                    내용요약내용요약내용요약내용요약내용요약내용요약내용요약
+                    {perfumeStoryMock.posts[2].description}
                   </p>
                 </div>
               </div>

@@ -1,14 +1,49 @@
 import { ArrowLeft } from "lucide-react";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { perfumes } from "../../types/perfumetypes";
+import { checkAuthToken, getPerfumeTestAnswers } from "../../apis/personalPerfumeTest";
+import type { PerfumeTestAnswers } from "../../types/personalPerfumeTest";
 
 // 타입 정의는 향수 추천 로직에서 사용할 때 필요시 추가
 
 export default function Test() {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [step, setStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const [initLoading, setInitLoading] = useState(true);
+  const [prevAnswers, setPrevAnswers] = useState<PerfumeTestAnswers | null>(null);
+
+  // 초기 진입 시: 로그인 토큰 체크 -> 과거 답변 조회 -> UI 처리
+  useEffect(() => {
+    const init = async () => {
+      setInitLoading(true);
+      const isValid = await checkAuthToken();
+      if (!isValid) {
+        // 로그인 필요: 로그인 페이지로 이동, 돌아올 경로 전달
+        navigate("/login", { replace: true, state: { from: location.pathname } });
+        return;
+      }
+
+      // 로그인 유효 -> 과거 답변 조회
+      try {
+        const answers = await getPerfumeTestAnswers();
+        if (answers) {
+          setPrevAnswers(answers);
+          setShowResults(true); // 과거 답변이 있으면 결과 화면으로 진입
+        }
+      } catch (e) {
+        // 조회 실패는 테스트 진행으로 계속
+        console.warn("Failed to load previous perfume test answers", e);
+      } finally {
+        setInitLoading(false);
+      }
+    };
+    void init();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleNext = () => {
     if (step < 7) {
@@ -43,6 +78,21 @@ export default function Test() {
   };
 
   const renderStep = () => {
+    if (initLoading) {
+      return (
+        <div className="w-full text-center">
+          <img
+            src="/src/assets/images/main-logo.png"
+            alt="CHICCHIC Logo"
+            width="60"
+            height="85"
+            className="mx-auto mb-4"
+          />
+          <h3 className="text-xl font-bold text-[#AB3130] mb-4">CHICCHIC</h3>
+          <p className="text-[#AB3130]/80">초기화 중입니다…</p>
+        </div>
+      );
+    }
     if (isLoading) {
       return (
         <div className="w-full text-center">
@@ -67,6 +117,12 @@ export default function Test() {
           <h2 className="text-2xl font-bold text-[#AB3130] mb-6">
             테스트 결과 CHICCHIC이 추천하는 향수들이에요!
           </h2>
+
+          {prevAnswers && (
+            <div className="max-w-2xl mx-auto mb-6 p-3 rounded-lg bg-[#AB3130]/10 text-[#AB3130] text-sm">
+              과거 테스트 답변을 불러왔어요. 아래 추천은 이전 응답을 기반으로 합니다.
+            </div>
+          )}
 
           {/* 5개의 향수 세로 나열 */}
           <div className="flex flex-col gap-4 max-w-2xl mx-auto mb-8">
@@ -103,7 +159,7 @@ export default function Test() {
 
           <div className="flex flex-col justify-center gap-4 sm:flex-row max-w-md mx-auto">
             <Link
-              to="/personal-perfume-test"
+              to="/personal-perfume/test"
               className="w-full sm:w-auto text-center py-3 px-6 rounded-full border border-[#AB3130]/50 text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors shadow-md"
             >
               다시 테스트하기

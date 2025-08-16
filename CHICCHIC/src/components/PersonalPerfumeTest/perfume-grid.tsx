@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { PerfumeCard } from './perfume-card';
 import { popularPerfumesMock } from '../../mocks/popularPerfumes';
+import { axiosInstance } from '../../apis/axiosInstance';
 import type { Perfume } from '../../types/perfumes';
 
 // API 응답에 대한 타입 정의
@@ -35,14 +36,7 @@ export function PerfumeGrid() {
           return;
         }
 
-        const response = await fetch(
-          'https://be-chicchicenvironments.up.railway.app/home/popular-products',
-        );
-        if (!response.ok) {
-          console.error('API 요청 실패:', response);
-          throw new Error(`향수 정보를 불러오는데 실패했습니다. (상태 코드: ${response.status})`);
-        }
-        const data = await response.json();
+  const { data } = await axiosInstance.get('/home/popular-products');
 
         // API 응답이 객체이고 result 속성에 배열이 담겨있습니다.
         const perfumeList: ApiPerfume[] = data.result;

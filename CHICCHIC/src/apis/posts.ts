@@ -36,11 +36,9 @@ export const getConsultPostDetail = async (
 ): Promise<ResponseConsultDetailDto> => {
   try {
     console.log("게시글 상세", consultPostId);
+    // 상세 조회는 path parameter로 id를 전달하므로 별도의 params 객체는 필요 없습니다.
     const { data } = await axiosInstance.get<ResponseConsultDetailDto>(
-      `/consult-posts/${consultPostId}`,
-      {
-        params: consultPostId,
-      }
+      `/consult-posts/${consultPostId}`
     );
     console.log("요청보냄");
     return data;

@@ -15,8 +15,9 @@ const BaseLayout = ({ protectedRoute = false }: BaseLayoutProps) => {
   const isCommunityPage = location.pathname.startsWith("/community");
 
   if (protectedRoute && !isLoggedIn) {
-    // 로그인 안 되어 있으면 로그인 페이지로 리디렉션
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    // 로그인 안 되어 있으면 로그인 페이지로 리디렉션 (문자열 경로만 전달)
+    const fromPath = `${location.pathname}${location.search ?? ""}`;
+    return <Navigate to="/login" state={{ from: fromPath }} replace />;
   }
 
   return (

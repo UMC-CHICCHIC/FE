@@ -60,11 +60,18 @@ export const getConsultPostHome =
 export const getConsultPostDetail = async (
   consultPostId: number
 ): Promise<ResponseConsultDetailDto> => {
-  const { data } = await axiosInstance.get<ResponseConsultDetailDto>(
-    `/consult-posts/${consultPostId}`
-  );
-  console.log("요청보냄");
-  return data;
+  try {
+    console.log("게시글 상세", consultPostId);
+    // 상세 조회는 path parameter로 id를 전달하므로 별도의 params 객체는 필요 없습니다.
+    const { data } = await axiosInstance.get<ResponseConsultDetailDto>(
+      `/consult-posts/${consultPostId}`
+    );
+    console.log("요청보냄");
+    return data;
+  } catch (e) {
+    console.error("요청 실패", e);
+    throw e;
+  }
 };
 
 // 향수 추천 상담소 게시글 포스트

@@ -28,7 +28,7 @@ export function ProductCard({
         <img
           src={imageUrl}
           alt={name}
-          className="object-cover max-w-[260px] max-h-[300px] transition-transform duration-300 shadow cursor-pointer hover:scale-110 active:scale-105"
+          className="object-cover max-w-[260px] max-h-[300px] transition-transform duration-300 shadow cursor-pointer hover:scale-103"
           loading="lazy" // 이미지 로딩 UX 향상
         />
       </div>

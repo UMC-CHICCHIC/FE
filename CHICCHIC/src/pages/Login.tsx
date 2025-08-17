@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import loginimg from "../assets/images/login-image.png";
+import { useLocation, useNavigate } from "react-router-dom";
 import google from "../assets/images/google-logo.png";
 import kakao from "../assets/images/kakao-logo.png";
 import naver from "../assets/images/naver-logo.png";
@@ -10,6 +10,8 @@ import { useAuth } from "../hooks/useAuth";
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const fromPath = (location.state as { from?: string } | null)?.from || "/";
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -43,7 +45,8 @@ const Login = () => {
 
       login(user);
 
-      navigate("/");
+  // 로그인 성공: 이전 페이지가 있으면 해당 경로로, 없으면 홈으로
+  navigate(fromPath, { replace: true });
     } catch (error: any) {
       setLoginError("아이디 또는 비밀번호가 올바르지 않습니다.");
       console.error("로그인 에러:", error);

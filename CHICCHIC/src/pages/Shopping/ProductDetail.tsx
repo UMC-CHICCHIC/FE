@@ -14,16 +14,22 @@ import { ReviewList } from "../../components/Product/ReviewList";
 const ProductDetail = () => {
   const [selectTab, setSelectTab] = useState<"DETAILS" | "REVIEW">("DETAILS");
   const [openAccordion, setOpenAccordion] = useState<number | null>(null);
-  const { id } = useParams<{ id: string }>();
+  const { perfumeId: urlPerfumeId } = useParams<{ perfumeId: string }>();
   const { perfumeId, setPerfumeId } = useProductStore();
-  const { data, isLoading, error } = useGetProductDetail(perfumeId!);
 
   // 페이지 진입 시 store에 id 저장
   useEffect(() => {
-    if (id) setPerfumeId(Number(id));
-  }, [id, setPerfumeId]);
+    if (urlPerfumeId) {
+      setPerfumeId(Number(urlPerfumeId));
+    }
+  }, [urlPerfumeId, setPerfumeId]);
+
+  const { data, isLoading, error } = useGetProductDetail(
+    perfumeId ?? undefined
+  );
 
   if (isLoading) return <div className="p-6">로딩중…</div>;
+  if (error) return <div className="p-6">상품 정보를 불러오지 못했어요.</div>;
 
   // 아코디언 카테고리
   const accordionItems = [

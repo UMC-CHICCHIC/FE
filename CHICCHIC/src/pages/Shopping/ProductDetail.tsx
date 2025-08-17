@@ -10,12 +10,14 @@ import { useGetProductDetail } from "../../hooks/queries/useGetProduct";
 import { useParams } from "react-router-dom";
 import ReviewForm from "../../components/Product/ReviewForm";
 import { ReviewList } from "../../components/Product/ReviewList";
+import { postScrap, deleteScrap, getScrapList } from "../../apis/products";
 
 const ProductDetail = () => {
   const [selectTab, setSelectTab] = useState<"DETAILS" | "REVIEW">("DETAILS");
   const [openAccordion, setOpenAccordion] = useState<number | null>(null);
   const { perfumeId: urlPerfumeId } = useParams<{ perfumeId: string }>();
   const { perfumeId, setPerfumeId } = useProductStore();
+  const [isScrapped, setIsScrapped] = useState(false); // 스크랩 상태
 
   // 페이지 진입 시 store에 id 저장
   useEffect(() => {
@@ -27,6 +29,36 @@ const ProductDetail = () => {
   const { data, isLoading, error } = useGetProductDetail(
     perfumeId ?? undefined
   );
+  
+  // 스크랩 여부 확인
+  useEffect(() => {
+    const fetchScrapStatus = async () => {
+      if (!perfumeId) return;
+      try {
+        const scrapList = await getScrapList();
+        const exists = scrapList.result.some((item: any) => item.id === perfumeId);
+        setIsScrapped(exists);
+      } catch (e) {
+        console.error("스크랩 상태 불러오기 실패:", e);
+      }
+    };
+    fetchScrapStatus();
+  }, [perfumeId]);
+  
+  const handleScrapToggle = async () => {
+    if (!perfumeId) return;
+    try {
+      if (isScrapped) {
+        await deleteScrap(perfumeId);
+        setIsScrapped(false);
+      } else {
+        await postScrap(perfumeId);
+        setIsScrapped(true);
+      }
+    } catch (e) {
+      console.error("스크랩 실패:", e);
+    }
+  };
 
   if (isLoading) return <div className="p-6">로딩중…</div>;
   if (error) return <div className="p-6">상품 정보를 불러오지 못했어요.</div>;
@@ -188,13 +220,20 @@ const ProductDetail = () => {
       )}
       {/* 스크랩 및 홈페이지 라우팅 버튼 */}
       <div className="flex flex-col items-center justify-center w-full max-w-5xl gap-2 py-12 mx-auto md:flex-row">
-        <button className="flex flex-1 w-full hover:bg-[#AB3130]/10 items-center justify-center gap-2 sm:gap-4 border border-[#AB3130] text-[#AB3130] rounded-full py-2 px-8 text-xl sm:text-[32px] font-[pretendard] cursor-pointer">
+        <button 
+          onClick={handleScrapToggle}
+          className={`flex flex-1 w-full items-center justify-center gap-2 sm:gap-4 border rounded-full py-2 px-8 text-xl sm:text-[32px] font-[pretendard] cursor-pointer transition-colors ${
+            isScrapped 
+              ? 'bg-[#AB3130] text-[#F7F4EF] border-[#AB3130] hover:bg-[#AB3130]' 
+              : 'border-[#AB3130] text-[#AB3130] hover:bg-[#AB3130]/10'
+          }`}
+        >
           <img
             src={BookmarkIcon}
-            className="sm:w-[22px] sm:h-[28.7px] w-6 h-6"
+            className={`sm:w-[22px] sm:h-[28.7px] w-6 h-6 ${isScrapped ? 'filter brightness-0 invert' : ''}`}
             alt="스크랩"
           />
-          스크랩
+          {isScrapped ? '스크랩됨' : '스크랩'}
         </button>
         <button
           className="flex flex-1 items-center justify-center hover:bg-[#66191F] bg-[#AB3130] text-[#F7F4EF] rounded-full py-2 px-8 text-xl sm:text-[32px] w-full font-[pretendard] font-light cursor-pointer"

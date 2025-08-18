@@ -10,7 +10,7 @@ import { perfumeStoryMock } from "../mocks/perfumeStroyMock";
 export default function Home() {
   const { isLoggedIn, loading: authLoading } = useAuth();
   const isAuthenticated = isLoggedIn;
-  
+
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -37,8 +37,7 @@ export default function Home() {
     "perfume-longevity": {
       summary:
         "오래가는 향이 항상 좋은 건 아닙니다. 계절·피부타입·공간에 따라 적절한 지속력이 달라집니다.",
-      teaser:
-        "나에게 맞는 잔향 길이를 선택하는 체크포인트를 알아보세요.",
+      teaser: "나에게 맞는 잔향 길이를 선택하는 체크포인트를 알아보세요.",
     },
   };
 
@@ -57,27 +56,27 @@ export default function Home() {
             <div className="container relative z-30 px-4 mx-auto sm:px-6 lg:px-8">
               <div className="flex md:translate-x-8 md:-translate-y-10">
                 <div className="w-full py-16 text-center md:w-1/2 md:text-left">
-                  <div className="w-48 h-48 md:w-60 md:h-60 bg-gray-300/20 rounded-lg mx-auto md:mx-0 md:-ml-20 mb-4 animate-pulse"></div>
-                  <div className="space-y-4 mb-6">
-                    <div className="h-8 bg-gray-300/20 rounded-md w-3/4 mx-auto md:mx-0 animate-pulse"></div>
-                    <div className="h-8 bg-gray-300/20 rounded-md w-2/3 mx-auto md:mx-0 animate-pulse"></div>
-                    <div className="h-8 bg-gray-300/20 rounded-md w-1/2 mx-auto md:mx-0 animate-pulse"></div>
+                  <div className="w-48 h-48 mx-auto mb-4 rounded-lg md:w-60 md:h-60 bg-gray-300/20 md:mx-0 md:-ml-20 animate-pulse"></div>
+                  <div className="mb-6 space-y-4">
+                    <div className="w-3/4 h-8 mx-auto rounded-md bg-gray-300/20 md:mx-0 animate-pulse"></div>
+                    <div className="w-2/3 h-8 mx-auto rounded-md bg-gray-300/20 md:mx-0 animate-pulse"></div>
+                    <div className="w-1/2 h-8 mx-auto rounded-md bg-gray-300/20 md:mx-0 animate-pulse"></div>
                   </div>
-                  <div className="h-20 bg-gray-300/20 rounded-md w-full mb-6 animate-pulse"></div>
-                  <div className="space-y-2 mb-8">
-                    <div className="h-6 bg-gray-300/20 rounded-md w-full animate-pulse"></div>
-                    <div className="h-6 bg-gray-300/20 rounded-md w-4/5 animate-pulse"></div>
+                  <div className="w-full h-20 mb-6 rounded-md bg-gray-300/20 animate-pulse"></div>
+                  <div className="mb-8 space-y-2">
+                    <div className="w-full h-6 rounded-md bg-gray-300/20 animate-pulse"></div>
+                    <div className="w-4/5 h-6 rounded-md bg-gray-300/20 animate-pulse"></div>
                   </div>
                   <div className="flex flex-col items-center justify-center gap-4 sm:flex-row md:justify-start">
-                    <div className="h-12 bg-gray-300/20 rounded-md w-48 animate-pulse"></div>
-                    <div className="h-12 bg-gray-300/20 rounded-md w-48 animate-pulse"></div>
+                    <div className="w-48 h-12 rounded-md bg-gray-300/20 animate-pulse"></div>
+                    <div className="w-48 h-12 rounded-md bg-gray-300/20 animate-pulse"></div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="absolute inset-0 flex items-center justify-center z-40">
-              <div className="text-white text-center">
-                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-white mx-auto mb-4"></div>
+            <div className="absolute inset-0 z-40 flex items-center justify-center">
+              <div className="text-center text-white">
+                <div className="w-16 h-16 mx-auto mb-4 border-b-2 border-white rounded-full animate-spin"></div>
                 <p className="text-xl">페이지를 불러오는 중입니다...</p>
               </div>
             </div>
@@ -86,16 +85,16 @@ export default function Home() {
             <div className="container px-4 mx-auto">
               <div className="flex items-center justify-between mb-8">
                 <div>
-                  <div className="h-10 bg-gray-300 rounded-md w-64 mb-2 animate-pulse"></div>
+                  <div className="w-64 h-10 mb-2 bg-gray-300 rounded-md animate-pulse"></div>
                   <div className="h-6 bg-gray-300 rounded-md w-80 animate-pulse"></div>
                 </div>
-                <div className="h-6 bg-gray-300 rounded-md w-32 animate-pulse"></div>
+                <div className="w-32 h-6 bg-gray-300 rounded-md animate-pulse"></div>
               </div>
               <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
                 {Array.from({ length: 4 }).map((_, index) => (
                   <div key={index} className="flex flex-col group">
                     <div className="relative aspect-[4/5] w-full overflow-hidden mb-4 bg-gray-300 animate-pulse rounded-lg" />
-                    <div className="text-left space-y-2">
+                    <div className="space-y-2 text-left">
                       <div className="w-3/4 h-6 mb-1 bg-gray-300 rounded animate-pulse" />
                       <div className="w-1/2 h-4 bg-gray-300 rounded animate-pulse" />
                       <div className="w-1/3 h-4 bg-gray-300 rounded animate-pulse" />
@@ -108,18 +107,18 @@ export default function Home() {
           <section className="py-16 bg-[#F8F5F2]">
             <div className="container px-4 mx-auto">
               <div className="mb-8">
-                <div className="h-10 bg-gray-300 rounded-md w-72 mb-2 animate-pulse"></div>
+                <div className="h-10 mb-2 bg-gray-300 rounded-md w-72 animate-pulse"></div>
                 <div className="h-6 bg-gray-300 rounded-md w-96 animate-pulse"></div>
               </div>
-              <div className="max-w-4xl mx-auto bg-white border-2 border-gray-300 rounded-lg p-10">
-                <div className="text-center space-y-6">
-                  <div className="w-24 h-24 bg-gray-300 rounded-full mx-auto animate-pulse"></div>
-                  <div className="h-8 bg-gray-300 rounded-md w-3/4 mx-auto animate-pulse"></div>
+              <div className="max-w-4xl p-10 mx-auto bg-white border-2 border-gray-300 rounded-lg">
+                <div className="space-y-6 text-center">
+                  <div className="w-24 h-24 mx-auto bg-gray-300 rounded-full animate-pulse"></div>
+                  <div className="w-3/4 h-8 mx-auto bg-gray-300 rounded-md animate-pulse"></div>
                   <div className="space-y-2">
-                    <div className="h-6 bg-gray-300 rounded-md w-full animate-pulse"></div>
-                    <div className="h-6 bg-gray-300 rounded-md w-5/6 mx-auto animate-pulse"></div>
+                    <div className="w-full h-6 bg-gray-300 rounded-md animate-pulse"></div>
+                    <div className="w-5/6 h-6 mx-auto bg-gray-300 rounded-md animate-pulse"></div>
                   </div>
-                  <div className="h-12 bg-gray-300 rounded-full w-64 mx-auto animate-pulse"></div>
+                  <div className="w-64 h-12 mx-auto bg-gray-300 rounded-full animate-pulse"></div>
                 </div>
               </div>
             </div>
@@ -128,22 +127,25 @@ export default function Home() {
             <div className="container px-4 mx-auto">
               <div className="flex items-center justify-between pt-12 mb-8 border-t border-gray-300">
                 <div>
-                  <div className="h-10 bg-gray-300 rounded-md w-64 mb-2 animate-pulse"></div>
-                  <div className="h-6 bg-gray-300 rounded-md w-48 animate-pulse"></div>
+                  <div className="w-64 h-10 mb-2 bg-gray-300 rounded-md animate-pulse"></div>
+                  <div className="w-48 h-6 bg-gray-300 rounded-md animate-pulse"></div>
                 </div>
                 <div className="h-6 bg-gray-300 rounded-md w-80 animate-pulse"></div>
               </div>
-              
+
               <div className="space-y-16">
                 {Array.from({ length: 3 }).map((_, index) => (
-                  <div key={index} className="flex flex-col items-center gap-8 md:flex-row md:gap-12">
+                  <div
+                    key={index}
+                    className="flex flex-col items-center gap-8 md:flex-row md:gap-12"
+                  >
                     <div className="w-full md:w-1/2">
                       <div className="w-full h-64 bg-gray-300 rounded-lg animate-pulse"></div>
                     </div>
-                    <div className="w-full md:w-1/2 space-y-4">
-                      <div className="h-8 bg-gray-300 rounded-md w-4/5 animate-pulse"></div>
-                      <div className="h-5 bg-gray-300 rounded-md w-full animate-pulse"></div>
-                      <div className="h-5 bg-gray-300 rounded-md w-5/6 animate-pulse"></div>
+                    <div className="w-full space-y-4 md:w-1/2">
+                      <div className="w-4/5 h-8 bg-gray-300 rounded-md animate-pulse"></div>
+                      <div className="w-full h-5 bg-gray-300 rounded-md animate-pulse"></div>
+                      <div className="w-5/6 h-5 bg-gray-300 rounded-md animate-pulse"></div>
                     </div>
                   </div>
                 ))}
@@ -205,7 +207,7 @@ export default function Home() {
                     <>
                       <Link
                         to="/login"
-                        className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-[#AB3130]/80 rounded-md text-base font-semibold text-white hover:bg-[#D9A0A0] transition-colors w-full sm:w-auto"
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-[#AB3130]/80 rounded-md text-base font-semibold text-white hover:bg-[#66191F] transition-colors w-full sm:w-auto"
                       >
                         <span>로그인/회원가입</span>
                         <ChevronRight className="w-5 h-5" />
@@ -223,14 +225,14 @@ export default function Home() {
                     <>
                       <Link
                         to="/mypage"
-                        className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-[#AB3130]/80 rounded-md text-base font-semibold text-white hover:bg-[#D9A0A0] transition-colors w-full sm:w-auto"
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-[#AB3130]/80 rounded-md text-base font-semibold text-white hover:bg-[#66191F] transition-colors w-full sm:w-auto"
                       >
                         <span>마이페이지</span>
                         <ChevronRight className="w-5 h-5" />
                       </Link>
                       <Link
                         to="/personal-perfume/test"
-                        className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-[#AB3130]/80 rounded-md text-base font-semibold text-white hover:bg-[#D9A0A0] transition-colors w-full sm:w-auto"
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-[#AB3130]/80 rounded-md text-base font-semibold text-white hover:bg-[#66191F] transition-colors w-full sm:w-auto"
                       >
                         <span>퍼스널 향수 테스트</span>
                         <ChevronRight className="w-5 h-5" />
@@ -374,7 +376,8 @@ export default function Home() {
                 </div>
                 <div className="w-full text-left md:w-1/2">
                   <h3 className="text-2xl font-headline font-bold text-[#AB3130] mb-4">
-                    {perfumeStoryMock.posts[0].title} {perfumeStoryMock.posts[0].description}
+                    {perfumeStoryMock.posts[0].title}{" "}
+                    {perfumeStoryMock.posts[0].description}
                   </h3>
                   <p className="text-lg font-semibold text-[#AB3130] mb-2">
                     {storySubtitles[perfumeStoryMock.posts[0].id]}
@@ -401,7 +404,8 @@ export default function Home() {
                 </div>
                 <div className="w-full text-left md:w-1/2">
                   <h3 className="text-2xl font-headline font-bold text-[#AB3130] mb-4">
-                    {perfumeStoryMock.posts[1].title} {perfumeStoryMock.posts[1].description}
+                    {perfumeStoryMock.posts[1].title}{" "}
+                    {perfumeStoryMock.posts[1].description}
                   </h3>
                   <p className="text-lg font-semibold text-[#AB3130] mb-2">
                     {storySubtitles[perfumeStoryMock.posts[1].id]}
@@ -428,7 +432,8 @@ export default function Home() {
                 </div>
                 <div className="w-full text-left md:w-1/2">
                   <h3 className="text-2xl font-headline font-bold text-[#AB3130] mb-4">
-                    {perfumeStoryMock.posts[2].title} {perfumeStoryMock.posts[2].description}
+                    {perfumeStoryMock.posts[2].title}{" "}
+                    {perfumeStoryMock.posts[2].description}
                   </h3>
                   <p className="text-lg font-semibold text-[#AB3130] mb-2">
                     {storySubtitles[perfumeStoryMock.posts[2].id]}

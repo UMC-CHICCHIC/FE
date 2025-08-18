@@ -147,13 +147,6 @@ export const getScrapList = async (): Promise<ResponseScrapListDto> => {
 };
 
 // 상품 스크랩 추가
-// export const createScrap = async (
-//   productId: number
-// ): Promise<ResponseScrapDto> => {
-
-// };
-
-// 상품 스크랩 추가
 export const postScrap = async (
   productId: number
 ): Promise<ResponseScrapDto> => {

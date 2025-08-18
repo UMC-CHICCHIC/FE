@@ -29,14 +29,14 @@ const ProductDetail = () => {
   const { data, isLoading, error } = useGetProductDetail(
     perfumeId ?? undefined
   );
-  
+
   // 스크랩 여부 확인
   useEffect(() => {
     const fetchScrapStatus = async () => {
       if (!perfumeId) return;
       try {
         const scrapList = await getScrapList();
-        const exists = scrapList.result.some((item: any) => item.id === perfumeId);
+        const exists = scrapList.result.some((item) => item.id === perfumeId);
         setIsScrapped(exists);
       } catch (e) {
         console.error("스크랩 상태 불러오기 실패:", e);
@@ -44,7 +44,7 @@ const ProductDetail = () => {
     };
     fetchScrapStatus();
   }, [perfumeId]);
-  
+
   const handleScrapToggle = async () => {
     if (!perfumeId) return;
     try {
@@ -220,20 +220,22 @@ const ProductDetail = () => {
       )}
       {/* 스크랩 및 홈페이지 라우팅 버튼 */}
       <div className="flex flex-col items-center justify-center w-full max-w-5xl gap-2 py-12 mx-auto md:flex-row">
-        <button 
+        <button
           onClick={handleScrapToggle}
           className={`flex flex-1 w-full items-center justify-center gap-2 sm:gap-4 border rounded-full py-2 px-8 text-xl sm:text-[32px] font-[pretendard] cursor-pointer transition-colors ${
-            isScrapped 
-              ? 'bg-[#AB3130] text-[#F7F4EF] border-[#AB3130] hover:bg-[#AB3130]' 
-              : 'border-[#AB3130] text-[#AB3130] hover:bg-[#AB3130]/10'
+            isScrapped
+              ? "bg-[#AB3130] text-[#F7F4EF] border-[#AB3130] hover:bg-[#AB3130]"
+              : "border-[#AB3130] text-[#AB3130] hover:bg-[#AB3130]/10"
           }`}
         >
           <img
             src={BookmarkIcon}
-            className={`sm:w-[22px] sm:h-[28.7px] w-6 h-6 ${isScrapped ? 'filter brightness-0 invert' : ''}`}
+            className={`sm:w-[22px] sm:h-[28.7px] w-6 h-6 ${
+              isScrapped ? "filter brightness-0 invert" : ""
+            }`}
             alt="스크랩"
           />
-          {isScrapped ? '스크랩됨' : '스크랩'}
+          {isScrapped ? "스크랩됨" : "스크랩"}
         </button>
         <button
           className="flex flex-1 items-center justify-center hover:bg-[#66191F] bg-[#AB3130] text-[#F7F4EF] rounded-full py-2 px-8 text-xl sm:text-[32px] w-full font-[pretendard] font-light cursor-pointer"

@@ -40,7 +40,7 @@ const ShoppingHome = () => {
 
   const list = data?.result.content ?? [];
   const totalPages = data?.result.totalPages ?? 1;
-  const currentPage = (data?.result.number ?? productPage - 1) + 1;
+  const currentPage = data?.result.number ?? productPage - 1;
 
   return (
     <div className="flex flex-col min-h-screen items-center p-4 space-y-8 bg-[#F7F4EF]">
@@ -105,7 +105,7 @@ const ShoppingHome = () => {
               <button
                 type="button"
                 key={label}
-                className={`px-2 py-1 rounded ${
+                className={`px-2 py-1 rounded cursor-pointer ${
                   active ? "font-bold" : "hover:underline"
                 }`}
                 onClick={() => {
@@ -143,7 +143,6 @@ const ShoppingHome = () => {
           totalPages={totalPages}
           onChange={(n) => {
             setProductPage(n);
-            window.scrollTo({ top: 0, behavior: "smooth" });
           }}
           windowSize={5}
           isLoading={isLoading}

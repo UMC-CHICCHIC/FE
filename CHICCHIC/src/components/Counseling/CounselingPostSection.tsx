@@ -30,7 +30,14 @@ const PostSection = ({ category }: PostSectionProps) => {
           : data?.result.content.map((post) => (
               <li
                 key={post.consultPostId}
-                className="flex justify-between items-end border-b border-[#AB3130] py-4"
+                onClick={() => {
+                  setCategory(category);
+                  setConsultPostId(post.consultPostId);
+                  navigate(
+                    `/community/recommendation/list/${post.consultPostId}`
+                  );
+                }}
+                className="flex justify-between items-end border-b border-[#AB3130] py-4 hover:bg-[#f5f1ee] transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-8">
                   {post.imageUrl ? (
@@ -57,7 +64,7 @@ const PostSection = ({ category }: PostSectionProps) => {
                     </button>
                     <div className="flex items-center space-x-4">
                       <img
-                        src={"/profile.png"}
+                        src="/profile.png"
                         alt="프로필"
                         className="object-cover w-6 h-6 rounded-full sm:w-12 sm:h-12"
                       />

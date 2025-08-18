@@ -5,6 +5,7 @@ import {
   getProductReview,
   getCategories,
   getPerfumeList,
+  getScrapList,
 } from "../../apis/products";
 import type {
   GetProductsParams,
@@ -51,5 +52,15 @@ export function useGetProductList(params: GetProductsParams) {
     queryFn: () => getPerfumeList(params),
     placeholderData: keepPreviousData,
     staleTime: 1000 * 60 * 3,
+  });
+}
+
+// 스크랩 상태 확인 (isScrapped)
+export function useScrapStatus(perfumeId: number) {
+  return useQuery({
+    queryKey: [QUERY_KEY.scraps],
+    queryFn: getScrapList,
+    select: (res) => res.result.some((i) => i.id === perfumeId),
+    enabled: !!perfumeId,
   });
 }

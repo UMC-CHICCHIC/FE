@@ -91,7 +91,7 @@ const PerfumePage = () => {
           </h2>
           <button
             onClick={handleNewDiaryButton}
-            className="bg-[#AB3130] cursor-pointer text-[#FFFFFF] px-[1.5rem] py-[0.75rem] text-[20px] border-none rounded-full"
+            className="bg-[#AB3130] cursor-pointer text-[#FFFFFF] px-[1.5rem] py-[0.75rem] transition hover:bg-[#66191F] text-[20px] border-none rounded-full"
           >
             새 일기 작성하기
           </button>
@@ -116,12 +116,12 @@ const PerfumePage = () => {
             </div>
             <ul>
               {loading ? (
-                <div className="flex justify-center items-center py-10">
+                <div className="flex items-center justify-center py-10">
                   <div className="text-[#AB3130] text-lg">로딩 중...</div>
                 </div>
               ) : publicPosts.length === 0 ? (
-                <div className="flex justify-center items-center py-10">
-                  <div className="text-gray-500 text-lg">
+                <div className="flex items-center justify-center py-10">
+                  <div className="text-lg text-gray-500">
                     공개 게시글이 없습니다.
                   </div>
                 </div>
@@ -181,12 +181,12 @@ const PerfumePage = () => {
             </div>
             <ul>
               {myLoading ? (
-                <div className="flex justify-center items-center py-10">
+                <div className="flex items-center justify-center py-10">
                   <div className="text-[#AB3130] text-lg">로딩 중...</div>
                 </div>
               ) : myPosts.length === 0 ? (
-                <div className="flex justify-center items-center py-10">
-                  <div className="text-gray-500 text-lg">
+                <div className="flex items-center justify-center py-10">
+                  <div className="text-lg text-gray-500">
                     나의 일기가 없습니다.
                   </div>
                 </div>

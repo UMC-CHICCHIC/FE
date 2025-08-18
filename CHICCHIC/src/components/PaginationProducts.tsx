@@ -47,7 +47,7 @@ export function PaginationProducts({
       <button
         type="button"
         onClick={() => go(current - 1)}
-        className="p-2 cursor-pointer disabled:opacity-40"
+        className="p-2 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
         disabled={!canPrev}
       >
         <img src={LeftArrowIcon} alt="이전" width={10} />
@@ -61,7 +61,7 @@ export function PaginationProducts({
             go(p);
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
-          className={`flex items-center justify-center w-[44px] h-11 text-2xl py-2 px-3 focus:outline-none ${
+          className={`flex items-center justify-center w-[44px] h-11 text-2xl py-2 px-3 focus:outline-none cursor-pointer ${
             p === current
               ? "bg-[#AB3130] text-white"
               : "text-[#AB3130] hover:bg-[#AB3130] hover:text-white"
@@ -76,7 +76,7 @@ export function PaginationProducts({
       <button
         type="button"
         onClick={() => go(current + 1)}
-        className="p-2 cursor-pointer disabled:opacity-40"
+        className="p-2 cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
         disabled={!canNext}
       >
         <img src={RightArrowIcon} alt="다음" width={10} />

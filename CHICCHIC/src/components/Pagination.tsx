@@ -38,11 +38,7 @@ export function Pagination({
     if (n < 1) return;
     if (n === page) return;
     onChange(n);
-    window.scrollTo({ top: 0, behavior: "smooth" });
   };
-
-  // 페이지가 1이고 다음도 없으면 숨김
-  if (page === 1 && !hasNext) return null;
 
   return (
     <nav className="flex items-center gap-2">

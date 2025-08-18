@@ -17,6 +17,7 @@ export const QUERY_KEY = {
   products: "products",
   perfumes: "perfumes",
   scraps: "scraps",
+  reviews: "reviews",
   perfumeStories: "perfumeStories",
   consultComments: "consultComments",
 };

@@ -1,5 +1,6 @@
 import type { PostCategory } from "../types/enums/category";
 import type {
+  ProductReview,
   RequestProductReviewDto,
   ResponseProductReviewDto,
   ResponseScrapDto,
@@ -63,20 +64,15 @@ export const getProductReview = async (
   perfumeId: number,
   page = 1,
   size = 10
-): Promise<ResponseProductReviewDto> => {
-  try {
-    console.log("요청 params", perfumeId, page, size);
-    const { data } = await axiosInstance.get<ResponseProductReviewDto>(
-      `/perfumes/${perfumeId}/reviews`,
-      {
-        params: { page, size },
-      }
-    );
-    return data ?? [];
-  } catch (e) {
-    console.error("요청 실패", e);
-    throw e;
-  }
+): Promise<ProductReview[]> => {
+  console.log("요청 params", perfumeId, page, size);
+  const { data } = await axiosInstance.get<ResponseProductReviewDto>(
+    `/perfumes/${perfumeId}/reviews`,
+    {
+      params: { page, size },
+    }
+  );
+  return data.result ?? [];
 };
 
 // 상품 리뷰 생성
@@ -135,15 +131,8 @@ export const updateProductReview = async (
 
 // 스크랩 목록 조회
 export const getScrapList = async (): Promise<ResponseScrapListDto> => {
-  try {
-    console.log("스크랩 목록 조회 요청");
-    const { data } = await axiosInstance.get<ResponseScrapListDto>("/scrap");
-    console.log("스크랩 목록 조회 성공", data);
-    return data;
-  } catch (e) {
-    console.error("스크랩 목록 조회 실패", e);
-    throw e;
-  }
+  const { data } = await axiosInstance.get<ResponseScrapListDto>("/scrap");
+  return data;
 };
 
 // 상품 스크랩 추가

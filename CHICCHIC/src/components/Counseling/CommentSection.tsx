@@ -38,7 +38,7 @@ export default function ConsultCommentsSection({
 
       <div className="flex flex-col mt-6">
         {groups.length === 0 ? (
-          <p className="py-8 text-gray-500">첫 번째 댓글을 남겨보세요.</p>
+          <p className="py-8 text-[#AB3130]">첫 번째 댓글을 남겨보세요.</p>
         ) : (
           groups.map((g) => (
             <div key={g.groupId} className="py-8 border-b">

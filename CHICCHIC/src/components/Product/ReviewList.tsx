@@ -24,7 +24,7 @@ export const ReviewList = ({ perfumeId, size }: ReviewListProps) => {
     isLoading,
     isError,
     error,
-  } = useGetProductReview(perfumeId, presentPage, size);
+  } = useGetProductReview(perfumeId, presentPage, (size = 3));
 
   const hasNext = data.length === size;
 
@@ -92,7 +92,7 @@ export const ReviewList = ({ perfumeId, size }: ReviewListProps) => {
           hasNext={hasNext}
           onChange={setPresentPage}
           windowSize={5}
-          lookAhead={1} // 다음 페이지 번호(2, 3…) 미리 노출
+          lookAhead={1} // 다음 페이지 번호(2, 3..) 미리 노출
           isLoading={isLoading}
         />
       )}

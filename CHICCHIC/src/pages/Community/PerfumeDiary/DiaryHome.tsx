@@ -143,7 +143,7 @@ const PerfumePage = () => {
                         <div className="w-[10rem] h-[8rem] bg-[#F0F0F0] object-cover border-none rounded-[20px]"></div>
                       )}
                       <div>
-                        <h3 className="font-semibold text-[#AB3130] text-[1.5rem] mb-2 ml-[0.5rem]">
+                        <h3 className="font-semibold text-[#AB3130] text-[1.5rem] mb-2 ml-[0.5rem] hover:underline">
                           {post.title}
                         </h3>
                         <div className="flex items-center text-sm ml-[0.5rem] text-gray-700">

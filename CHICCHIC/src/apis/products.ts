@@ -80,17 +80,11 @@ export const createProductReview = async (
   perfumeId: number,
   body: RequestProductReviewDto
 ): Promise<ResponseUpdateReviewDto> => {
-  try {
-    console.log("생성 요청 성공");
-    const { data } = await axiosInstance.post<ResponseUpdateReviewDto>(
-      `/perfumes/${perfumeId}/reviews`,
-      body
-    );
-    return data;
-  } catch (e) {
-    console.error("생성 요청 실패", e);
-    throw e;
-  }
+  const { data } = await axiosInstance.post<ResponseUpdateReviewDto>(
+    `/perfumes/${perfumeId}/reviews`,
+    body
+  );
+  return data;
 };
 
 // 상품 리뷰 삭제
@@ -98,16 +92,10 @@ export const deleteProductReview = async (
   perfumeId: number,
   reviewId: number
 ): Promise<void> => {
-  try {
-    console.log("삭제 요청 성공");
-    const { data } = await axiosInstance.delete(
-      `/perfumes/${perfumeId}/reviews/${reviewId}`
-    );
-    return data.result;
-  } catch (e) {
-    console.error("삭제 요청 실패", e);
-    throw e;
-  }
+  const { data } = await axiosInstance.delete(
+    `/perfumes/${perfumeId}/reviews/${reviewId}`
+  );
+  return data.result;
 };
 
 // 상품 리뷰 수정
@@ -116,17 +104,11 @@ export const updateProductReview = async (
   reviewId: number,
   body: RequestProductReviewDto
 ): Promise<ResponseUpdateReviewDto> => {
-  try {
-    console.log("수정 요청 성공");
-    const { data } = await axiosInstance.put<ResponseUpdateReviewDto>(
-      `/perfumes/${perfumeId}/reviews/${reviewId}`,
-      body
-    );
-    return data;
-  } catch (e) {
-    console.error("수정 요청 실패", e);
-    throw e;
-  }
+  const { data } = await axiosInstance.put<ResponseUpdateReviewDto>(
+    `/perfumes/${perfumeId}/reviews/${reviewId}`,
+    body
+  );
+  return data;
 };
 
 // 스크랩 목록 조회

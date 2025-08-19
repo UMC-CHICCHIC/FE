@@ -1,9 +1,8 @@
 import { useState } from "react";
 import type { Consult } from "../../types/post";
 import { DateTimeFormat, HoursTimeFormat } from "../../utils/dateTimeFormat"; // ← 경로 조정
-import { ReplyFormat } from "./ReplyFormat";
+import { ReplyFormat } from "./ReplyFormat"; // 기존 컴포저 재사용
 import { useImgUploadStore } from "../../store/useProfileImg";
-import { ReplyItem } from "./ReplyItem";
 
 type Props = {
   item: Consult; // 답글 데이터
@@ -16,7 +15,7 @@ type Props = {
   }) => Promise<void> | void;
 };
 
-export function CommentItem({
+export function ReplyItem({
   item,
   level = 0,
   groupId,
@@ -30,7 +29,7 @@ export function CommentItem({
 
   const avatarSize = isParent ? "w-12 h-12" : "w-10 h-10";
   const containerIndent = isParent ? "" : "ml-5";
-  const nameRowText = isParent ? "font-medium" : "text-sm text-gray-600";
+  const nameRowText = isParent ? "font-medium" : "text-sm text-[#AB3130]";
 
   return (
     <div className={`flex ${containerIndent}`}>
@@ -41,9 +40,8 @@ export function CommentItem({
           <span className={isParent ? "font-medium" : "font-medium"}>
             {item.nickname}
           </span>
-          <span className={!isParent ? "" : "hidden"}>·</span>
           <time
-            className={!isParent ? "text-gray-500" : "text-[#66191F] text-sm"}
+            className={!isParent ? "text-[#AB3130]" : "text-[#66191F] text-md"}
           ></time>
         </div>
 
@@ -58,7 +56,7 @@ export function CommentItem({
 
         {/* 액션 영역(부모 전용) */}
         {isParent && (
-          <div className="text-[#66191F] space-x-8 text-sm pb-2">
+          <div className="text-[#66191F] space-x-8 text-md pb-2">
             <span>
               {DateTimeFormat(item.dateTime)} {HoursTimeFormat(item.dateTime)}
             </span>

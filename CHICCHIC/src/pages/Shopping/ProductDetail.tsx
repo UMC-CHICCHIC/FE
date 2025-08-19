@@ -5,6 +5,7 @@ import note3Img from "../../assets/images/sampleNote3.png";
 import { ProductAccordion } from "../../components/Product/ProductAccordion";
 import { ProductAccordionItem } from "../../components/Product/ProductAccordionItem";
 import BookmarkIcon from "../../assets/icons/Bookmark.svg";
+import BookmarkFull from "../../assets/icons/BookmarkFull.svg";
 import { useProductStore } from "../../store/useProductStore";
 import {
   useGetProductDetail,
@@ -151,27 +152,26 @@ const ProductDetail = () => {
                 </div>
                 <div className="flex flex-col items-center justify-center text-[#F7F4EF] w-full text-[32px] gap-16 md:flex-row md:items-start">
                   {/* Top Note */}
-                  {data?.result.topNote.map((note) => (
-                    <div
-                      key={note.noteId}
-                      className="flex flex-col items-center text-center w-[345px]"
-                    >
-                      <img
-                        src={note1Img}
-                        alt={note1Img}
-                        className="w-full max-h-[232px] object-cover"
-                      />
-                      <div className="mt-4 tracking-wide" key={note.name}>
-                        {note.name}
+                  <div className="flex flex-col items-center text-center w-[345px]">
+                    <img
+                      src={note1Img}
+                      alt={note1Img}
+                      className="w-full h-[232px] object-cover"
+                    />
+                    {data?.result.topNote.map((note) => (
+                      <div key={note.noteId}>
+                        <div className="tracking-wide" key={note.name}>
+                          {note.name}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                   {/* Middle Note */}
                   <div className="flex flex-col items-center text-center w-[345px]">
                     <img
                       src={note2Img}
                       alt={note2Img}
-                      className="w-full max-h-[232px] object-cover flex-none"
+                      className="w-full h-[232px] object-cover flex-none"
                     />
                     <div className="tracking-wide">
                       {data?.result.middleNote}
@@ -182,7 +182,7 @@ const ProductDetail = () => {
                     <img
                       src={note3Img}
                       alt={note3Img}
-                      className="w-full max-h-[232px] object-cover"
+                      className="w-full h-[232px] object-cover"
                     />
                     <div className="tracking-wide">{data?.result.baseNote}</div>
                   </div>
@@ -199,20 +199,18 @@ const ProductDetail = () => {
         <button
           onClick={() => toggle(isScrapped)}
           disabled={isMutating}
-          className={`flex flex-1 w-full items-center justify-center gap-2 sm:gap-4 border rounded-full py-2 px-8 text-xl sm:text-[32px] font-[pretendard] cursor-pointer transition-colors ${
+          className={`flex flex-1 w-full items-center justify-center gap-2 sm:gap-4 border rounded-full text-[#AB3130] py-2 px-8 text-xl sm:text-[32px] font-[pretendard] cursor-pointer transition-colors ${
             isScrapped
-              ? "bg-[#AB3130] text-[#F7F4EF] border-[#AB3130] hover:bg-[#AB3130]"
-              : "border-[#AB3130] text-[#AB3130] hover:bg-[#AB3130]/10"
+              ? "border-[#AB3130] hover:bg-[#AB3130]/10"
+              : "border-[#AB3130] hover:bg-[#AB3130]/10"
           }`}
         >
           <img
-            src={BookmarkIcon}
-            className={`sm:w-[22px] sm:h-[28.7px] w-6 h-6 ${
-              isScrapped ? "filter brightness-0 invert" : ""
-            }`}
+            src={isScrapped ? BookmarkFull : BookmarkIcon}
+            className={`sm:w-[22px] sm:h-[28.7px] w-6 h-6`}
             alt="스크랩"
           />
-          {isScrapped ? "스크랩됨" : "스크랩"}
+          스크랩
         </button>
         <button
           className="flex flex-1 items-center justify-center hover:bg-[#66191F] bg-[#AB3130] text-[#F7F4EF] rounded-full py-2 px-8 text-xl sm:text-[32px] w-full font-[pretendard] font-light cursor-pointer"

@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import { useGetProductReview } from "../../hooks/queries/useGetProduct";
 import kebab from "../../assets/icons/kebab.svg";
 import { GetStarRating } from "./getStarRating";
-import type { Rating } from "../../types/perfumes";
+import type { ProductReview, Rating } from "../../types/perfumes";
 import { ReviewTimeFormat } from "../../utils/dateTimeFormat";
 import { Pagination } from "../Pagination";
+import { ReviewEdit } from "./ReviewEdit";
+import { useAuth } from "../../hooks/useAuth";
 
 interface ReviewListProps {
   perfumeId: number;
@@ -14,6 +16,26 @@ interface ReviewListProps {
 
 export const ReviewList = ({ perfumeId, size }: ReviewListProps) => {
   const [presentPage, setPresentPage] = useState(1);
+  const [reviewEdit, setReviewEdit] = useState<number | null>(null);
+  const { isLoggedIn, user } = useAuth() as {
+    isLoggedIn: boolean;
+    user?: { memberId?: number; nickname?: string };
+  };
+
+  const handleReviewEdit = (review: ProductReview) => {
+    if (!isLoggedIn) {
+      alert("로그인이 필요한 서비스 입니다.");
+      return;
+    }
+    // 리뷰 편집 닉네임 비교
+    const isOwner = user?.nickname && review?.memberNickname === user?.nickname;
+
+    if (user && !isOwner) {
+      alert("본인 리뷰만 수정 가능합니다");
+      return;
+    }
+    setReviewEdit((prev) => (prev === review.id ? null : review.id));
+  };
 
   useEffect(() => {
     setPresentPage(1);
@@ -48,11 +70,9 @@ export const ReviewList = ({ perfumeId, size }: ReviewListProps) => {
           ))}
         </ul>
       )}
-
       {!isLoading && data.length === 0 && (
         <p className="text-[#AB3130]">아직 리뷰가 없습니다.</p>
       )}
-
       {!isLoading &&
         data.map((review) => (
           <div
@@ -71,16 +91,31 @@ export const ReviewList = ({ perfumeId, size }: ReviewListProps) => {
                   </p>
                 )}
               </div>
-              <div className="flex flex-col w-40 items-end gap-4 text-[#AB3130]">
+              <div className="flex flex-col w-40 items-end gap-4 text-[#AB3130] relative">
                 <span className="text-sm sm:text-[20px] font-light">
                   {ReviewTimeFormat(review.createdAt)}
                 </span>
-                <button
-                  className="flex flex-col items-center justify-center"
-                  aria-label="more"
-                >
-                  <img src={kebab} alt="kebab" className="w-2" />
-                </button>
+                <div className="z-10 flex flex-row">
+                  <div className="relative flex">
+                    {/* 편집 폼을 absolute로 설정 */}
+                    {reviewEdit === review.id && (
+                      <div className="absolute z-0 mt-2 -top-4 right-6">
+                        <ReviewEdit
+                          perfumeId={perfumeId}
+                          reviewId={review.id}
+                          // onOpenEdit={}
+                          // onDone={}
+                        />
+                      </div>
+                    )}
+                    <button
+                      className="flex flex-col items-center justify-center px-2 cursor-pointer"
+                      onClick={() => handleReviewEdit(review)}
+                    >
+                      <img src={kebab} alt="kebab" className="w-2" />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

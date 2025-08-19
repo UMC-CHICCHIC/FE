@@ -8,6 +8,7 @@ import { ReviewTimeFormat } from "../../utils/dateTimeFormat";
 import { Pagination } from "../Pagination";
 import { ReviewEdit } from "./ReviewEdit";
 import { useAuth } from "../../hooks/useAuth";
+import { ReviewEditForm } from "./ReviewEditForm";
 
 interface ReviewListProps {
   perfumeId: number;
@@ -17,11 +18,17 @@ interface ReviewListProps {
 export const ReviewList = ({ perfumeId, size }: ReviewListProps) => {
   const [presentPage, setPresentPage] = useState(1);
   const [reviewEdit, setReviewEdit] = useState<number | null>(null);
+  const [editTarget, setEditTarget] = useState<{
+    id: number;
+    content: string;
+    rating: Rating;
+  } | null>(null);
   const { isLoggedIn, user } = useAuth() as {
     isLoggedIn: boolean;
     user?: { memberId?: number; nickname?: string };
   };
 
+  // 리뷰 수정 토글
   const handleReviewEdit = (review: ProductReview) => {
     if (!isLoggedIn) {
       alert("로그인이 필요한 서비스 입니다.");
@@ -36,6 +43,19 @@ export const ReviewList = ({ perfumeId, size }: ReviewListProps) => {
     }
     setReviewEdit((prev) => (prev === review.id ? null : review.id));
   };
+
+  // 리뷰 수정 폼
+  const openEditForm = (review: ProductReview) => {
+    setEditTarget({
+      id: review.id,
+      content: review.content ?? "",
+      rating: (review.rating as Rating) ?? 0,
+    });
+    setReviewEdit(null); // 메뉴 닫기
+  };
+
+  // 수정 폼 닫기
+  const closeEditForm = () => setEditTarget(null);
 
   useEffect(() => {
     setPresentPage(1);
@@ -103,8 +123,8 @@ export const ReviewList = ({ perfumeId, size }: ReviewListProps) => {
                         <ReviewEdit
                           perfumeId={perfumeId}
                           reviewId={review.id}
-                          // onOpenEdit={}
-                          // onDone={}
+                          onOpenEdit={() => openEditForm(review)}
+                          onDone={closeEditForm}
                         />
                       </div>
                     )}
@@ -118,6 +138,18 @@ export const ReviewList = ({ perfumeId, size }: ReviewListProps) => {
                 </div>
               </div>
             </div>
+            {/* 인라인 수정 폼 */}
+            {editTarget?.id === review.id && (
+              <div>
+                <ReviewEditForm
+                  perfumeId={perfumeId}
+                  reviewId={editTarget.id}
+                  defaultContent={editTarget.content}
+                  defaultRating={editTarget.rating}
+                  onClose={closeEditForm}
+                />
+              </div>
+            )}
           </div>
         ))}
 

@@ -24,6 +24,7 @@ export const ReviewEdit = ({
       onSuccess: () => {
         alert("리뷰가 삭제되었습니다.");
         onDone?.();
+        window.location.reload();
       },
       onError: (e) => {
         alert(`삭제 실패 : ${e.message ?? "잠시 후 다시 시도해주세요"}`);

@@ -1,41 +1,52 @@
+// /hooks/mutations/usePerfumeScrap.ts
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
-import { createScrap, deleteScrap } from "../../apis/products";
+import { deleteScrap, postScrap } from "../../apis/products";
 import { QUERY_KEY } from "../../constants/key";
+import type { ResponseScrapDto } from "../../types/perfumes";
 
-interface useUpdateScrapProps {
-  productId: number;
-  scrapped: boolean;
-}
-
-export function useUpdateScrap({ productId, scrapped }: useUpdateScrapProps) {
+// 스크랩 post
+export function useUpdateScrap(perfumeId: number) {
   const queryClient = useQueryClient();
-  const [isScrapped, setIsSrapped] = useState<boolean>(scrapped);
 
-  const add = useMutation({
-    mutationFn: () => createScrap(productId),
-    onSuccess: () => {
-      setIsSrapped(true);
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.scraps, productId],
-      });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.products] });
-    },
+  const invalidate = () => {
+    // 스크랩 목록
+    queryClient.invalidateQueries({ queryKey: [QUERY_KEY.scraps] });
+    // 제품 상태
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEY.products, "detail", perfumeId],
+    });
+    // 제품 목록
+    queryClient.invalidateQueries({
+      queryKey: [QUERY_KEY.products, "list"],
+    });
+  };
+
+  // 추가
+  const add = useMutation<ResponseScrapDto, Error, void>({
+    mutationFn: () => postScrap(perfumeId),
+    onSuccess: invalidate,
   });
-  const remove = useMutation({
-    mutationFn: () => deleteScrap(productId),
-    onSuccess: () => {
-      setIsSrapped(false);
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.scraps, productId],
-      });
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.products] });
-    },
+
+  // 삭제
+  const remove = useMutation<ResponseScrapDto, Error, void>({
+    mutationFn: () => deleteScrap(perfumeId),
+    onSuccess: invalidate,
   });
+
+  const toggle = (scrapped: boolean) => {
+    if (add.isPending || remove.isPending) return; // 중복 클릭 방지
+    if (scrapped) {
+      remove.mutate();
+    } else {
+      add.mutate();
+    }
+  };
+
   return {
-    isScrapped,
-    toggle: () => (isScrapped ? remove.mutate() : add.mutate()),
-    isLoading: add.isPending || remove.isPending,
-    error: add.error ?? remove.error,
+    add,
+    remove,
+    toggle,
+    isMutating: add.isPending || remove.isPending,
+    error: add.error ?? remove.error ?? null,
   };
 }

@@ -20,7 +20,6 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 w-full bg-[#AB3130] text-[#F7F4EF] font-[pretendard] px-2 sm:px-4 py-2 sm:py-3">
       <div className="flex items-center h-12 sm:h-16">
-        {/* 로고 */}
         <div className="flex items-center flex-shrink-0">
           <img
             src={mainlogo}
@@ -30,7 +29,6 @@ const Navbar = () => {
           />
         </div>
 
-        {/* 데스크탑 메뉴 */}
         <ul className="hidden lg:flex items-center ml-8 xl:ml-16 space-x-4 xl:space-x-6 text-sm xl:text-base font-light flex-shrink-0">
           {navbarMenu.map((item) => (
             <li key={item.path}>
@@ -46,7 +44,6 @@ const Navbar = () => {
 
         <div className="flex-grow"></div>
 
-        {/* 검색바 */}
         <div className="relative hidden md:block mr-2 sm:mr-4">
           <input
             type="text"
@@ -72,7 +69,6 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* 아이콘들 - 항상 표시 */}
         <div className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
           <button onClick={() => handleNavigate('/mypage/scraps')} className="hover:text-red-200 cursor-pointer">
             <img src={scraplogo} className="w-[14px] sm:w-[18px] h-[18px] sm:h-[24px]" alt="scrap" />
@@ -81,14 +77,12 @@ const Navbar = () => {
             <img src={myhomelogo} className="w-[15px] sm:w-[19px] h-[18px] sm:h-[23px]" alt="mypage" />
           </button>
 
-          {/* 햄버거 바 */}
           <button className="block lg:hidden ml-1 sm:ml-2 cursor-pointer" onClick={() => setMenuOpen(!menuOpen)}>
             {menuOpen ? <X size={20} className="sm:w-6 sm:h-6" /> : <Menu size={20} className="sm:w-6 sm:h-6" />}
           </button>
         </div>
       </div>
 
-      {/* 드롭다운 메뉴 */}
       <div className={`lg:hidden absolute top-full left-0 w-full bg-[#AB3130]/80 z-40 shadow-lg border-red-400/20 transition-all duration-300 ease-in-out overflow-hidden ${
         menuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
       }`}>

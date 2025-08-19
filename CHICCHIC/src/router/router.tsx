@@ -31,6 +31,7 @@ import PublicDiaryList from "../pages/Community/PerfumeDiary/PublicDiaryList.tsx
 import DiaryDetail from "../pages/Community/PerfumeDiary/DiaryDetail.tsx";
 import PopularPerfumeId from "../pages/PopularPerfume/PopularPerfumeId";
 import Brand from "../pages/Brand/Brand";
+import OAuthCallback from "../pages/OAuthCallback.tsx";
 
 const publicRoutes: RouteObject[] = [
   {
@@ -41,6 +42,7 @@ const publicRoutes: RouteObject[] = [
       { index: true, element: <Home /> },
       { path: "login", element: <Login /> },
       { path: "signup", element: <Signup /> },
+      { path: "oauth/callback", element: <OAuthCallback /> },
 
       {
         path: "community",
@@ -112,7 +114,7 @@ const publicRoutes: RouteObject[] = [
         element: <PopularPerfumeId />,
       },
 
-  { path: "brand", element: <Brand /> },
+      { path: "brand", element: <Brand /> },
 
       { path: "privacy-policy", element: <PrivacyPolicy /> },
       { path: "terms", element: <Terms /> },
@@ -134,8 +136,13 @@ const protectedRoutes: RouteObject[] = [
         ],
       },
       {
-        path: "recommendation",
-        children: [{ path: "new", element: <NewCounseling /> }],
+        path: "/community",
+        children: [
+          {
+            path: "recommendation",
+            children: [{ path: "new", element: <NewCounseling /> }],
+          },
+        ],
       },
     ],
   },

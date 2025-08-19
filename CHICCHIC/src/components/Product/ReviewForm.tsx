@@ -38,6 +38,7 @@ const ReviewForm = ({ perfumeId }: ProductReviewProps) => {
       onSuccess: () => {
         alert("작성 완료!");
         setReivew("");
+        window.location.reload();
       },
     });
   };
@@ -45,7 +46,7 @@ const ReviewForm = ({ perfumeId }: ProductReviewProps) => {
   return (
     <div className="flex text-[#AB3130] items-center justify-center m-4 sm:m-14 md:w-[800px] lg:w-[1000px]">
       <div className="flex flex-col flex-1 w-full lg:w-[800px]">
-        <span className="text-4xl ">REVIEWS</span>
+        <span className="text-4xl sm:text-[64px]">REVIEWS</span>
         <div className="flex flex-col font-[pretendard] border-[1.8px] border-[#AB3130] rounded py-6 px-6 sm:px-16 mt-6">
           <span className="py-2 text-xl font-medium sm:text-3xl">
             리뷰 작성

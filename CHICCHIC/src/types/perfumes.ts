@@ -12,7 +12,7 @@ export interface Perfume {
 }
 
 // 별점
-export type Rating = 0.5 | 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5;
+export type Rating = 1 | 1.5 | 2 | 2.5 | 3 | 3.5 | 4 | 4.5 | 5;
 
 // 상품 리뷰
 export type ProductReview = {
@@ -45,7 +45,7 @@ export type Scrap = {
 };
 
 // 스크랩 추가 및 삭제 응답
-export type ResponseScrapDto = CommonResponse<"">;
+export type ResponseScrapDto = CommonResponse<Record<string, never>>;
 
 // 스크랩 조회 응답
 export type ResponseScrapListDto = CommonResponse<Scrap[]>;

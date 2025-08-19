@@ -11,6 +11,7 @@ export default function Profile() {
   const navigate = useNavigate();
   const currentPath = location.pathname;
   const logout = useLogout();
+  const isLogoutLoading = false;
 
   // zustand 전역 상태 사용
   const { user, setUser, isLoggedIn } = useAuthStore();
@@ -70,6 +71,10 @@ if (!isLoggedIn()) {
   const handleScrapsClick = () => navigate("/mypage/scraps");
   const handleDiariesClick = () => navigate("/community/diary/my-diary");
 
+  const handleLogout = async () => {
+    await logout();
+  };
+
   return (
     <div className="font-pretendard min-h-[calc(100vh-64px)] bg-transparent text-[#a8342f] flex flex-col sm:flex-row">
       {/* 사이드 탭 */}
@@ -123,10 +128,13 @@ if (!isLoggedIn()) {
         </div>
 
         <button 
-          onClick={logout}
-          className="text-base mt-2 underline text-[#AB3130] cursor-pointer bg-transparent border-none"
+          onClick={handleLogout}
+          disabled={isLogoutLoading}
+          className={`text-base mt-2 underline text-[#AB3130] cursor-pointer bg-transparent border-none transition-opacity ${
+            isLogoutLoading ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-75'
+          }`}
         >
-          로그아웃
+          {isLogoutLoading ? '로그아웃 중...' : '로그아웃'}
         </button>
 
         <div className="text-xl font-semibold mt-18">페이지 바로가기</div>

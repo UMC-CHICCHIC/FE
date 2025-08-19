@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { usePostFilter } from "../../store/usePostFilter";
-import type { PostCategory } from "../../types/enums/postCategory";
+import type { PostCategory } from "../../types/enums/category";
 import SkeletonPostCard from "../skeletons/SkeletonPostCard";
 import { useGetConsultPost } from "../../hooks/queries/useGetConsultPost";
 import { useCounselingStore } from "../../store/useConsultPost";
@@ -30,7 +30,14 @@ const PostSection = ({ category }: PostSectionProps) => {
           : data?.result.content.map((post) => (
               <li
                 key={post.consultPostId}
-                className="flex justify-between items-end border-b border-[#AB3130] py-4"
+                onClick={() => {
+                  setCategory(category);
+                  setConsultPostId(post.consultPostId);
+                  navigate(
+                    `/community/recommendation/list/${post.consultPostId}`
+                  );
+                }}
+                className="flex justify-between items-end border-b border-[#AB3130] py-4 hover:bg-[#f5f1ee] transition-colors cursor-pointer"
               >
                 <div className="flex items-center gap-8">
                   {post.imageUrl ? (
@@ -40,7 +47,7 @@ const PostSection = ({ category }: PostSectionProps) => {
                       className="object-cover rounded-xl w-30 h-26 sm:w-[224px] sm:h-[177px]"
                     />
                   ) : (
-                    <div className="h-24 bg-gray-300 w-30 rounded-xl"></div>
+                    <div className="w-[224px] bg-gray-200 h-[177px] rounded-xl"></div>
                   )}
                   <div className="flex flex-col gap-8 sm:gap-10">
                     <button
@@ -57,7 +64,7 @@ const PostSection = ({ category }: PostSectionProps) => {
                     </button>
                     <div className="flex items-center space-x-4">
                       <img
-                        src={"/profile.png"}
+                        src="/profile.png"
                         alt="프로필"
                         className="object-cover w-6 h-6 rounded-full sm:w-12 sm:h-12"
                       />

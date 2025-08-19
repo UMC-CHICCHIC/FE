@@ -35,9 +35,8 @@ export const ReviewEdit = ({
   return (
     <div className="flex flex-col justify-center itmes-center text-[#AB3130] drop-shadow-2xl text-[20px] w-[170px] h-[70px]">
       <button
-        className="text-center cursor-pointer hover:bg-[#AB3130]/10 border rounded-tl-xl transition-colors border-b-0"
+        className="text-center cursor-pointer hover:bg-[#AB3130]/10 border rounded-tl-xl transition-colors border-b-0 disabled:opacity-50"
         onClick={handleReviewEdit}
-        disabled={removing}
       >
         수정하기
       </button>

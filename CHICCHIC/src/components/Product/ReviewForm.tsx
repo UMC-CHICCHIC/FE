@@ -38,6 +38,7 @@ const ReviewForm = ({ perfumeId }: ProductReviewProps) => {
       onSuccess: () => {
         alert("작성 완료!");
         setReivew("");
+        window.location.reload();
       },
     });
   };

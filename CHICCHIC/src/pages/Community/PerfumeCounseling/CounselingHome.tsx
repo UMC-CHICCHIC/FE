@@ -1,7 +1,7 @@
 import counselingMainImage from "/counselingHome.svg";
 import RightArrow from "../../../assets/icons/arrowRight.svg";
-import PostSection from "../../../components/Counseling/CounselingPostSection";
 import { useNavigate } from "react-router-dom";
+import PostListSection from "../../../components/Counseling/CounselingPostListSection";
 
 const PerfumeCounselingHome = () => {
   const navigate = useNavigate();
@@ -30,21 +30,21 @@ const PerfumeCounselingHome = () => {
           <span className="text-[#AB3130] font-semibold text-2xl sm:text-4xl ">
             추천받아요! 최근 게시글
           </span>
-          <div
+          <button
             onClick={() => navigate("/community/recommendation/list")}
             className="cursor-pointer flex items-center justify-center gap-3 text-[#AB3130] text-sm sm:text-xl"
           >
             더보기
             <img src={RightArrow} width={6} alt="rightArrow" />
-          </div>
+          </button>
         </div>
-        <PostSection category="RECEIVE" />
+        <PostListSection category="RECEIVE" />
         <div className="mb-6 sm:mb-12">
           <span className="text-[#AB3130] font-semibold text-2xl sm:text-4xl">
             추천해요! 최근 게시글
           </span>
         </div>
-        <PostSection category="GIVE" />
+        <PostListSection category="GIVE" />
       </section>
     </div>
   );

@@ -92,16 +92,16 @@ const MyDiaryList = () => {
             {/* 게시글 목록 */}
             <div className="space-y-0">
               {loading ? (
-                <div className="flex justify-center items-center py-20">
+                <div className="flex items-center justify-center py-20">
                   <div className="text-[#AB3130] text-lg">로딩 중...</div>
                 </div>
               ) : error ? (
-                <div className="flex justify-center items-center py-20">
-                  <div className="text-red-500 text-lg">{error}</div>
+                <div className="flex items-center justify-center py-20">
+                  <div className="text-lg text-red-500">{error}</div>
                 </div>
               ) : currentPosts.length === 0 ? (
-                <div className="flex justify-center items-center py-20">
-                  <div className="text-gray-500 text-lg">
+                <div className="flex items-center justify-center py-20">
+                  <div className="text-lg text-gray-500">
                     나의 일기가 없습니다.
                   </div>
                 </div>
@@ -124,8 +124,8 @@ const MyDiaryList = () => {
                       )}
 
                       {/* 텍스트 정보 */}
-                      <div className="ml-6 flex-1">
-                        <h3 className="font-semibold text-[#AB3130] text-[1.5rem] mb-1">
+                      <div className="flex-1 ml-6">
+                        <h3 className="font-semibold text-[#AB3130] text-[1.5rem] mb-1 hover:underline">
                           {post.title}
                         </h3>
                         <div className="mb-[1rem] flex">
@@ -141,7 +141,7 @@ const MyDiaryList = () => {
                             {post.isPublic ? "공개" : "비공개"}
                           </span>
                         </div>
-                        <div className="flex items-center text-sm text-gray-700 mb-2">
+                        <div className="flex items-center mb-2 text-sm text-gray-700">
                           <img
                             src="/profile.png"
                             alt="Profile"
@@ -153,7 +153,7 @@ const MyDiaryList = () => {
                     </div>
 
                     {/* 날짜 */}
-                    <span className="text-sm text-gray-600 flex-shrink-0">
+                    <span className="flex-shrink-0 text-sm text-gray-600">
                       {post.createdAt}
                     </span>
                   </div>
@@ -173,7 +173,7 @@ const MyDiaryList = () => {
           </div>
 
           {/* 페이지네이션 */}
-          <div className="flex justify-center items-center space-x-2 mt-12">
+          <div className="flex items-center justify-center mt-12 space-x-2">
             {/* 이전 버튼 */}
             <button
               onClick={() => handlePageChange(currentPage - 1)}

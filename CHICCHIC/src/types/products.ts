@@ -55,7 +55,7 @@ export interface GetProductsParams {
   cat?: number;
 }
 
-// /category 카테고리 목록 조회
+// /category 카테고리 목록 조회 (가격, 발향률)
 export type ProductCategory = {
   categoryId: number;
   name: string;

@@ -3,9 +3,12 @@ import { useEffect, useState } from "react";
 import { useGetProductReview } from "../../hooks/queries/useGetProduct";
 import kebab from "../../assets/icons/kebab.svg";
 import { GetStarRating } from "./getStarRating";
-import type { Rating } from "../../types/perfumes";
+import type { ProductReview, Rating } from "../../types/perfumes";
 import { ReviewTimeFormat } from "../../utils/dateTimeFormat";
 import { Pagination } from "../Pagination";
+import { ReviewEdit } from "./ReviewEdit";
+import { useAuth } from "../../hooks/useAuth";
+import { ReviewEditForm } from "./ReviewEditForm";
 
 interface ReviewListProps {
   perfumeId: number;
@@ -14,6 +17,45 @@ interface ReviewListProps {
 
 export const ReviewList = ({ perfumeId, size }: ReviewListProps) => {
   const [presentPage, setPresentPage] = useState(1);
+  const [reviewEdit, setReviewEdit] = useState<number | null>(null);
+  const [editTarget, setEditTarget] = useState<{
+    id: number;
+    content: string;
+    rating: Rating;
+  } | null>(null);
+  const { isLoggedIn, user } = useAuth() as {
+    isLoggedIn: boolean;
+    user?: { memberId?: number; nickname?: string };
+  };
+
+  // 리뷰 수정 토글
+  const handleReviewEdit = (review: ProductReview) => {
+    if (!isLoggedIn) {
+      alert("로그인이 필요한 서비스 입니다.");
+      return;
+    }
+    // 리뷰 편집 닉네임 비교
+    const isOwner = user?.nickname && review?.memberNickname === user?.nickname;
+
+    if (user && !isOwner) {
+      alert("본인 리뷰만 수정 가능합니다");
+      return;
+    }
+    setReviewEdit((prev) => (prev === review.id ? null : review.id));
+  };
+
+  // 리뷰 수정 폼
+  const openEditForm = (review: ProductReview) => {
+    setEditTarget({
+      id: review.id,
+      content: review.content ?? "",
+      rating: (review.rating as Rating) ?? 0,
+    });
+    setReviewEdit(null); // 메뉴 닫기
+  };
+
+  // 수정 폼 닫기
+  const closeEditForm = () => setEditTarget(null);
 
   useEffect(() => {
     setPresentPage(1);
@@ -24,7 +66,7 @@ export const ReviewList = ({ perfumeId, size }: ReviewListProps) => {
     isLoading,
     isError,
     error,
-  } = useGetProductReview(perfumeId, presentPage, size);
+  } = useGetProductReview(perfumeId, presentPage, (size = 3));
 
   const hasNext = data.length === size;
 
@@ -48,11 +90,9 @@ export const ReviewList = ({ perfumeId, size }: ReviewListProps) => {
           ))}
         </ul>
       )}
-
       {!isLoading && data.length === 0 && (
         <p className="text-[#AB3130]">아직 리뷰가 없습니다.</p>
       )}
-
       {!isLoading &&
         data.map((review) => (
           <div
@@ -71,18 +111,45 @@ export const ReviewList = ({ perfumeId, size }: ReviewListProps) => {
                   </p>
                 )}
               </div>
-              <div className="flex flex-col w-40 items-end gap-4 text-[#AB3130]">
+              <div className="flex flex-col w-40 items-end gap-4 text-[#AB3130] relative">
                 <span className="text-sm sm:text-[20px] font-light">
                   {ReviewTimeFormat(review.createdAt)}
                 </span>
-                <button
-                  className="flex flex-col items-center justify-center"
-                  aria-label="more"
-                >
-                  <img src={kebab} alt="kebab" className="w-2" />
-                </button>
+                <div className="z-10 flex flex-row">
+                  <div className="relative flex">
+                    {/* 편집 폼을 absolute로 설정 */}
+                    {reviewEdit === review.id && (
+                      <div className="absolute z-0 mt-2 -top-4 right-6">
+                        <ReviewEdit
+                          perfumeId={perfumeId}
+                          reviewId={review.id}
+                          onOpenEdit={() => openEditForm(review)}
+                          onDone={closeEditForm}
+                        />
+                      </div>
+                    )}
+                    <button
+                      className="flex flex-col items-center justify-center px-2 cursor-pointer"
+                      onClick={() => handleReviewEdit(review)}
+                    >
+                      <img src={kebab} alt="kebab" className="w-2" />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
+            {/* 인라인 수정 폼 */}
+            {editTarget?.id === review.id && (
+              <div>
+                <ReviewEditForm
+                  perfumeId={perfumeId}
+                  reviewId={editTarget.id}
+                  defaultContent={editTarget.content}
+                  defaultRating={editTarget.rating}
+                  onClose={closeEditForm}
+                />
+              </div>
+            )}
           </div>
         ))}
 
@@ -92,7 +159,7 @@ export const ReviewList = ({ perfumeId, size }: ReviewListProps) => {
           hasNext={hasNext}
           onChange={setPresentPage}
           windowSize={5}
-          lookAhead={1} // 다음 페이지 번호(2, 3…) 미리 노출
+          lookAhead={1} // 다음 페이지 번호(2, 3..) 미리 노출
           isLoading={isLoading}
         />
       )}

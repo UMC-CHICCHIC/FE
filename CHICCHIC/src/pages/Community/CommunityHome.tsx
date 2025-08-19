@@ -2,14 +2,14 @@ import CommunityMainImage from "/communityMain.svg";
 import RightArrow from "../../assets/icons/arrowRight.svg";
 import { useNavigate } from "react-router-dom";
 import { perfumeStoryMock } from "../../mocks/perfumeStroyMock";
-import { useGetConsultHome } from "../../hooks/queries/useGetConsultPost";
+import { useGetConsultComHome } from "../../hooks/queries/useGetConsultPost";
 import { useCounselingStore } from "../../store/useConsultPost";
 import { usePostFilter } from "../../store/usePostFilter";
 
 const CommunityHome = () => {
   const { setCategory } = usePostFilter();
   const { setConsultPostId } = useCounselingStore();
-  const { data } = useGetConsultHome();
+  const { data } = useGetConsultComHome();
   const navigate = useNavigate();
 
   return (

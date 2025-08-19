@@ -1,5 +1,10 @@
 import { axiosInstance } from "./axiosInstance";
-import type { LoginPayload, SignupPayload, UserInfo, UpdateUserInfoPayload } from "../types/authtypes";
+import type {
+  LoginPayload,
+  SignupPayload,
+  UserInfo,
+  UpdateUserInfoPayload,
+} from "../types/authtypes";
 import type { CommonResponse } from "../types/common";
 
 export const postLogin = (data: LoginPayload) => {
@@ -31,9 +36,13 @@ export const getProfileImage = () => {
 };
 
 export const putProfileImage = (formData: FormData) => {
-  return axiosInstance.put<CommonResponse<string>>("/member/profile-image", formData, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return axiosInstance.put<CommonResponse<string>>(
+    "/member/profile-image",
+    formData,
+    {
+      headers: { "Content-Type": "multipart/form-data" },
+    }
+  );
 };
 
 export const deleteProfileImage = () => {

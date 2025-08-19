@@ -1,5 +1,6 @@
-import type { PostCategory } from "../types/enums/category";
+import type { PerfumeCategory } from "../types/enums/category";
 import type {
+  ProductReview,
   RequestProductReviewDto,
   ResponseProductReviewDto,
   ResponseScrapDto,
@@ -16,7 +17,7 @@ import { axiosInstance } from "./axiosInstance";
 
 // 향수 카테고리 조회 (가격대, 발향률)
 export const getCategories = async (
-  type?: PostCategory
+  type?: PerfumeCategory
 ): Promise<ProductCategory[]> => {
   const { data } = await axiosInstance.get<ProductCategory[]>("/categories", {
     params: type ? { type } : undefined,
@@ -63,20 +64,15 @@ export const getProductReview = async (
   perfumeId: number,
   page = 1,
   size = 10
-): Promise<ResponseProductReviewDto> => {
-  try {
-    console.log("요청 params", perfumeId, page, size);
-    const { data } = await axiosInstance.get<ResponseProductReviewDto>(
-      `/perfumes/${perfumeId}/reviews`,
-      {
-        params: { page, size },
-      }
-    );
-    return data ?? [];
-  } catch (e) {
-    console.error("요청 실패", e);
-    throw e;
-  }
+): Promise<ProductReview[]> => {
+  console.log("요청 params", perfumeId, page, size);
+  const { data } = await axiosInstance.get<ResponseProductReviewDto>(
+    `/perfumes/${perfumeId}/reviews`,
+    {
+      params: { page, size },
+    }
+  );
+  return data.result ?? [];
 };
 
 // 상품 리뷰 생성
@@ -84,17 +80,11 @@ export const createProductReview = async (
   perfumeId: number,
   body: RequestProductReviewDto
 ): Promise<ResponseUpdateReviewDto> => {
-  try {
-    console.log("생성 요청 성공");
-    const { data } = await axiosInstance.post<ResponseUpdateReviewDto>(
-      `/perfumes/${perfumeId}/reviews`,
-      body
-    );
-    return data;
-  } catch (e) {
-    console.error("생성 요청 실패", e);
-    throw e;
-  }
+  const { data } = await axiosInstance.post<ResponseUpdateReviewDto>(
+    `/perfumes/${perfumeId}/reviews`,
+    body
+  );
+  return data;
 };
 
 // 상품 리뷰 삭제
@@ -102,16 +92,10 @@ export const deleteProductReview = async (
   perfumeId: number,
   reviewId: number
 ): Promise<void> => {
-  try {
-    console.log("삭제 요청 성공");
-    const { data } = await axiosInstance.delete(
-      `/perfumes/${perfumeId}/reviews/${reviewId}`
-    );
-    return data.result;
-  } catch (e) {
-    console.error("삭제 요청 실패", e);
-    throw e;
-  }
+  const { data } = await axiosInstance.delete(
+    `/perfumes/${perfumeId}/reviews/${reviewId}`
+  );
+  return data.result;
 };
 
 // 상품 리뷰 수정
@@ -120,38 +104,18 @@ export const updateProductReview = async (
   reviewId: number,
   body: RequestProductReviewDto
 ): Promise<ResponseUpdateReviewDto> => {
-  try {
-    console.log("수정 요청 성공");
-    const { data } = await axiosInstance.put<ResponseUpdateReviewDto>(
-      `/perfumes/${perfumeId}/reviews/${reviewId}`,
-      body
-    );
-    return data;
-  } catch (e) {
-    console.error("수정 요청 실패", e);
-    throw e;
-  }
+  const { data } = await axiosInstance.put<ResponseUpdateReviewDto>(
+    `/perfumes/${perfumeId}/reviews/${reviewId}`,
+    body
+  );
+  return data;
 };
 
 // 스크랩 목록 조회
 export const getScrapList = async (): Promise<ResponseScrapListDto> => {
-  try {
-    console.log("스크랩 목록 조회 요청");
-    const { data } = await axiosInstance.get<ResponseScrapListDto>("/scrap");
-    console.log("스크랩 목록 조회 성공", data);
-    return data;
-  } catch (e) {
-    console.error("스크랩 목록 조회 실패", e);
-    throw e;
-  }
+  const { data } = await axiosInstance.get<ResponseScrapListDto>("/scrap");
+  return data;
 };
-
-// 상품 스크랩 추가
-// export const createScrap = async (
-//   productId: number
-// ): Promise<ResponseScrapDto> => {
-
-// };
 
 // 상품 스크랩 추가
 export const postScrap = async (

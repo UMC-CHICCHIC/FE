@@ -1,4 +1,4 @@
-import type { PostCategory } from "../types/enums/category";
+import type { PerfumeCategory } from "../types/enums/category";
 import type {
   ProductReview,
   RequestProductReviewDto,
@@ -17,7 +17,7 @@ import { axiosInstance } from "./axiosInstance";
 
 // 향수 카테고리 조회 (가격대, 발향률)
 export const getCategories = async (
-  type?: PostCategory
+  type?: PerfumeCategory
 ): Promise<ProductCategory[]> => {
   const { data } = await axiosInstance.get<ProductCategory[]>("/categories", {
     params: type ? { type } : undefined,

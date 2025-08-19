@@ -1,5 +1,5 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import type { PostCategory } from "../../types/enums/category";
+import type { PerfumeCategory } from "../../types/enums/category";
 import {
   getPerfumeDetail,
   getProductReview,
@@ -14,12 +14,12 @@ import type {
 } from "../../types/products";
 import { QUERY_KEY } from "../../constants/key";
 
-// 향수 상품 카테고리 (노트, 가격대, 발향률)
-export const useGetCategories = (type?: PostCategory) => {
+// 향수 상품 카테고리 (가격대, 발향률)
+export const useGetCategories = (type?: PerfumeCategory) => {
   return useQuery<ProductCategory[], Error>({
     queryKey: [QUERY_KEY.categories, type ?? "ALL"],
     queryFn: () => getCategories(type),
-    staleTime: 5 * 60 * 1000, // 5분
+    staleTime: 5 * 60 * 1000,
     gcTime: 30 * 60 * 1000,
   });
 };

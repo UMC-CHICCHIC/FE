@@ -2,31 +2,35 @@ import { useNavigate } from "react-router-dom";
 import { usePostFilter } from "../../store/usePostFilter";
 import type { PostCategory } from "../../types/enums/category";
 import SkeletonPostCard from "../skeletons/SkeletonPostCard";
-import { useGetConsultPost } from "../../hooks/queries/useGetConsultPost";
+import { useGetConsultHome } from "../../hooks/queries/useGetConsultPost";
 import { useCounselingStore } from "../../store/useConsultPost";
 import { DateTimeFormat } from "../../utils/dateTimeFormat";
 
-type PostSectionProps = {
+type PostListSectionProps = {
   category: PostCategory;
 };
 
-const PostSection = ({ category }: PostSectionProps) => {
+// List에서 게시글 미리보기
+const PostListSection = ({ category }: PostListSectionProps) => {
   const { setCategory } = usePostFilter();
   const { setConsultPostId } = useCounselingStore();
   const navigate = useNavigate();
-  const { data, isLoading, error } = useGetConsultPost(category);
+  const { data, isLoading, error } = useGetConsultHome();
 
   if (error) return <div className="p-6">상품 정보를 불러오지 못했어요.</div>;
+
+  const selectPosts = category === "GIVE" ? "givePosts" : "receivePosts";
+  const posts = data?.result?.[selectPosts] ?? [];
 
   return (
     <section className="mb-20 text-[#66191F]">
       <ul className="space-y-4">
         {/* 게시글 스켈레톤 UI */}
         {isLoading
-          ? Array.from({ length: 3 }).map((_, i) => (
+          ? Array.from({ length: 2 }).map((_, i) => (
               <SkeletonPostCard key={i} />
             ))
-          : data?.result.content.map((post) => (
+          : posts.map((post) => (
               <li
                 key={post.consultPostId}
                 onClick={() => {
@@ -83,4 +87,4 @@ const PostSection = ({ category }: PostSectionProps) => {
   );
 };
 
-export default PostSection;
+export default PostListSection;

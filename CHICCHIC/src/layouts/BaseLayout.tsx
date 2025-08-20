@@ -16,6 +16,7 @@ const BaseLayout = ({ protectedRoute = false }: BaseLayoutProps) => {
   const location = useLocation();
 
   const isCommunityPage = location.pathname.startsWith("/community");
+  const isBrandPage = location.pathname.startsWith("/brand");
 
   // 토큰 검증/갱신 중 간단한 스피너 로딩
   if (protectedRoute && (!isInitialized || isRefreshing)) {
@@ -41,7 +42,7 @@ const BaseLayout = ({ protectedRoute = false }: BaseLayoutProps) => {
           <Outlet />
         </Suspense>
       </main>
-      <Footer />
+  <Footer variant={isBrandPage ? "brand" : "default"} />
     </div>
   );
 };

@@ -175,7 +175,7 @@ export default function Test() {
 
           {/* 실제 API 데이터를 우선적으로 사용하는 향수 목록 */}
           <div className="flex flex-col gap-4 max-w-2xl mx-auto mb-8">
-            {(reco && reco.length > 0 ? reco.slice(0, 5) : perfumes.slice(0, 5)).map((item, index) => {
+            {(reco && reco.length > 0 ? reco.slice(0, 4) : perfumes.slice(0, 4)).map((item, index) => {
               // API 데이터와 fallback 데이터 구조 통합 처리
               const image = (("imageUrl" in item && (item as any).imageUrl) || "/sample-image.png") as string;
               const name = ("perfumeName" in item ? (item as any).perfumeName : `${(item as any).brand} ${(item as any).name}`) as string;

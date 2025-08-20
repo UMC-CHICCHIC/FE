@@ -273,15 +273,24 @@ export default function Home() {
         {isAuthenticated ? (
           <section id="personal-perfume-list" className="py-16 bg-[#F8F5F2]">
             <div className="container px-4 mx-auto">
-              <div className="mb-8">
-                <h2 className="text-4xl font-headline font-bold text-[#AB3130] mb-2">
-                  Personal perfume List
-                </h2>
-                <p className="text-muted-foreground">
-                  퍼스널 향수 추천 테스트 결과에 따라 추천된 향수입니다.
-                </p>
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h2 className="text-4xl font-headline font-bold text-[#AB3130] mb-2">
+                    Personal perfume List
+                  </h2>
+                  <p className="text-muted-foreground">
+                    퍼스널 향수 추천 테스트 결과에 따라 추천된 향수입니다.
+                  </p>
+                </div>
+                <Link
+                  to="/personal-perfume/recommend"
+                  className="text-[#AB3130] font-semibold flex items-center gap-1"
+                >
+                  <span>추천 향수 더보기</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
-              <PerfumeGrid />
+              <PerfumeGrid endpoint="/home/recommend-products" limit={4} />
             </div>
           </section>
         ) : (
@@ -304,7 +313,7 @@ export default function Home() {
                 <div className="mb-6 md:mb-8">
                   <div className="flex items-center justify-center mx-auto mb-4 md:mb-6">
                     <svg
-                      className="w-20 h-16 md:w-22 md:h-22 lg:w-28 lg:h-28 text-[#AB3130]"
+                      className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 text-[#AB3130]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -318,7 +327,7 @@ export default function Home() {
                     </svg>
                   </div>
 
-                  <h3 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-[#AB3130] mb-100 md:mb-10 px-2 max-w-5xl mx-auto">
+                  <h3 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-[#AB3130] mb-100 md:mb-10 px-2 max-w-5xl mx-auto">
                     퍼스널 향수 추천 테스트를 아직 진행하지 않았어요.
                   </h3>
                   <p className="max-w-4xl px-2 mx-auto mb-6 text-base leading-relaxed text-gray-600 md:text-lg lg:text-xl xl:text-2xl md:mb-8">

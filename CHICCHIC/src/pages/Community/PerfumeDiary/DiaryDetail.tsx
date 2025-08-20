@@ -26,6 +26,17 @@ const DiaryDetail = () => {
   const [comments, setComments] = useState<DiaryComment[]>([]);
   const [commentsLoading, setCommentsLoading] = useState(true);
 
+  const formatDateTime = (dateString: string) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    
+    return `${year}.${month}.${day} ${hours}:${minutes}`;
+  };
+
   const fetchComments = async () => {
     if (!postId) return;
 
@@ -134,7 +145,7 @@ const DiaryDetail = () => {
                   <p>{commentItem.nickName}</p>
                   <p className="py-4">{commentItem.content}</p>
                   <div className="text-[#66191F] space-x-8 text-sm pb-2">
-                    <span>{commentItem.createdAt}</span>
+                    <span>{formatDateTime(commentItem.createdAt)}</span>
                     <button
                       type="button"
                       className="cursor-pointer hover:underline"

@@ -1,12 +1,18 @@
 import { Link } from "react-router-dom";
 
-const Footer = () => {
+type FooterProps = {
+  variant?: "default" | "brand";
+};
+
+const Footer = ({ variant = "default" }: FooterProps) => {
+  const isBrand = variant === "brand";
+  const wrapperClass = isBrand
+    ? "bg-[#66191F] text-white"
+    : "bg-transparent text-[#AB3130]";
+  const hrClass = isBrand ? "border-white/60" : "border-[#AB3130]";
   return (
-    <footer
-      className="font-pretendard text-normal bg-transparent px-5 py-4"
-      style={{ color: "#AB3130" }}
-    >
-      <hr className="mb-5" style={{ color: "#AB3130" }} />
+    <footer className={`font-pretendard text-normal px-5 py-4 ${wrapperClass}`}>
+      <hr className={`mb-5 ${hrClass}`} />
       <p className="text-base">© 2025 CHICCHIC. All right reserved.</p>
       <div className="flex gap-2 sm:gap-2 text-base mb-5">
         <Link to="/privacy-policy" className="hover:underline">

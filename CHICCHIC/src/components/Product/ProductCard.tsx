@@ -1,3 +1,5 @@
+// import SamplePerfumeImg from "../../assets/images/samplePerfumeImg.png";
+
 export interface ProductCardProps {
   id: number;
   name: string;
@@ -5,8 +7,8 @@ export interface ProductCardProps {
   imageUrl?: string;
   brand: string;
   ml: number;
-  onClick?: (id: number) => void;
   isLoading: boolean;
+  onClick?: (id: number) => void;
 }
 
 export function ProductCard({
@@ -16,8 +18,8 @@ export function ProductCard({
   imageUrl,
   brand,
   ml,
-  onClick,
   isLoading,
+  onClick,
 }: ProductCardProps) {
   return (
     <button
@@ -40,7 +42,6 @@ export function ProductCard({
             <p className="cursor-pointer hover:underline">{name}</p>
             <p>{ml}mL</p>
           </div>
-
           <div className="text-[#AB3130] font-semibold text-center mt-2">
             {price.toLocaleString()} ₩
           </div>

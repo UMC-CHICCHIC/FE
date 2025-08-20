@@ -21,7 +21,7 @@ export const getPerfumeRecommendations = async (
 ): Promise<RecommendationResponseDto> => {
   console.log("새 테스트 실행:", body);
   const { data } = await axiosInstance.post<RecommendationResponseDto>(
-    "/test",
+  "/test",
     body
   );
   console.log("새 테스트 응답:", data);

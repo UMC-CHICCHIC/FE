@@ -46,6 +46,7 @@ export const ProductGrid = memo(function ProductGrid({
               price={p.price}
               brand={p.brand}
               ml={p.ml}
+              isLoading
               imageUrl={p.imageUrl}
               onClick={onItemClick}
             />

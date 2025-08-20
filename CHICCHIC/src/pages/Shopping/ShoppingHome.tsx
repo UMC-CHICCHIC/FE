@@ -53,7 +53,7 @@ const ShoppingHome = () => {
 
   // 상품 리스트 훅 사용
   const { data, isLoading, isError } = useGetProductList({
-    page: productPage - 1,
+    page: productPage,
     size: 16,
     sort: sortMap[sort],
     // 가격대, 발향률에 대한 카테고리
@@ -61,7 +61,7 @@ const ShoppingHome = () => {
   });
 
   const list = data?.result.content ?? [];
-  const totalPages = data?.result.totalPages ?? 0;
+  const totalPages = data?.result.totalPages ?? 1;
   const currentPage = data?.result.number ?? productPage - 1;
 
   const handleCatId = (id: number | null) => {
@@ -194,7 +194,6 @@ const ShoppingHome = () => {
         </div>
         <ProductGrid
           items={list.map((p) => ({
-            isLoading,
             id: p.id,
             name: p.name,
             price: p.price,

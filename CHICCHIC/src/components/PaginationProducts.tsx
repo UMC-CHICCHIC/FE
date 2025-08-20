@@ -1,12 +1,11 @@
-// /produts API 필드 totalPages 존재
 import { useMemo } from "react";
 import LeftArrowIcon from "../assets/icons/arrowLeft.svg";
 import RightArrowIcon from "../assets/icons/arrowRight.svg";
 
 interface Props {
-  page: number; // 현재 페이지 (0-base)
-  totalPages: number;
-  onChange: (next: number) => void; // 페이지 변경
+  page: number; // 0-base
+  totalPages: number; // 전체 페이지 수
+  onChange: (next: number) => void; // 0-base
   windowSize?: number;
   isLoading?: boolean;
 }
@@ -15,30 +14,32 @@ export function PaginationProducts({
   page,
   totalPages,
   onChange,
-  windowSize = 5, // 최근 몇 개 페이지 번호를 보여줄지(기본 5)
+  windowSize = 5,
   isLoading = false,
 }: Props) {
-  // 현재 페이지를 중심으로 windowSize만큼 슬라이딩 윈도우 구성
   const tp = Math.max(0, totalPages);
-  const current = Math.min(Math.max(1, page + 1), tp);
+  const current = tp > 0 ? Math.min(Math.max(1, page + 1), tp) : 0; // 1-base
   const w = Math.max(1, windowSize);
 
   const pageNumbers = useMemo(() => {
+    if (tp === 0) return [];
     const half = Math.floor(w / 2);
-    const start = Math.max(1, current - half);
-    const end = Math.min(tp + 1, start + w);
+    let start = Math.max(1, current - half);
+    const end = Math.min(tp, start + w - 1);
+    start = Math.max(1, end - w + 1); // 보정
     const arr: number[] = [];
-    for (let p = start; p < end; p++) arr.push(p);
+    for (let p = start; p <= end; p++) arr.push(p); // 끝 포함
     return arr;
   }, [current, tp, w]);
 
-  const canPrev = page > 0 && !isLoading;
-  const canNext = page < tp - 1 && !isLoading;
+  const canPrev = !isLoading && page > 0; // 0-base
+  const canNext = !isLoading && page < tp - 1; // 0-base
 
-  const go = (n: number) => {
-    if (isLoading) return;
-    const next = Math.min(Math.max(1, n), tp);
-    if (next !== current) onChange(next);
+  const go = (nextDisplay: number) => {
+    if (isLoading || tp === 0) return;
+    const clamped = Math.min(Math.max(1, nextDisplay), tp);
+    const nextZeroBase = clamped - 1;
+    if (nextZeroBase !== page) onChange(nextZeroBase);
   };
 
   return (

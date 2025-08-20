@@ -33,7 +33,7 @@ const sortMap: Record<SortLabel, PAGINATION_ORDER> = {
 };
 
 const ShoppingHome = () => {
-  const [productPage, setProductPage] = useState(1);
+  const [productPage, setProductPage] = useState(0);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const [sort, setSort] = useState<SortLabel>("인기도순");
@@ -61,12 +61,12 @@ const ShoppingHome = () => {
   });
 
   const list = data?.result.content ?? [];
-  const totalPages = data?.result.totalPages ?? 1;
-  const currentPage = data?.result.number ?? productPage - 1;
+  const totalPages = data?.result.totalPages ?? 0;
+  const currentPage = data?.result.number ?? productPage;
 
   const handleCatId = (id: number | null) => {
     setCatId((prev) => (prev === id ? null : id));
-    setProductPage(1);
+    setProductPage(0);
   };
 
   return (
@@ -81,7 +81,7 @@ const ShoppingHome = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setSearch(e.target.value)
           }
-          onKeyUp={(e) => e.key === "Enter" && setProductPage(1)}
+          onKeyUp={(e) => e.key === "Enter" && setProductPage(0)}
         />
         <img
           src={SearchIcon}
@@ -124,7 +124,7 @@ const ShoppingHome = () => {
                     type="button"
                     onClick={() => handleCatId(c.categoryId)}
                     className={`m-1 py-2 px-3 text-sm transition cursor-pointer col-span-2
-                    ${active ? "text-[#66191F] font-bold" : "hover:underline"}
+                    ${active ? "text-[#AB3130] font-bold" : "hover:underline"}
                   `}
                   >
                     {c.name}
@@ -156,7 +156,7 @@ const ShoppingHome = () => {
                     type="button"
                     onClick={() => handleCatId(c.categoryId)}
                     className={`py-2 px-3 text-sm transition cursor-pointer
-                  ${active ? "text-[#66191F] font-bold" : "hover:underline"}`}
+                  ${active ? "text-[#AB3130] font-bold" : "hover:underline"}`}
                   >
                     {c.name}
                   </button>
@@ -172,7 +172,7 @@ const ShoppingHome = () => {
       )}
       {/* 상품 필터링 */}
       <section className="w-full max-w-5xl">
-        <div className="flex justify-start space-x-2 text-[#AB3130] mb-4 flex-wrap gap-2 pt-6">
+        <div className="flex w-full justify-start space-x-2 text-[#AB3130] mb-4 flex-wrap gap-2 pt-6">
           {sortItems.map((label) => {
             const active = sort === label;
             return (
@@ -184,7 +184,7 @@ const ShoppingHome = () => {
                 }`}
                 onClick={() => {
                   setSort(label);
-                  setProductPage(1);
+                  setProductPage(0);
                 }}
               >
                 {label}

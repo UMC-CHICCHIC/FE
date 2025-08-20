@@ -1,9 +1,9 @@
 import { axiosInstance } from "./axiosInstance";
 import type {
-  PerfumeTestAnswers,
-  SavePerfumeTestAnswersDto,
   RecommendationRequestDto,
   RecommendationResponseDto,
+  HomeRecommendItem,
+  HomeRecommendResponse,
 } from "../types/personalPerfumeTest";
 
 // 로그인 토큰 유효성 체크: 사용자 정보 API로 확인
@@ -15,32 +15,43 @@ export const checkAuthToken = async (): Promise<boolean> => {
     return false;
   }
 };
-// 과거 유저의 테스트 답변 조회
-export const getPerfumeTestAnswers = async (): Promise<
-  PerfumeTestAnswers | null
-> => {
-  const { data } = await axiosInstance.get<{
-    result: PerfumeTestAnswers | null;
-  }>("/perfume-test/answers");
-  return data?.result ?? null;
-};
-// 테스트 답변 저장
-export const savePerfumeTestAnswers = async (
-  body: SavePerfumeTestAnswersDto
-): Promise<{ success: boolean }> => {
-  const { data } = await axiosInstance.post<{ success: boolean }>(
-    "/perfume-test/answers",
-    body
-  );
-  return { success: Boolean(data?.success) };
-};
 
 export const getPerfumeRecommendations = async (
   body: RecommendationRequestDto
 ): Promise<RecommendationResponseDto> => {
+  console.log("새 테스트 실행:", body);
   const { data } = await axiosInstance.post<RecommendationResponseDto>(
-  "/test",
+    "/test",
     body
   );
+  console.log("새 테스트 응답:", data);
   return data;
+};
+
+export const getHomeRecommendProducts = async (): Promise<HomeRecommendItem[]> => {
+  try {
+    const { data } = await axiosInstance.get<HomeRecommendResponse>(
+      "/home/recommend-products"
+    );
+    
+    console.log("추천 상품 응답:", data);
+    
+    if (data?.isSuccess && data.result) {
+      return data.result;
+    }
+    
+    return [];
+  } catch (error) {
+    console.error("추천 상품 조회 실패:", error);
+    return [];
+  }
+};
+
+export const hasUserRecommendations = async (): Promise<boolean> => {
+  try {
+    const recommendations = await getHomeRecommendProducts();
+    return recommendations.length > 0;
+  } catch {
+    return false;
+  }
 };

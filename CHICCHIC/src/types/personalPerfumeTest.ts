@@ -35,3 +35,26 @@ export interface RecommendationResponseDto {
   message: string;
   result: RecommendationItem[];
 }
+
+export type HomeRecommendNote = {
+  noteId: number;
+  name: string;
+};
+
+export type HomeRecommendItem = {
+  productId: number;
+  name: string;
+  topNote: HomeRecommendNote[];
+  baseNote: string;
+  middleNote: string;
+  price: number;
+  itemRating: number;
+  imageUrl: string;
+};
+
+export type HomeRecommendResponse = {
+  isSuccess: boolean;
+  code: string;
+  message: string;
+  result: HomeRecommendItem[];
+};

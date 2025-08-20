@@ -44,6 +44,7 @@ const publicRoutes: RouteObject[] = [
       { path: "login", element: <Login /> },
       { path: "signup", element: <Signup /> },
       { path: "oauth/callback", element: <OAuthCallback /> },
+      { path: "login/error", element: <OAuthCallback /> },
 
       {
         path: "community",

@@ -137,10 +137,10 @@ const PerfumePage = () => {
                         <img
                           src={post.imageUrl}
                           alt={post.title}
-                          className="w-[10rem] h-[8rem] object-cover rounded-[20px]"
+                          className="w-[10rem] h-[8rem] object-cover rounded-[20px] mr-[1.2rem]"
                         />
                       ) : (
-                        <div className="w-[10rem] h-[8rem] bg-[#F0F0F0] object-cover border-none rounded-[20px]"></div>
+                        <div className="w-[10rem] h-[8rem] bg-[#F0F0F0] object-cover border-none rounded-[20px] mr-[1.2rem]"></div>
                       )}
                       <div>
                         <h3 className="font-semibold text-[#AB3130] text-[1.5rem] mb-2 ml-[0.5rem] hover:underline">

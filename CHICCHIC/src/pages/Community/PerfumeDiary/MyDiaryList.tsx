@@ -172,7 +172,8 @@ const MyDiaryList = () => {
             </button>
           </div>
 
-          {/* 페이지네이션 */}
+          {/* 페이지네이션 - 게시글이 있고 페이지가 2개 이상일 때만 표시 */}
+          {posts.length > 0 && totalPages > 1 && (
           <div className="flex items-center justify-center mt-12 space-x-2">
             {/* 이전 버튼 */}
             <button
@@ -215,6 +216,7 @@ const MyDiaryList = () => {
               <span className="text-[1.5rem]">&gt;</span>
             </button>
           </div>
+          )}
         </main>
       </div>
     </div>

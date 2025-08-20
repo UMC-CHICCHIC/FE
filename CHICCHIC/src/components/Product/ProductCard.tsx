@@ -29,14 +29,12 @@ export function ProductCard({
         <div className="max-w-[260px] max-h-[300px bg-gray-300 animate-pulse"></div>
       ) : (
         <>
-          <div className="overflow-hidden max-w-[260px] max-h-[300px]">
-            <img
-              src={imageUrl}
-              alt={name}
-              className="object-cover max-w-[260px] max-h-[300px] transition-transform duration-300 shadow cursor-pointer hover:scale-103"
-              loading="lazy" // 이미지 로딩 UX 향상
-            />
-          </div>
+          <img
+            src={imageUrl}
+            alt={name}
+            className="object-cover max-w-[260px] max-h-[300px] border-none rounded-md transition-transform duration-300 shadow cursor-pointer hover:scale-103"
+            loading="lazy" // 이미지 로딩 UX 향상
+          />
           <div className="flex flex-col gap-1 mt-2 text-[#AB3130] text-lg font-semibold text-center">
             <p>{brand}</p>
             <p className="cursor-pointer hover:underline">{name}</p>

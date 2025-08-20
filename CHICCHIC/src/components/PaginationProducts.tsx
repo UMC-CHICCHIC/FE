@@ -4,7 +4,7 @@ import LeftArrowIcon from "../assets/icons/arrowLeft.svg";
 import RightArrowIcon from "../assets/icons/arrowRight.svg";
 
 interface Props {
-  page: number; // 현재 페이지(1-base)
+  page: number; // 현재 페이지 (0-base)
   totalPages: number;
   onChange: (next: number) => void; // 페이지 변경
   windowSize?: number;
@@ -19,20 +19,20 @@ export function PaginationProducts({
   isLoading = false,
 }: Props) {
   // 현재 페이지를 중심으로 windowSize만큼 슬라이딩 윈도우 구성
-  const tp = Math.max(1, totalPages);
+  const tp = totalPages - 1;
   const current = Math.min(Math.max(1, page), tp);
   const w = Math.max(1, windowSize);
 
   const pageNumbers = useMemo(() => {
     const half = Math.floor(w / 2);
-    const start = Math.max(1, Math.min(current - half, tp - w + 1));
+    const start = Math.max(1, current - half);
     const end = Math.min(tp, start + w - 1);
     const arr: number[] = [];
     for (let p = start; p <= end; p++) arr.push(p);
     return arr;
   }, [current, tp, w]);
 
-  const canPrev = page > 1 && !isLoading;
+  const canPrev = page >= 0 && !isLoading;
   const canNext = page < tp && !isLoading;
 
   const go = (n: number) => {
@@ -58,7 +58,7 @@ export function PaginationProducts({
         <button
           key={p}
           onClick={() => {
-            go(p);
+            go(p + 1);
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
           className={`flex items-center justify-center w-[44px] h-11 text-2xl py-2 px-3 focus:outline-none cursor-pointer ${

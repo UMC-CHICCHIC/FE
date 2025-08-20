@@ -2,7 +2,6 @@ import { useState } from "react";
 import type { Consult } from "../../types/post";
 import { DateTimeFormat, HoursTimeFormat } from "../../utils/dateTimeFormat"; // ← 경로 조정
 import { ReplyFormat } from "./ReplyFormat";
-import { useImgUploadStore } from "../../store/useProfileImg";
 import { ReplyItem } from "./ReplyItem";
 
 type Props = {
@@ -10,6 +9,7 @@ type Props = {
   level?: 0 | 1; // 답글 / 댓글
   groupId?: number; // 댓글 목록
   replies?: Consult[]; // 답글 목록
+  profileImg: string;
   onSubmitReply?: (payload: {
     groupId: number;
     content: string;
@@ -20,13 +20,12 @@ export function CommentItem({
   item,
   level = 0,
   groupId,
+  profileImg,
   replies = [],
   onSubmitReply,
 }: Props) {
   const isParent = level === 0;
   const [isReplyOpen, setIsReplyOpen] = useState(false);
-  const preiviewUrl = useImgUploadStore((s) => s.previewUrl);
-  const avartar = preiviewUrl ?? "/profileImg.png";
 
   const avatarSize = isParent ? "w-12 h-12" : "w-10 h-10";
   const containerIndent = isParent ? "" : "ml-5";
@@ -34,7 +33,7 @@ export function CommentItem({
 
   return (
     <div className={`flex ${containerIndent}`}>
-      <img className={avatarSize} src={avartar} alt="profile" />
+      <img className={avatarSize} src={profileImg} alt="profile" />
       <div className="flex flex-col w-full pl-6 sm:pl-10">
         {/* 작성자/시간 */}
         <div className={`flex items-center gap-2 ${nameRowText}`}>

@@ -5,6 +5,7 @@ import type { PostCategory } from "./enums/category";
 export type ConsultPost = {
   memberId: number;
   nickname: string;
+  profile: string;
   consultPostId: number;
   postType: PostCategory;
   title: string;

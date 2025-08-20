@@ -71,14 +71,14 @@ export const ReviewEditForm = ({
         <button
           type="button"
           onClick={onClose}
-          className="px-3 py-2 border rounded cursor-pointer"
+          className="px-6 py-1 border cursor-pointer rounded-full hover:bg-[#AB3130]/10 transition-colors"
         >
           취소
         </button>
         <button
           type="submit"
           disabled={saving}
-          className="px-3 py-2 rounded bg-[#AB3130] text-white disabled:opacity-50 cursor-pointer"
+          className="px-6 py-1 rounded-full hover:bg-[#66191F] transition-colors bg-[#AB3130] text-white disabled:opacity-50 cursor-pointer"
         >
           {saving ? "저장 중..." : "저장"}
         </button>

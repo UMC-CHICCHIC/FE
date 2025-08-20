@@ -11,10 +11,11 @@ import {
   useGetProductDetail,
   useScrapStatus,
 } from "../../hooks/queries/useGetProduct";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ReviewForm from "../../components/Product/ReviewForm";
 import { ReviewList } from "../../components/Product/ReviewList";
 import { useUpdateScrap } from "../../hooks/mutations/useUpdateScrap";
+import { useAuth } from "../../hooks/useAuth";
 
 const ProductDetail = () => {
   const [selectTab, setSelectTab] = useState<"DETAILS" | "REVIEW">("DETAILS");
@@ -25,6 +26,8 @@ const ProductDetail = () => {
   const { toggle, isMutating } = useUpdateScrap(perfumeId!);
   // 스크랩 상태
   const { data: isScrapped = false } = useScrapStatus(perfumeId!);
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
 
   // 페이지 진입 시 store에 id 저장
   useEffect(() => {
@@ -197,7 +200,15 @@ const ProductDetail = () => {
       {/* 스크랩 및 홈페이지 라우팅 버튼 */}
       <div className="flex flex-col items-center justify-center w-full max-w-5xl gap-2 py-12 mx-auto md:flex-row">
         <button
-          onClick={() => toggle(isScrapped)}
+          onClick={() => {
+            // 스크랩 로그인 검사
+            if (!isLoggedIn) {
+              alert("로그인이 필요한 서비스입니다.");
+              navigate("/login");
+              return;
+            }
+            toggle(isScrapped);
+          }}
           disabled={isMutating}
           className={`flex flex-1 w-full items-center justify-center gap-2 sm:gap-4 border rounded-full text-[#AB3130] py-2 px-8 text-xl sm:text-[32px] font-[pretendard] cursor-pointer transition-colors ${
             isScrapped
@@ -214,7 +225,9 @@ const ProductDetail = () => {
         </button>
         <button
           className="flex flex-1 items-center justify-center hover:bg-[#66191F] bg-[#AB3130] text-[#F7F4EF] rounded-full py-2 px-8 text-xl sm:text-[32px] w-full font-[pretendard] font-light cursor-pointer"
-          onClick={() => (window.location.href = `${data?.result.brandUrl}`)}
+          onClick={() =>
+            (window.location.href = `https://${data?.result.brandUrl}`)
+          }
         >
           공식 홈페이지 바로가기
         </button>

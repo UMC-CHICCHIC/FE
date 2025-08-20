@@ -48,7 +48,12 @@ const ProductDetail = () => {
     {
       title: "노트 상세보기",
       notes: [
-        { noteId: 1, name: `Top : ${data?.result.topNote ?? "정보없음"}` },
+        {
+          noteId: 1,
+          name: `Top : ${
+            data?.result.topNote.map((i) => i.name) ?? "정보없음"
+          }`,
+        },
         {
           noteId: 2,
           name: `Middle : ${data?.result.middleNote ?? "정보없음"}`,

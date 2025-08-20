@@ -30,7 +30,17 @@ const Login = () => {
     setLoginError(null);
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await handleLogin();
+  };
+
   const handleLogin = async () => {
+    if (!formData.email.trim() || !formData.password.trim()) {
+      setLoginError("이메일과 비밀번호를 모두 입력해주세요.");
+      return;
+    }
+
     setLoginError(null);
     setIsLoading(true);
 
@@ -45,8 +55,8 @@ const Login = () => {
 
       login(user);
 
-  // 로그인 성공: 이전 페이지가 있으면 해당 경로로, 없으면 홈으로
-  navigate(fromPath, { replace: true });
+      // 로그인 성공: 이전 페이지가 있으면 해당 경로로, 없으면 홈으로
+      navigate(fromPath, { replace: true });
     } catch (error: any) {
       setLoginError("아이디 또는 비밀번호가 올바르지 않습니다.");
       console.error("로그인 에러:", error);
@@ -105,87 +115,91 @@ const Login = () => {
             </h2>
           </div>
 
-          <div className="mb-4 space-y-2 sm:space-y-4 sm:mb-6">
-            <input
-              type="text"
-              placeholder="Email"
-              value={formData.email}
-              onChange={(e) => handleInputChange("email", e.target.value)}
-              className="font-crimson w-full px-2 sm:px-4 py-2 sm:py-3 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] placeholder-[#AB3130] placeholder-opacity-60 focus:outline-none focus:ring-[#AB3130] text-sm sm:text-lg"
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={(e) => handleInputChange("password", e.target.value)}
-              className="font-crimson font-light w-full px-2 sm:px-4 py-2 sm:py-3 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] placeholder-[#AB3130] placeholder-opacity-60 focus:outline-none focus:ring-[#AB3130] text-sm sm:text-lg"
-            />
-            {loginError && (
-              <div className="sm:-mt-3 text-xs pl-2 mb-3 sm:text-sm text-red-500">
-                {loginError}
-              </div>
-            )}
-          </div>
-
-          <div className="flex items-center justify-between mb-4 sm:mb-8">
-            <label className="flex items-center text-[#AB3130] text-xs sm:text-sm cursor-pointer">
+          <form onSubmit={handleSubmit} noValidate>
+            <div className="mb-4 space-y-2 sm:space-y-4 sm:mb-6">
               <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                disabled={isLoading}
-                className="hidden"
+                type="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={(e) => handleInputChange("email", e.target.value)}
+                autoComplete="email"
+                className="font-crimson w-full px-2 sm:px-4 py-2 sm:py-3 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] placeholder-[#AB3130] placeholder-opacity-60 focus:outline-none focus:ring-[#AB3130] text-sm sm:text-lg disabled:opacity-50"
               />
-              <span
-                className={`
-                  mr-2 w-3 h-3 sm:w-4 sm:h-4
-                  border-1 border-[#AB3130] rounded-full
-                  flex items-center justify-center
-                  transition-colors duration-200
-                  ${rememberMe ? "bg-[#AB3130]" : "bg-transparent"}
-                  ${isLoading ? "opacity-50" : ""}
-                `}
-              >
-                {rememberMe && (
-                  <span
-                    className="block w-1 h-2 border-b-2 border-r-2 border-white rotate-45"
-                  />
-                )}
-              </span>
-              로그인 상태 유지
-            </label>
-            <div className="flex space-x-1 sm:space-x-2">
+              <input
+                type="password"
+                placeholder="Password"
+                value={formData.password}
+                onChange={(e) => handleInputChange("password", e.target.value)}
+                autoComplete="current-password"
+                className="font-crimson font-light w-full px-2 sm:px-4 py-2 sm:py-3 border border-[#AB3130] rounded-full bg-transparent text-[#AB3130] placeholder-[#AB3130] placeholder-opacity-60 focus:outline-none focus:ring-[#AB3130] text-sm sm:text-lg disabled:opacity-50"
+              />
+              {loginError && (
+                <div className="sm:-mt-3 text-xs pl-2 mb-3 sm:text-sm text-red-500">
+                  {loginError}
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center justify-between mb-4 sm:mb-8">
+              <label className="flex items-center text-[#AB3130] text-xs sm:text-sm cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="hidden"
+                />
+                <span
+                  className={`
+                    mr-2 w-3 h-3 sm:w-4 sm:h-4
+                    border-1 border-[#AB3130] rounded-full
+                    flex items-center justify-center
+                    transition-colors duration-200
+                    ${rememberMe ? "bg-[#AB3130]" : "bg-transparent"}
+                    ${isLoading ? "opacity-50" : ""}
+                  `}
+                >
+                  {rememberMe && (
+                    <span className="block w-1 h-2 border-b-2 border-r-2 border-white rotate-45" />
+                  )}
+                </span>
+                로그인 상태 유지
+              </label>
+              <div className="flex space-x-1 sm:space-x-2">
+                <button
+                  type="button"
+                  onClick={handleFindId}
+                  className="text-[#AB3130] text-xs sm:text-sm hover:underline"
+                >
+                  아이디 찾기
+                </button>
+                <span className="text-[#AB3130] text-xs sm:text-sm">|</span>
+                <button
+                  type="button"
+                  onClick={handleResetPassword}
+                  className="text-[#AB3130] text-xs sm:text-sm hover:underline"
+                >
+                  비밀번호 재설정
+                </button>
+              </div>
+            </div>
+
+            <div className="mb-8 space-y-2 sm:space-y-3 sm:mb-12">
               <button
-                onClick={handleFindId}
-                className="text-[#AB3130] text-xs sm:text-sm hover:underline"
+                type="submit"
+                disabled={isLoading}
+                className="font-crimson w-full bg-[#AB3130] text-white py-2 sm:py-3 rounded-full hover:bg-[#8b2a25] transition-colors font-normal cursor-pointer text-sm sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                아이디 찾기
+                Log-in
               </button>
-              <span className="text-[#AB3130] text-xs sm:text-sm">|</span>
               <button
-                onClick={handleResetPassword}
-                className="text-[#AB3130] text-xs sm:text-sm hover:underline"
+                type="button"
+                onClick={handleSignup}
+                className="font-crimson w-full bg-transparent font-normal text-[#AB3130] border border-[#AB3130] py-2 sm:py-3 rounded-full hover:bg-[#EFE8DC] transition-colors cursor-pointer text-sm sm:text-lg"
               >
-                비밀번호 재설정
+                Sign-up
               </button>
             </div>
-          </div>
-
-          <div className="mb-8 space-y-2 sm:space-y-3 sm:mb-12">
-            <button
-              onClick={handleLogin}
-              disabled={isLoading}
-              className="font-crimson w-full bg-[#AB3130] text-white py-2 sm:py-3 rounded-full hover:bg-[#8b2a25] transition-colors font-normal cursor-pointer text-sm sm:text-lg disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Log-in
-            </button>
-            <button
-              onClick={handleSignup}
-              className="font-crimson w-full bg-transparent font-normal text-[#AB3130] border border-[#AB3130] py-2 sm:py-3 rounded-full hover:bg-[#EFE8DC] transition-colors cursor-pointer text-sm sm:text-lg"
-            >
-              Sign-up
-            </button>
-          </div>
+          </form>
 
           <div>
             <div className="flex items-center mb-4 sm:mb-6">
@@ -198,6 +212,7 @@ const Login = () => {
 
             <div className="flex justify-center space-x-2 sm:space-x-4">
               <button
+                type="button"
                 onClick={() => handleSocialLogin("naver")}
                 className="flex items-center justify-center w-8 h-8 transition-opacity rounded-full cursor-pointer sm:w-12 sm:h-12 hover:opacity-80"
               >
@@ -208,6 +223,7 @@ const Login = () => {
                 />
               </button>
               <button
+                type="button"
                 onClick={() => handleSocialLogin("kakao")}
                 className="flex items-center justify-center w-8 h-8 transition-opacity rounded-full cursor-pointer sm:w-12 sm:h-12 hover:opacity-80"
               >
@@ -218,6 +234,7 @@ const Login = () => {
                 />
               </button>
               <button
+                type="button"
                 onClick={() => handleSocialLogin("google")}
                 className="flex items-center justify-center w-8 h-8 transition-opacity rounded-full cursor-pointer sm:w-12 sm:h-12 hover:opacity-80"
               >

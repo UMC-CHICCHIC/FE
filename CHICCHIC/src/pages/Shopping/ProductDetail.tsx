@@ -214,7 +214,9 @@ const ProductDetail = () => {
         </button>
         <button
           className="flex flex-1 items-center justify-center hover:bg-[#66191F] bg-[#AB3130] text-[#F7F4EF] rounded-full py-2 px-8 text-xl sm:text-[32px] w-full font-[pretendard] font-light cursor-pointer"
-          onClick={() => (window.location.href = `${data?.result.brandUrl}`)}
+          onClick={() =>
+            (window.location.href = `https://${data?.result.brandUrl}`)
+          }
         >
           공식 홈페이지 바로가기
         </button>

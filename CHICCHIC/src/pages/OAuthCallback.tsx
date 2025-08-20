@@ -18,8 +18,6 @@ const OAuthCallback = () => {
         const accessToken = urlParams.get('accessToken');
         const refreshToken = urlParams.get('refreshToken');
 
-        console.log("OAuth 콜백 - 받은 토큰:", { accessToken, refreshToken });
-
         if (!accessToken) {
           throw new Error('');
         }

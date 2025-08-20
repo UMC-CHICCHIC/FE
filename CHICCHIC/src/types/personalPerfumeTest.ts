@@ -6,7 +6,7 @@ export interface PerfumeTestAnswerItem {
 export interface PerfumeTestAnswers {
   userId: number;
   answers: PerfumeTestAnswerItem[];
-  createdAt: string; // ISO string
+  createdAt: string;
 }
 
 export interface SavePerfumeTestAnswersDto {
@@ -36,6 +36,7 @@ export interface RecommendationResponseDto {
   result: RecommendationItem[];
 }
 
+// 테스트 결과 받아오기
 export type HomeRecommendNote = {
   noteId: number;
   name: string;

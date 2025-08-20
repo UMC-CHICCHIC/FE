@@ -5,12 +5,28 @@ import { perfumes } from "../../types/perfumetypes";
 import { 
   checkAuthToken, 
   getPerfumeRecommendations, 
-  getHomeRecommendProducts,
 } from "../../apis/personalPerfumeTest";
 import type {
   HomeRecommendItem,
 } from "../../types/personalPerfumeTest";
 import axios from "axios";
+import { axiosInstance } from "../../apis/axiosInstance";
+
+// 추천 상품(보호된 엔드포인트) 조회 헬퍼
+async function fetchHomeRecommendProducts(): Promise<HomeRecommendItem[]> {
+  try {
+    const res = await axiosInstance.get("/home/recommend-products");
+    const data = res?.data;
+    if (data?.isSuccess && Array.isArray(data.result)) {
+      return data.result as HomeRecommendItem[];
+    }
+    console.warn("추천 결과 응답 형식 경고:", data);
+    return [];
+  } catch (e) {
+    console.error("추천 결과 조회 실패:", e);
+    throw e;
+  }
+}
 
 // 모든 필수 문항 ID 상수화
 const REQUIRED_QIDS = [1, 2, 3, 4, 5, 6, 7] as const;
@@ -44,6 +60,7 @@ export default function Test() {
   const [recoError, setRecoError] = useState<string | null>(null);
   const [authError, setAuthError] = useState<string | null>(null);
   const [hasPastRecommendations, setHasPastRecommendations] = useState(false);
+  const [brandMap, setBrandMap] = useState<Record<number, string>>({});
 
   // 초기 진입 시: 로그인 토큰 체크 -> 기존 추천 결과 확인
   useEffect(() => {
@@ -71,7 +88,7 @@ export default function Test() {
         // 기존 추천 결과 확인
         try {
           console.log("기존 추천 결과 조회 시작...");
-          const existingRecommendations = await getHomeRecommendProducts();
+          const existingRecommendations = await fetchHomeRecommendProducts();
           console.log("기존 추천 결과:", existingRecommendations);
           
           if (existingRecommendations.length > 0) {
@@ -192,7 +209,7 @@ export default function Test() {
       const testResult = await getPerfumeRecommendations({ answers });
       console.log("테스트 실행 결과:", testResult);
       
-      const recommendations = await getHomeRecommendProducts();
+  const recommendations = await fetchHomeRecommendProducts();
       console.log("추천 결과 조회:", recommendations);
       
       if (recommendations.length > 0) {
@@ -223,6 +240,36 @@ export default function Test() {
     }
   };
 
+  // 추천 결과의 productId로 상세 정보를 조회해 브랜드만 저장
+  useEffect(() => {
+    const fetchBrands = async () => {
+      if (!showResults || !reco || reco.length === 0) return;
+  // 화면에 보여줄 상위 개수만 조회 (현재 렌더는 최대 4개)
+  const maxCount = Math.min(reco.length, 4);
+      const targets = reco.slice(0, maxCount)
+        .filter((it) => typeof it.productId === "number" && !(it.productId in brandMap));
+      if (targets.length === 0) return;
+      try {
+        await Promise.all(
+          targets.map(async (it) => {
+            try {
+              const res = await axiosInstance.get(`/products/detail/${it.productId}`);
+              const brand = (res.data?.result?.brand ?? "").trim();
+              if (brand) {
+                setBrandMap((prev) => ({ ...prev, [it.productId]: brand }));
+              }
+            } catch (e) {
+              console.warn("브랜드 조회 실패", it.productId, e);
+            }
+          })
+        );
+      } catch {
+        // 개별 실패만 경고 처리
+      }
+    };
+    void fetchBrands();
+  }, [showResults, reco, brandMap]);
+
   const renderStep = () => {
     if (initLoading) return <LoadingPanel message="초기화 중입니다…" />;
     if (isLoading) return <LoadingPanel message="당신과 어울리는 향수를 찾는 중이에요!" />;
@@ -249,16 +296,18 @@ export default function Test() {
 
           {/* 향수 목록 렌더링 */}
           <div className="flex flex-col gap-4 max-w-2xl mx-auto mb-8">
-            {(reco && reco.length > 0 ? reco.slice(0, 5) : perfumes.slice(0, 5)).map((item, index) => {
+            {(reco && reco.length > 0 ? reco.slice(0, 4) : perfumes.slice(0, 4)).map((item, index) => {
               let image: string;
               let name: string;
               let notes: string;
               let to: string;
+              let brandText: string | undefined;
 
               if ('productId' in item && 'topNote' in item) {
                 const homeItem = item as HomeRecommendItem;
                 image = homeItem.imageUrl || "/sample-image.png";
                 name = homeItem.name;
+                brandText = brandMap[homeItem.productId];
                 
                 const topNotes = homeItem.topNote.map(note => note.name).join(", ");
                 const allNotes = [topNotes, homeItem.middleNote, homeItem.baseNote]
@@ -289,7 +338,7 @@ export default function Test() {
                   </div>
                   <div className="flex-1 text-left">
                     <h3 className="text-lg font-semibold text-[#AB3130] mb-1">{name}</h3>
-                    <p className="text-base text-[#AB3130]/80 mb-3">{name}</p>
+                    <p className="text-base text-[#AB3130]/80 mb-3">{brandText ?? (('productId' in item) ? '브랜드 정보 없음' : (item as any).brand)}</p>
                     <p className="text-sm text-[#AB3130]/60 mb-4">{notes}</p>
                     <Link 
                       to={to} 

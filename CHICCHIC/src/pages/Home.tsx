@@ -12,6 +12,10 @@ export default function Home() {
   const isAuthenticated = isLoggedIn;
 
   const [isLoading, setIsLoading] = useState(true);
+  // 추천 API 실패/빈 결과 플래그
+  const [recoError, setRecoError] = useState<string | null>(null);
+  const [recoEmpty, setRecoEmpty] = useState(false);
+  const [recoRefreshKey, setRecoRefreshKey] = useState(0);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -290,7 +294,41 @@ export default function Home() {
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </div>
-              <PerfumeGrid endpoint="/home/recommend-products" limit={4} />
+              {/* 실패/빈 결과 시 그리드 숨김, 아래 패널 노출 */}
+              <PerfumeGrid
+                endpoint="/home/recommend-products"
+                limit={4}
+                hideOnErrorOrEmpty
+                onError={(e) => setRecoError(e.message)}
+                onEmpty={() => setRecoEmpty(true)}
+                refreshKey={recoRefreshKey}
+              />
+              {(recoError || recoEmpty) && (
+                <div className="mt-6">
+                  <div className="max-w-3xl p-6 mx-auto bg-white border-2 border-[#AB3130] rounded-lg text-center">
+                    <h3 className="mb-2 text-xl font-bold text-[#AB3130]">
+                      추천 목록을 불러오지 못했어요
+                    </h3>
+                    <p className="mb-4 text-[#AB3130]/80">
+                      {recoError ? "네트워크 또는 인증 문제로 추천 결과를 가져오지 못했습니다." : "아직 추천 결과가 없어요. 테스트를 진행해 보세요!"}
+                    </p>
+                    <div className="flex items-center justify-center gap-3">
+                      <Link
+                        to="/personal-perfume/test"
+                        className="px-6 py-3 text-white rounded-full bg-[#AB3130] hover:bg-[#8B2829] font-semibold"
+                      >
+                        퍼스널 향수 테스트 다시하기
+                      </Link>
+                      <button
+                        onClick={() => { setRecoError(null); setRecoEmpty(false); setRecoRefreshKey((k) => k + 1); }}
+                        className="px-6 py-3 rounded-full border border-[#AB3130] text-[#AB3130] hover:bg-[#AB3130]/10 font-semibold"
+                      >
+                        다시 시도
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </section>
         ) : (

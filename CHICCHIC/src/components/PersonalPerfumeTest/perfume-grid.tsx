@@ -39,15 +39,21 @@ interface PerfumeGridProps {
   variant?: 'grid' | 'detail';
   limit?: number; // grid에서 보여줄 개수 제한
   endpoint?: string; // 호출할 API 경로 (기본: 인기상품)
+  onError?: (error: Error) => void; // 외부 에러 처리 콜백
+  onEmpty?: () => void; // 결과 없음 처리 콜백
+  hideOnErrorOrEmpty?: boolean; // 에러/빈 결과 시 자체 UI 숨김
+  refreshKey?: number | string; // 값이 바뀌면 재요청 트리거
 }
 
-export function PerfumeGrid({ variant = 'grid', limit = 4, endpoint = '/home/popular-products' }: PerfumeGridProps) {
+export function PerfumeGrid({ variant = 'grid', limit = 4, endpoint = '/home/popular-products', onError, onEmpty, hideOnErrorOrEmpty = false, refreshKey }: PerfumeGridProps) {
   const [perfumes, setPerfumes] = useState<ApiPerfume[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const [isEmpty, setIsEmpty] = useState(false);
+  const [brandMap, setBrandMap] = useState<Record<number, string>>({});
 
   useEffect(() => {
-    const fetchPopularPerfumes = async () => {
+  const fetchPopularPerfumes = async () => {
       try {
   console.info("[PerfumeGrid] fetch start", { endpoint });
         const useMock = false;
@@ -65,6 +71,7 @@ export function PerfumeGrid({ variant = 'grid', limit = 4, endpoint = '/home/pop
             topNote: [],
           }));
           setPerfumes(mocked);
+          setIsEmpty(mocked.length === 0);
           return;
         }
 
@@ -82,24 +89,66 @@ export function PerfumeGrid({ variant = 'grid', limit = 4, endpoint = '/home/pop
         const { isSuccess, result } = response.data;
 
         if (!isSuccess) {
-          throw new Error(`API 실패: ${response.data.code} - ${response.data.message}`);
+          const err = new Error(`API 실패: ${response.data.code} - ${response.data.message}`);
+          onError?.(err);
+          throw err;
         }
 
         if (!Array.isArray(result)) {
-          throw new Error("API 응답 형식이 올바르지 않습니다 (배열이 아님).");
+          const err = new Error("API 응답 형식이 올바르지 않습니다 (배열이 아님).");
+          onError?.(err);
+          throw err;
         }
-
   setPerfumes(result);
+        const empty = result.length === 0;
+        setIsEmpty(empty);
+        if (empty) {
+          onEmpty?.();
+        }
       } catch (e) {
         console.error("[PerfumeGrid] fetch error", { endpoint, error: e });
-        setError(e as Error);
+        const err = e as Error;
+        setError(err);
+        onError?.(err);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchPopularPerfumes();
-  }, [endpoint]);
+  }, [endpoint, refreshKey]);
+
+  // 추천 엔드포인트일 때, 각 상품의 브랜드 정보 보강
+  useEffect(() => {
+    const isProtected = endpoint.includes('/home/recommend-products');
+    if (!isProtected || perfumes.length === 0) return;
+
+    const list = variant === 'grid' ? perfumes.slice(0, limit) : perfumes;
+    const targets = list
+      .map((p) => p.id ?? p.productId)
+      .filter((id): id is number => typeof id === 'number' && !(id in brandMap));
+    if (targets.length === 0) return;
+
+    (async () => {
+      try {
+        await Promise.all(
+          targets.map(async (pid) => {
+            try {
+              const res = await axiosInstance.get(`/products/detail/${pid}`);
+              const brand = (res.data?.result?.brand ?? '').trim();
+              if (brand) {
+                setBrandMap((prev) => ({ ...prev, [pid]: brand }));
+              }
+            } catch (e) {
+              console.warn('브랜드 조회 실패', pid, e);
+            }
+          })
+        );
+      } catch {
+        // 개별 실패만 경고 처리
+      }
+    })();
+  }, [endpoint, perfumes, variant, limit, brandMap]);
 
   if (isLoading) {
     // 스켈레톤 UI
@@ -128,27 +177,35 @@ export function PerfumeGrid({ variant = 'grid', limit = 4, endpoint = '/home/pop
     );
   }
 
+  if ((error && hideOnErrorOrEmpty) || (isEmpty && hideOnErrorOrEmpty)) {
+    return null;
+  }
+
   if (error) {
     return <div className="text-red-500">오류: {error.message}</div>;
   }
 
   if (variant === 'grid') {
     // API 데이터를 PerfumeCard가 사용하는 Perfume 타입으로 변환
-    const formattedPerfumes: Perfume[] = perfumes.slice(0, limit).map((p) => ({
-      id: p.id ?? p.productId!,
-      name: p.name,
-      brand: (p.brand ?? '브랜드 정보 없음').trim(),
-      imageUrl: p.imageUrl,
-      description: `Middle: ${p.middleNote}, Base: ${p.baseNote}`,
-      purchaseUrl: '#',
-      notes: [p.middleNote, p.baseNote],
-      price: p.price,
-    }));
+    const formattedPerfumes: Perfume[] = perfumes.slice(0, limit).map((p) => {
+      const pid = p.id ?? p.productId!;
+      const brandText = brandMap[pid] ?? p.brand ?? '브랜드 정보 없음';
+      return {
+        id: pid,
+        name: p.name,
+        brand: brandText.trim(),
+        imageUrl: p.imageUrl,
+        description: `Middle: ${p.middleNote}, Base: ${p.baseNote}`,
+        purchaseUrl: '#',
+        notes: [p.middleNote, p.baseNote],
+        price: p.price,
+      } as Perfume;
+    });
 
     return (
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-        {formattedPerfumes.map((perfume) => (
-          <PerfumeCard key={perfume.id} perfume={perfume} />
+        {formattedPerfumes.map((perfume, idx) => (
+          <PerfumeCard key={`${perfume.id}-${idx}`} perfume={perfume} />
         ))}
       </div>
     );
@@ -160,7 +217,7 @@ export function PerfumeGrid({ variant = 'grid', limit = 4, endpoint = '/home/pop
       {perfumes.map((perfume, index) => {
         const pid = perfume.id ?? perfume.productId!;
         return (
-        <section key={pid} className="mb-8">
+        <section key={`${pid}-${index}`} className="mb-8">
           <div className="container mx-auto px-4">
             <div className="bg-[#F8F5F2] min-h-[70vh] flex">
               {/* 왼쪽 제품 이미지 */}
@@ -185,6 +242,9 @@ export function PerfumeGrid({ variant = 'grid', limit = 4, endpoint = '/home/pop
                   {/* 제품명 */}
                   <div>
                     <h2 className="text-4xl font-bold mb-2">{perfume.name}</h2>
+                    {(brandMap[pid] || perfume.brand) && (
+                      <p className="text-lg opacity-80">{(brandMap[pid] ?? perfume.brand) as string}</p>
+                    )}
                     <p className="text-xl opacity-80">₩{perfume.price.toLocaleString()}</p>
                   </div>
 

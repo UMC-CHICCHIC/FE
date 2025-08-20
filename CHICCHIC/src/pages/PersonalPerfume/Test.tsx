@@ -75,7 +75,7 @@ export default function Test() {
         
         if (!isValid) {
           console.log("토큰 무효 - 로그인 페이지로 이동");
-          navigate("/auth/login", { 
+          navigate("/login", { 
             replace: true, 
             state: { 
               from: location.pathname,

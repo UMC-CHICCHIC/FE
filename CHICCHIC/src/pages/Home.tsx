@@ -286,13 +286,6 @@ export default function Home() {
                     퍼스널 향수 추천 테스트 결과에 따라 추천된 향수입니다.
                   </p>
                 </div>
-                <Link
-                  to="/personal-perfume/recommend"
-                  className="text-[#AB3130] font-semibold flex items-center gap-1"
-                >
-                  <span>추천 향수 더보기</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
               </div>
               {/* 실패/빈 결과 시 그리드 숨김, 아래 패널 노출 */}
               <PerfumeGrid

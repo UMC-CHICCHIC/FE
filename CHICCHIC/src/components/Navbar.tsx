@@ -90,7 +90,7 @@ const Navbar = () => {
                 const result = await searchProductByName(searchQuery.trim());
                 setSearchResult(result);
                 setShowDropdown(true);
-                if (result) {
+                if (result && result.name.trim().toLowerCase() === searchQuery.trim().toLowerCase()) {
                   navigate(`/shopping/${result.id}`);
                   setShowDropdown(false);
                   setSearchQuery("");
@@ -104,7 +104,7 @@ const Navbar = () => {
               const result = await searchProductByName(searchQuery.trim());
               setSearchResult(result);
               setShowDropdown(true);
-              if (result) {
+              if (result && result.name.trim().toLowerCase() === searchQuery.trim().toLowerCase()) {
                 navigate(`/shopping/${result.id}`);
                 setShowDropdown(false);
                 setSearchQuery("");

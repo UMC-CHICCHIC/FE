@@ -305,23 +305,41 @@ export default function Home() {
               />
               {(recoError || recoEmpty) && (
                 <div className="mt-6">
-                  <div className="max-w-3xl p-6 mx-auto bg-white border-2 border-[#AB3130] rounded-lg text-center">
-                    <h3 className="mb-2 text-xl font-bold text-[#AB3130]">
-                      추천 목록을 불러오지 못했어요
+                  <div className="max-w-lg md:max-w-4xl lg:max-w-6xl xl:max-w-7xl 2xl:max-w-full mx-auto bg-white border-2 border-[#AB3130] rounded-lg p-6 md:p-10 lg:p-12 text-center">
+                    <div className="flex items-center justify-center mx-auto mb-4 md:mb-6">
+                      <svg
+                        className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 text-[#AB3130]"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                      </svg>
+                    </div>
+
+                    <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#AB3130] mb-4 md:mb-6">
+                      {recoError ? "추천 목록을 불러오지 못했어요." : "아직 추천 결과가 없어요."}
                     </h3>
-                    <p className="mb-4 text-[#AB3130]/80">
-                      {recoError ? "네트워크 또는 인증 문제로 추천 결과를 가져오지 못했습니다." : "아직 추천 결과가 없어요. 테스트를 진행해 보세요!"}
+                    <p className="max-w-3xl mx-auto mb-6 md:mb-8 text-base md:text-lg text-[#AB3130]/80">
+                      {recoError
+                        ? "퍼스널 향수 추천 테스트를 진행해 보세요! 나에게 어울리는 향수를 추천해 드립니다."
+                        : "퍼스널 향수 추천 테스트를 진행해 보세요! 나에게 어울리는 향수를 추천해 드립니다."}
                     </p>
                     <div className="flex items-center justify-center gap-3">
                       <Link
                         to="/personal-perfume/test"
-                        className="px-6 py-3 text-white rounded-full bg-[#AB3130] hover:bg-[#8B2829] font-semibold"
+                        className="bg-[#AB3130] text-white px-6 py-3 md:px-8 md:py-4 rounded-full hover:bg-[#8B2829] transition-colors font-semibold text-base md:text-lg"
                       >
-                        퍼스널 향수 테스트 다시하기
+                        퍼스널 향수 추천 테스트 진행하기
                       </Link>
                       <button
                         onClick={() => { setRecoError(null); setRecoEmpty(false); setRecoRefreshKey((k) => k + 1); }}
-                        className="px-6 py-3 rounded-full border border-[#AB3130] text-[#AB3130] hover:bg-[#AB3130]/10 font-semibold"
+                        className="px-6 py-3 md:px-8 md:py-4 rounded-full border border-[#AB3130] text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors font-semibold text-base md:text-lg"
                       >
                         다시 시도
                       </button>

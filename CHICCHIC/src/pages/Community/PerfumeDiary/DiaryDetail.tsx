@@ -17,7 +17,10 @@ const DiaryDetail = () => {
   const { postId } = useParams<{ postId: string }>();
   const { category } = usePostFilter();
   const select = POST_CATEGORY[category];
-  const [openReply, setOpenReply] = useState(false);
+  const [openReply, setOpenReply] = useState<{ [key: number]: boolean }>({});
+  const [replyContent, setReplyContent] = useState<{ [key: number]: string }>(
+    {}
+  );
   const [diaryData, setDiaryData] = useState<DiaryPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -29,11 +32,11 @@ const DiaryDetail = () => {
   const formatDateTime = (dateString: string) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
     return `${year}.${month}.${day} ${hours}:${minutes}`;
   };
 
@@ -43,7 +46,24 @@ const DiaryDetail = () => {
     try {
       setCommentsLoading(true);
       const response = await getDiaryComments(Number(postId));
-      setComments(response.result);
+
+      // 댓글과 답글을 구분하여 구조화
+      const parentComments = response.result.filter(
+        (comment) => !comment.parentCommentId
+      );
+      const replies = response.result.filter(
+        (comment) => comment.parentCommentId
+      );
+
+      // 부모 댓글에 답글 연결
+      const commentsWithReplies = parentComments.map((parent) => ({
+        ...parent,
+        replies: replies.filter(
+          (reply) => reply.parentCommentId === parent.commentId
+        ),
+      }));
+
+      setComments(commentsWithReplies);
     } catch (err) {
       console.error("댓글 목록 조회 실패:", err);
     } finally {
@@ -71,8 +91,36 @@ const DiaryDetail = () => {
     fetchComments();
   }, [postId]);
 
-  const handleReplyClick = () => {
-    setOpenReply((prev) => !prev);
+  const handleReplyClick = (commentId: number) => {
+    setOpenReply((prev) => ({
+      ...prev,
+      [commentId]: !prev[commentId],
+    }));
+  };
+
+  const handleReplySubmit = async (parentCommentId: number) => {
+    const content = replyContent[parentCommentId];
+    if (!content?.trim() || !postId || commentLoading) return;
+
+    try {
+      setCommentLoading(true);
+      await createDiaryComment(Number(postId), {
+        content: content.trim(),
+        parentCommentId,
+      });
+      setReplyContent((prev) => ({ ...prev, [parentCommentId]: "" }));
+      setOpenReply((prev) => ({ ...prev, [parentCommentId]: false }));
+      await fetchComments();
+    } catch (err) {
+      console.error("답글 작성 실패:", err);
+      alert("답글 작성에 실패했습니다.");
+    } finally {
+      setCommentLoading(false);
+    }
+  };
+
+  const handleReplyContentChange = (commentId: number, value: string) => {
+    setReplyContent((prev) => ({ ...prev, [commentId]: value }));
   };
 
   const handleCommentSubmit = async () => {
@@ -134,12 +182,18 @@ const DiaryDetail = () => {
         </div>
         {/* 댓글란 */}
         <section>
-          <p className="pt-8 font-medium">댓글 {comments.length}</p>
+          <p className="pt-8 font-medium">
+            댓글{" "}
+            {comments.reduce(
+              (total, comment) => total + 1 + (comment.replies?.length || 0),
+              0
+            )}
+          </p>
           {commentsLoading ? (
             <div className="py-8">댓글을 불러오는 중...</div>
           ) : comments.length > 0 ? (
             comments.map((commentItem) => (
-              <div key={commentItem.id} className="flex py-8 border-b">
+              <div key={commentItem.commentId} className="flex py-8 border-b">
                 <img className="w-12 h-12" src={"/profile.png"} alt="" />
                 <div className="flex flex-col w-full pl-10">
                   <p>{commentItem.nickName}</p>
@@ -149,27 +203,70 @@ const DiaryDetail = () => {
                     <button
                       type="button"
                       className="cursor-pointer hover:underline"
-                      onClick={() => handleReplyClick()}
+                      onClick={() => handleReplyClick(commentItem.commentId)}
                     >
-                      {openReply ? "답글쓰기" : "답글닫기"}
+                      {openReply[commentItem.commentId]
+                        ? "답글닫기"
+                        : "답글쓰기"}
                     </button>
                   </div>
-                  {!openReply && (
-                    // 답글 입력창
-                    <div className="flex items-center border border-[#AB3130] rounded-xl bg-transparent">
+                  {openReply[commentItem.commentId] && (
+                    <div className="flex items-center border border-[#AB3130] rounded-xl bg-transparent mt-2">
                       <input
                         type="text"
                         placeholder="답글 쓰기"
                         className="flex-1 px-4 bg-transparent sm:p-4 focus:outline-none"
+                        value={replyContent[commentItem.commentId] || ""}
+                        onChange={(e) =>
+                          handleReplyContentChange(
+                            commentItem.commentId,
+                            e.target.value
+                          )
+                        }
+                        disabled={commentLoading}
                       />
-                      <button className="p-2 pr-3 cursor-pointer">
+                      <button
+                        className="p-2 pr-3"
+                        onClick={() => handleReplySubmit(commentItem.commentId)}
+                        disabled={
+                          commentLoading ||
+                          !replyContent[commentItem.commentId]?.trim()
+                        }
+                      >
                         <img
-                          className="bg-[#AB3130] border rounded-full p-1 hover:bg-[#872b2b] w-full"
+                          className={`border rounded-full p-1 w-full ${
+                            commentLoading ||
+                            !replyContent[commentItem.commentId]?.trim()
+                              ? "bg-gray-400 cursor-not-allowed"
+                              : "bg-[#AB3130] cursor-pointer hover:bg-[#872b2b]"
+                          }`}
                           src={arrowUp}
                           alt="arrowUp"
                           width={35}
                         />
                       </button>
+                    </div>
+                  )}
+
+                  {/* 답글 표시 */}
+                  {commentItem.replies && commentItem.replies.length > 0 && (
+                    <div className="ml-8 mt-4 space-y-4">
+                      {commentItem.replies.map((reply) => (
+                        <div key={reply.commentId} className="flex py-4 pl-4">
+                          <img
+                            className="w-10 h-10"
+                            src={"/profile.png"}
+                            alt=""
+                          />
+                          <div className="flex flex-col w-full pl-6">
+                            <p>{reply.nickName}</p>
+                            <p className="py-4">{reply.content}</p>
+                            <div className="text-[#66191F] space-x-8 text-sm pb-2">
+                              <span>{formatDateTime(reply.createdAt)}</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>

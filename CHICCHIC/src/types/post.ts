@@ -102,21 +102,27 @@ export type ResponseDiaryDetailDto = CommonResponse<DiaryPost>;
 // 일기 댓글 작성 요청
 export type RequestCreateDiaryCommentDto = {
   content: string;
+  parentCommentId?: number;
 };
 
 // 일기 댓글 작성 응답
 export type ResponseCreateDiaryCommentDto = CommonResponse<{
-  id: number;
+  commentId: number;
+  diaryId: number;
   content: string;
+  nickName: string;
   createdAt: string;
+  parentCommentId?: number;
 }>;
 
 // 일기 댓글 정보
 export type DiaryComment = {
-  id: number;
+  commentId: number;
   content: string;
   nickName: string;
   createdAt: string;
+  parentCommentId?: number;
+  replies?: DiaryComment[];
 };
 
 // 일기 댓글 목록 조회 응답

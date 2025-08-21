@@ -12,8 +12,8 @@ import {
   useScrapStatus,
 } from "../../hooks/queries/useGetProduct";
 import { useNavigate, useParams } from "react-router-dom";
-import ReviewForm from "../../components/Product/ReviewForm";
-import { ReviewList } from "../../components/Product/ReviewList";
+import ReviewForm from "../../components/Product//Review/ReviewForm";
+import { ReviewList } from "../../components/Product/Review/ReviewList";
 import { useUpdateScrap } from "../../hooks/mutations/useUpdateScrap";
 import { useAuth } from "../../hooks/useAuth";
 

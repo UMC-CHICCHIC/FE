@@ -41,6 +41,7 @@ export type RequestCreatePostDto = {
 export type Consult = {
   memberId: number;
   nickname: string;
+  profile: string;
   content: string;
   hierarchy: number;
   order: number;

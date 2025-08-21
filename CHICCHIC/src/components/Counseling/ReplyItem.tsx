@@ -2,7 +2,6 @@ import { useState } from "react";
 import type { Consult } from "../../types/post";
 import { DateTimeFormat, HoursTimeFormat } from "../../utils/dateTimeFormat"; // ← 경로 조정
 import { ReplyFormat } from "./ReplyFormat"; // 기존 컴포저 재사용
-import { useImgUploadStore } from "../../store/useProfileImg";
 
 type Props = {
   item: Consult; // 답글 데이터
@@ -24,20 +23,22 @@ export function ReplyItem({
 }: Props) {
   const isParent = level === 0;
   const [isReplyOpen, setIsReplyOpen] = useState(false);
-  const preiviewUrl = useImgUploadStore((s) => s.previewUrl);
-  const avartar = preiviewUrl ?? "/profileImg.png";
 
-  const avatarSize = isParent ? "w-12 h-12" : "w-10 h-10";
+  const avatarSize = isParent ? "w-14 h-14" : "w-10 h-10";
   const containerIndent = isParent ? "" : "ml-5";
-  const nameRowText = isParent ? "font-medium" : "text-sm text-[#AB3130]";
+  const nameRowText = isParent ? "font-medium" : "text-sm";
 
   return (
     <div className={`flex ${containerIndent}`}>
-      <img className={avatarSize} src={avartar} alt="profile" />
+      <img
+        className={`rounded-full ${avatarSize}`}
+        src={item.profile}
+        alt="profile"
+      />
       <div className="flex flex-col w-full pl-6 sm:pl-10">
         {/* 작성자/시간 */}
         <div className={`flex items-center gap-2 ${nameRowText}`}>
-          <span className={isParent ? "font-medium" : "font-medium"}>
+          <span className={isParent ? "font-xl" : "font-medium"}>
             {item.nickname}
           </span>
           <time

@@ -46,7 +46,6 @@ export default function ConsultCommentsSection({
                 item={g.parent}
                 level={0}
                 groupId={g.groupId}
-                profileImg={g.parent.content}
                 replies={g.replies}
                 onSubmitReply={onSubmitReply}
               />

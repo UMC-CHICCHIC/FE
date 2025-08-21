@@ -1,13 +1,13 @@
 // components/Review/ReviewList.tsx
 import { useEffect, useState } from "react";
-import { useGetProductReview } from "../../hooks/queries/useGetProduct";
-import kebab from "../../assets/icons/kebab.svg";
-import { GetStarRating } from "./getStarRating";
-import type { ProductReview, Rating } from "../../types/perfumes";
-import { ReviewTimeFormat } from "../../utils/dateTimeFormat";
-import { Pagination } from "../Pagination";
+import { useGetProductReview } from "../../../hooks/queries/useGetProduct";
+import kebab from "../../../assets/icons/kebab.svg";
+import { GetStarRating } from ".././getStarRating";
+import type { ProductReview, Rating } from "../../../types/perfumes";
+import { ReviewTimeFormat } from "../../../utils/dateTimeFormat";
+import { Pagination } from "../../Pagination";
 import { ReviewEdit } from "./ReviewEdit";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuth } from "../../../hooks/useAuth";
 import { ReviewEditForm } from "./ReviewEditForm";
 
 interface ReviewListProps {

@@ -92,7 +92,7 @@ const ShoppingHome = () => {
       </section>
 
       {/* 카테고리 */}
-      <section className="w-full max-w-5xl text-center">
+      <section className="w-full max-w-[1090px] text-center">
         <div className="flex items-center justify-center">
           <div className="flex-1 h-px bg-[#AB3130]" />
           <label className="text-2xl tracking-wide font-black px-4 text-[#AB3130]">
@@ -105,12 +105,12 @@ const ShoppingHome = () => {
             <span className="text-white bg-[#AB3130] py-2">가격대</span>
             {/* PRICE 카테고리 렌더링 */}
             {isPriceLoading && (
-              <span className="col-span-2 py-2 text-sm text-gray-500 md:col-span-8">
+              <span className="col-span-2 py-2 text-sm md:col-span-6">
                 로딩중…
               </span>
             )}
             {isPriceError && (
-              <span className="col-span-2 py-2 text-sm md:col-span-8">
+              <span className="col-span-2 py-2 text-sm md:col-span-6">
                 가격대 불러오기 실패
               </span>
             )}
@@ -137,12 +137,12 @@ const ShoppingHome = () => {
             <span className="text-white bg-[#AB3130] py-2">발향률</span>
             {/* CONCENTRATION 카테고리 렌더링 */}
             {isConcLoading && (
-              <span className="col-span-2 py-2 text-sm text-gray-500 md:col-span-8">
+              <span className="col-span-2 py-2 text-sm md:col-span-6">
                 로딩중…
               </span>
             )}
             {isConcError && (
-              <span className="col-span-2 py-2 text-sm md:col-span-8">
+              <span className="col-span-2 text-sm md:col-span-6">
                 발향률 불러오기 실패
               </span>
             )}
@@ -171,8 +171,8 @@ const ShoppingHome = () => {
         </div>
       )}
       {/* 상품 필터링 */}
-      <section className="w-full max-w-5xl">
-        <div className="flex w-full justify-start space-x-2 text-[#AB3130] mb-4 flex-wrap gap-2 pt-6">
+      <section className="w-full max-w-[1100px]">
+        <div className="flex w-full justify-start space-x-4 text-[#AB3130] mb-4 flex-wrap pt-6">
           {sortItems.map((label) => {
             const active = sort === label;
             return (

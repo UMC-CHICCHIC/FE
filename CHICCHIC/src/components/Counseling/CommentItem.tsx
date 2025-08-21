@@ -28,13 +28,15 @@ export function CommentItem({
   const avatarSize = isParent ? "w-12 h-12" : "w-10 h-10";
   const containerIndent = isParent ? "" : "ml-5";
   const nameRowText = isParent ? "font-medium" : "text-md";
+  const fallback = "/profileImg.png";
 
   return (
     <div className={`flex ${containerIndent}`}>
       <img
         className={`rounded-full ${avatarSize}`}
-        src={item.profile}
+        src={item.profile || fallback}
         alt="profile"
+        onError={(e) => ((e.target as HTMLImageElement).src = fallback)}
       />
       <div className="flex flex-col w-full pl-6 sm:pl-10">
         {/* 작성자/시간 */}
@@ -45,7 +47,9 @@ export function CommentItem({
           <span className={!isParent ? "" : "hidden"}>·</span>
           <time
             className={!isParent ? "text-gray-500" : "text-[#66191F] text-sm"}
-          ></time>
+          >
+            {DateTimeFormat(item.dateTime)} {HoursTimeFormat(item.dateTime)}
+          </time>
         </div>
 
         {/* 내용 */}

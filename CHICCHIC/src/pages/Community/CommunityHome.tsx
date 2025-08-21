@@ -23,13 +23,14 @@ const CommunityHome = () => {
         />
 
         {/* 텍스트 레이어 */}
-        <div className="relative flex flex-col items-start justify-start h-full px-4 pt-16 text-white z-5 sm:px-8 md:px-20">
-          <span className="mb-10 whitespace-pre-line sm:leading-20 leading-12 text-[clamp(3rem,6vw,5rem)]">
+        <div className="relative flex flex-col items-start justify-start h-full gap-10 px-2 text-white z-5 sm:px-8 md:px-20">
+          <span className="mb-10 whitespace-pre-line sm:leading-20 leading-12 text-[clamp(4rem,7vw,6rem)]">
             Perfume{"\n"}Community
           </span>
-          <span className="max-w-2xl font-[pretendard] font-extralight break-keep text-[clamp(1rem,1.75vw,1.25rem)] leading-relaxed">
+          <span className="max-w-5xl font-[pretendard] font-extralight break-keep text-[clamp(1.5rem,2.25vw,1.75rem)] leading-relaxed">
             향수 추천부터 향수에 대한 다양한 이야기, 그리고 향수를 기록하는 향수
-            일기장까지.{"\n"}CHICCHIC의 커뮤니티에서 경험하세요.
+            일기장까지.{"\n"}
+            CHICCHIC의 커뮤니티에서 경험하세요.
           </span>
         </div>
       </section>

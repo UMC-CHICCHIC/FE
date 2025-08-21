@@ -52,7 +52,7 @@ const ShoppingHome = () => {
   } = useGetCategories("CONCENTRATION" as PerfumeCategory);
 
   // 상품 리스트 훅 사용
-  const { data, isLoading, isError } = useGetProductList({
+  const { data, isLoading, isError, isFetching } = useGetProductList({
     page: productPage,
     size: 16,
     sort: sortMap[sort],
@@ -100,68 +100,73 @@ const ShoppingHome = () => {
           </label>
           <div className="flex-1 h-px bg-[#AB3130]" />
         </div>
-        <div className="items-center text-black border-b border-[#ece3d4] my-4 font-[pretendard]">
-          <div className="grid items-center grid-cols-7 border-t border-[#EAE6DF]">
-            <span className="text-white bg-[#AB3130] py-2">가격대</span>
-            {/* PRICE 카테고리 렌더링 */}
-            {isPriceLoading && (
-              <span className="col-span-2 py-2 text-sm md:col-span-6">
-                로딩중…
-              </span>
-            )}
-            {isPriceError && (
-              <span className="col-span-2 py-2 text-sm md:col-span-6">
-                가격대 불러오기 실패
-              </span>
-            )}
-            {priceCat
-              ?.sort((a, b) => a.order - b.order)
-              .map((c) => {
-                const active = catId === c.categoryId;
-                return (
-                  <button
-                    key={c.categoryId}
-                    type="button"
-                    onClick={() => handleCatId(c.categoryId)}
-                    className={`m-1 py-2 px-3 text-sm transition cursor-pointer col-span-2
+        <div className="items-center text-black border-b border-[#ece3d4] mt-4 font-[pretendard]">
+          <div className="flex">
+            <span className="text-white bg-[#AB3130] w-[181.5px] h-[43px] py-2">
+              가격대
+            </span>
+            <div className="w-full grid items-center grid-cols-3 border-t border-[#EAE6DF]">
+              {/* PRICE 카테고리 렌더링 */}
+              {isPriceLoading && (
+                <span className="py-2 text-sm md:col-span-3">로딩중…</span>
+              )}
+              {isPriceError && (
+                <span className="py-2 text-sm md:col-span-3">
+                  가격대 불러오기 실패
+                </span>
+              )}
+              {priceCat
+                ?.sort((a, b) => a.order - b.order)
+                .map((c) => {
+                  const active = catId === c.categoryId;
+                  return (
+                    <button
+                      key={c.categoryId}
+                      type="button"
+                      onClick={() => handleCatId(c.categoryId)}
+                      className={`m-1 py-2 px-3 text-sm transition cursor-pointer
                     ${active ? "text-[#AB3130] font-bold" : "hover:underline"}
                   `}
-                  >
-                    {c.name}
-                  </button>
-                );
-              })}
+                    >
+                      {c.name}
+                    </button>
+                  );
+                })}
+            </div>
           </div>
-
-          <div className="grid items-center grid-cols-7 border-t border-[#EAE6DF]">
-            <span className="text-white bg-[#AB3130] py-2">발향률</span>
-            {/* CONCENTRATION 카테고리 렌더링 */}
-            {isConcLoading && (
-              <span className="col-span-2 py-2 text-sm md:col-span-6">
-                로딩중…
-              </span>
-            )}
-            {isConcError && (
-              <span className="col-span-2 text-sm md:col-span-6">
-                발향률 불러오기 실패
-              </span>
-            )}
-            {concCat
-              ?.sort((a, b) => a.order - b.order)
-              .map((c) => {
-                const active = catId === c.categoryId;
-                return (
-                  <button
-                    key={c.categoryId}
-                    type="button"
-                    onClick={() => handleCatId(c.categoryId)}
-                    className={`py-2 px-3 text-sm transition cursor-pointer
+          <div className="flex">
+            <span className="text-white bg-[#AB3130] py-2 w-[181.5px] h-[43px]">
+              발향률
+            </span>
+            <div className="grid w-full items-center grid-cols-4 border-t border-[#EAE6DF]">
+              {/* CONCENTRATION 카테고리 렌더링 */}
+              {isConcLoading && (
+                <span className="col-span-1 py-2 text-sm md:col-span-3">
+                  로딩중…
+                </span>
+              )}
+              {isConcError && (
+                <span className="col-span-1 text-sm md:col-span-3">
+                  발향률 불러오기 실패
+                </span>
+              )}
+              {concCat
+                ?.sort((a, b) => a.order - b.order)
+                .map((c) => {
+                  const active = catId === c.categoryId;
+                  return (
+                    <button
+                      key={c.categoryId}
+                      type="button"
+                      onClick={() => handleCatId(c.categoryId)}
+                      className={`py-2 px-3 text-sm transition cursor-pointer
                   ${active ? "text-[#AB3130] font-bold" : "hover:underline"}`}
-                  >
-                    {c.name}
-                  </button>
-                );
-              })}
+                    >
+                      {c.name}
+                    </button>
+                  );
+                })}
+            </div>
           </div>
         </div>
       </section>
@@ -200,6 +205,7 @@ const ShoppingHome = () => {
             brand: p.brand,
             ml: p.ml,
             isLoading,
+            isFetching,
             imageUrl: p.imageUrl,
           }))}
           isLoading={isLoading}

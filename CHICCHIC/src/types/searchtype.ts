@@ -10,12 +10,12 @@ export interface ProductSearchResult {
   name: string;
   brand: string;
   ml: number;
-  topNote: ProductSearchNote[];
-  baseNote: string;
-  middleNote: string;
-  concentration: string;
+  topNote?: ProductSearchNote[];
+  baseNote?: string;
+  middleNote?: string;
+  concentration?: string;
   price: number;
-  itemRating: number;
+  itemRating?: number;
   imageUrl: string;
 }
 

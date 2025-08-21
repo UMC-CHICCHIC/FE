@@ -6,7 +6,7 @@ type ProductGridItem = Omit<ProductCardProps, "onClick"> & {
   onClick?: (id: number) => void;
 };
 
-interface ProductGridProps {
+export interface ProductGridProps {
   items: ProductGridItem[];
   isLoading?: boolean;
   isFetching?: boolean;

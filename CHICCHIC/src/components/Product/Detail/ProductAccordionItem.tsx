@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import ArrowIcon from "../../assets/icons/arrow.svg";
-import type { Notes } from "../../types/products";
+import ArrowIcon from "../../../assets/icons/arrow.svg";
+import type { Notes } from "../../../types/products";
 
 interface AccordionItemProps {
   title: string;

@@ -20,4 +20,5 @@ export const QUERY_KEY = {
   reviews: "reviews",
   perfumeStories: "perfumeStories",
   consultComments: "consultComments",
+  productSearch: "productSearch",
 };

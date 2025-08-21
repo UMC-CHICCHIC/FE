@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SearchIcon from "../../assets/icons/search.svg";
 import type {
   PAGINATION_ORDER,
@@ -10,8 +10,11 @@ import {
   useGetProductList,
 } from "../../hooks/queries/useGetProduct";
 import { useNavigate } from "react-router-dom";
-import { ProductGrid } from "../../components/Product/ProductList";
+import { ProductGrid } from "../../components/Product/Shopping/ProductList";
 import { PaginationProducts } from "../../components/PaginationProducts";
+import { useDebounce } from "../../hooks/useDebounce";
+import { useProductSearch } from "../../hooks/queries/useGetProductSearch";
+import { ProductSearchComponent } from "../../components/Product/Shopping/ProductSearchComponent";
 
 const sortItems = [
   "인기도순",
@@ -34,11 +37,22 @@ const sortMap: Record<SortLabel, PAGINATION_ORDER> = {
 
 const ShoppingHome = () => {
   const [productPage, setProductPage] = useState(0);
-  const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const [sort, setSort] = useState<SortLabel>("인기도순");
   const { setPerfumeId } = useProductStore();
   const [catId, setCatId] = useState<number | null>(null);
+
+  // 검색 debounce 적용
+  const [search, setSearch] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const searchTermDebounce = useDebounce(searchTerm, 300);
+  const {
+    data: product,
+    isError: isSearchError,
+    isLoading: isSearchLoading,
+    isPending: isSearchPending,
+    error: searchError,
+  } = useProductSearch(searchTermDebounce);
 
   const {
     data: priceCat,
@@ -64,6 +78,16 @@ const ShoppingHome = () => {
   const totalPages = data?.result.totalPages ?? 0;
   const currentPage = data?.result.number ?? productPage;
 
+  // 검색 플래그 변수
+  const showSearchResult =
+    !isSearchError && !!searchTermDebounce && !!product && !isSearchLoading;
+
+  // 검색 해제
+  // const clearSearch = () => {
+  //   setSearch("");
+  //   setSearchTerm("");
+  // };
+
   const handleCatId = (id: number | null) => {
     setCatId((prev) => (prev === id ? null : id));
     setProductPage(0);
@@ -71,23 +95,22 @@ const ShoppingHome = () => {
 
   return (
     <div className="flex flex-col min-h-screen items-center p-4 space-y-8 bg-[#F7F4EF]">
-      {/* 상품 검색창 구현 X */}
+      {/* 상품 검색창 */}
       <section className="flex items-center w-full max-w-xl border rounded-full border-[#AB3130] px-4 py-2 my-14">
         <input
           type="text"
           placeholder="Search"
           className="flex-grow bg-transparent outline-none placeholder-[#AB3130] text-[#AB3130] px-2"
           value={search}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setSearch(e.target.value)
-          }
-          onKeyUp={(e) => e.key === "Enter" && setProductPage(0)}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyUp={(e) => e.key === "Enter" && setSearchTerm(search.trim())}
         />
         <img
           src={SearchIcon}
           alt="Search Icon"
           className="cursor-pointer"
           width={20}
+          onClick={() => setSearchTerm(search.trim())}
         />
       </section>
 
@@ -125,7 +148,11 @@ const ShoppingHome = () => {
                       type="button"
                       onClick={() => handleCatId(c.categoryId)}
                       className={`m-1 py-2 px-3 text-sm transition cursor-pointer
-                    ${active ? "text-[#AB3130] font-bold" : "hover:underline"}
+                    ${
+                      active
+                        ? "text-[#AB3130] font-semibold"
+                        : "hover:underline"
+                    }
                   `}
                     >
                       {c.name}
@@ -160,7 +187,9 @@ const ShoppingHome = () => {
                       type="button"
                       onClick={() => handleCatId(c.categoryId)}
                       className={`py-2 px-3 text-sm transition cursor-pointer
-                  ${active ? "text-[#AB3130] font-bold" : "hover:underline"}`}
+                  ${
+                    active ? "text-[#AB3130] font-semibold" : "hover:underline"
+                  }`}
                     >
                       {c.name}
                     </button>
@@ -197,37 +226,54 @@ const ShoppingHome = () => {
             );
           })}
         </div>
-        <ProductGrid
-          items={list.map((p) => ({
-            id: p.id,
-            name: p.name,
-            price: p.price,
-            brand: p.brand,
-            ml: p.ml,
-            isLoading,
-            isFetching,
-            imageUrl: p.imageUrl,
-          }))}
-          isLoading={isLoading}
-          pageSize={16}
+        {/* 검색 결과 */}
+        <ProductSearchComponent
+          name={searchTermDebounce}
+          product={product ?? null}
+          isLoading={isSearchLoading || isSearchPending}
+          isError={isSearchError}
+          error={searchError!}
+          // onClear={clearSearch}
           onItemClick={(id) => {
             setPerfumeId(id);
             navigate(`/shopping/${id}`);
           }}
         />
+        {!showSearchResult && (
+          <section className=" flex flex-col items-center w-full max-w-[1090px]">
+            <ProductGrid
+              items={list.map((p) => ({
+                id: p.id,
+                name: p.name,
+                price: p.price,
+                brand: p.brand,
+                ml: p.ml,
+                isLoading,
+                isFetching,
+                imageUrl: p.imageUrl,
+              }))}
+              isLoading={isLoading}
+              pageSize={16}
+              onItemClick={(id) => {
+                setPerfumeId(id);
+                navigate(`/shopping/${id}`);
+              }}
+            />
+            {/* 페이지 네이션 */}
+            <footer className="flex py-12 space-x-4">
+              <PaginationProducts
+                page={currentPage}
+                totalPages={totalPages}
+                onChange={(n) => {
+                  setProductPage(n);
+                }}
+                windowSize={5}
+                isLoading={isLoading}
+              />
+            </footer>
+          </section>
+        )}
       </section>
-      {/* 페이지 네이션 */}
-      <footer className="flex py-12 space-x-4">
-        <PaginationProducts
-          page={currentPage}
-          totalPages={totalPages}
-          onChange={(n) => {
-            setProductPage(n);
-          }}
-          windowSize={5}
-          isLoading={isLoading}
-        />
-      </footer>
     </div>
   );
 };

@@ -1,5 +1,5 @@
-import type { Rating } from "../../types/perfumes";
-import { computeStar } from "../../utils/ratings";
+import type { Rating } from "../../../types/perfumes";
+import { computeStar } from "../../../utils/ratings";
 
 export function GetStarRating({
   value,

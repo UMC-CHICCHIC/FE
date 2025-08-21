@@ -4,7 +4,7 @@ import { useCreateProductReview } from "../../../hooks/mutations/useUpdateProduc
 import { useAuth } from "../../../hooks/useAuth";
 import { useState } from "react";
 import type { Rating } from "../../../types/perfumes";
-import { StarRating } from ".././StarRating";
+import { StarRating } from "../Detail/StarRating";
 
 interface ProductReviewProps {
   perfumeId: number;

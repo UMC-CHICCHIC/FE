@@ -1,5 +1,3 @@
-// import SamplePerfumeImg from "../../assets/images/samplePerfumeImg.png";
-
 export interface ProductCardProps {
   id: number;
   name: string;
@@ -7,8 +5,8 @@ export interface ProductCardProps {
   imageUrl?: string;
   brand: string;
   ml: number;
-  isLoading: boolean;
-  isFetching: boolean;
+  isLoading?: boolean;
+  isFetching?: boolean;
   onClick?: (id: number) => void;
 }
 

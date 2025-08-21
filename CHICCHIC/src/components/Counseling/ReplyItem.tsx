@@ -22,7 +22,9 @@ export function ReplyItem({ item, level = 0, groupId, onSubmitReply }: Props) {
   const avatarSize = isParent ? "w-14 h-14" : "w-10 h-10";
   const containerIndent = isParent ? "" : "ml-5";
   const nameRowText = isParent ? "font-medium" : "text-sm";
-  const timeClass = !isParent ? "text-[#AB3130]" : "text-[#66191F] text-md";
+  const timeClass = !isParent
+    ? "text-[#66191F] text-xs"
+    : "text-[#66191F] text-md";
   const fallback = "/profileImg.png";
 
   return (
@@ -39,19 +41,21 @@ export function ReplyItem({ item, level = 0, groupId, onSubmitReply }: Props) {
           <span className={isParent ? "font-xl" : "font-medium"}>
             {item.nickname}
           </span>
+        </div>
+
+        {/* 내용 */}
+        <div>
+          <p
+            className={`mt-1 ${
+              isParent ? "py-4" : "mt-1"
+            } whitespace-pre-wrap leading-relaxed`}
+          >
+            {item.content}
+          </p>
           <time className={timeClass}>
             {DateTimeFormat(item.dateTime)} {HoursTimeFormat(item.dateTime)}
           </time>
         </div>
-
-        {/* 내용 */}
-        <p
-          className={`mt-1 ${
-            isParent ? "py-4" : "mt-1"
-          } whitespace-pre-wrap leading-relaxed`}
-        >
-          {item.content}
-        </p>
 
         {/* 액션 영역(부모 전용) */}
         {isParent && (

@@ -124,6 +124,7 @@ export type DiaryComment = {
   nickName: string;
   createdAt: string;
   parentCommentId?: number;
+  profileImageUrl: string;
   replies?: DiaryComment[];
 };
 

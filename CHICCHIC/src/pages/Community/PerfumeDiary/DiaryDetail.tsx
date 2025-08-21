@@ -194,7 +194,7 @@ const DiaryDetail = () => {
           ) : comments.length > 0 ? (
             comments.map((commentItem) => (
               <div key={commentItem.commentId} className="flex py-8 border-b">
-                <img className="w-12 h-12" src={"/profile.png"} alt="" />
+                <img className="w-12 h-12 rounded-full object-cover" src={commentItem.profileImageUrl || "/profile.png"} alt="" />
                 <div className="flex flex-col w-full pl-10">
                   <p>{commentItem.nickName}</p>
                   <p className="py-4">{commentItem.content}</p>
@@ -254,8 +254,8 @@ const DiaryDetail = () => {
                       {commentItem.replies.map((reply) => (
                         <div key={reply.commentId} className="flex py-4 pl-4">
                           <img
-                            className="w-10 h-10"
-                            src={"/profile.png"}
+                            className="w-10 h-10 rounded-full object-cover"
+                            src={reply.profileImageUrl || "/profile.png"}
                             alt=""
                           />
                           <div className="flex flex-col w-full pl-6">

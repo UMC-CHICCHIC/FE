@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
-import ArrowIcon from "../../assets/icons/arrow.svg";
-import type { Notes } from "../../types/products";
+import ArrowIcon from "../../../assets/icons/arrow.svg";
+import type { Notes } from "../../../types/products";
 
 interface AccordionItemProps {
   title: string;
@@ -37,7 +37,7 @@ export function ProductAccordionItem({
       {open && (
         <div className="pb-6 text-[#AB3130] max-w-80 sm:max-w-none flex flex-col gap-2">
           {notes?.length
-            ? notes.map((note, idx) => <div key={idx}>{note.name}</div>)
+            ? notes.map((note) => <div key={note.noteId}>{note.name}</div>)
             : content}
         </div>
       )}

@@ -1,4 +1,4 @@
-import { useDeleteProductReview } from "../../hooks/mutations/useUpdateProduct";
+import { useDeleteProductReview } from "../../../hooks/mutations/useUpdateProduct";
 
 interface ReviewEditProps {
   perfumeId: number;

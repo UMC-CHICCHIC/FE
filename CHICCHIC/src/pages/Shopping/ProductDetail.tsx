@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import note1Img from "../../assets/images/sampleNote1.png";
 import note2Img from "../../assets/images/sampleNote2.png";
 import note3Img from "../../assets/images/sampleNote3.png";
-import { ProductAccordion } from "../../components/Product/ProductAccordion";
-import { ProductAccordionItem } from "../../components/Product/ProductAccordionItem";
+import { ProductAccordion } from "../../components/Product/Detail/ProductAccordion";
+import { ProductAccordionItem } from "../../components/Product/Detail/ProductAccordionItem";
 import BookmarkIcon from "../../assets/icons/Bookmark.svg";
 import BookmarkFull from "../../assets/icons/BookmarkFull.svg";
 import { useProductStore } from "../../store/useProductStore";
@@ -11,10 +11,11 @@ import {
   useGetProductDetail,
   useScrapStatus,
 } from "../../hooks/queries/useGetProduct";
-import { useParams } from "react-router-dom";
-import ReviewForm from "../../components/Product/ReviewForm";
-import { ReviewList } from "../../components/Product/ReviewList";
+import { useNavigate, useParams } from "react-router-dom";
+import ReviewForm from "../../components/Product//Review/ReviewForm";
+import { ReviewList } from "../../components/Product/Review/ReviewList";
 import { useUpdateScrap } from "../../hooks/mutations/useUpdateScrap";
+import { useAuth } from "../../hooks/useAuth";
 
 const ProductDetail = () => {
   const [selectTab, setSelectTab] = useState<"DETAILS" | "REVIEW">("DETAILS");
@@ -25,6 +26,8 @@ const ProductDetail = () => {
   const { toggle, isMutating } = useUpdateScrap(perfumeId!);
   // 스크랩 상태
   const { data: isScrapped = false } = useScrapStatus(perfumeId!);
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
 
   // 페이지 진입 시 store에 id 저장
   useEffect(() => {
@@ -45,7 +48,12 @@ const ProductDetail = () => {
     {
       title: "노트 상세보기",
       notes: [
-        { noteId: 1, name: `Top : ${data?.result.topNote ?? "정보없음"}` },
+        {
+          noteId: 1,
+          name: `Top : ${
+            data?.result.topNote.map((i) => i.name) ?? "정보없음"
+          }`,
+        },
         {
           noteId: 2,
           name: `Middle : ${data?.result.middleNote ?? "정보없음"}`,
@@ -197,7 +205,15 @@ const ProductDetail = () => {
       {/* 스크랩 및 홈페이지 라우팅 버튼 */}
       <div className="flex flex-col items-center justify-center w-full max-w-5xl gap-2 py-12 mx-auto md:flex-row">
         <button
-          onClick={() => toggle(isScrapped)}
+          onClick={() => {
+            // 스크랩 로그인 검사
+            if (!isLoggedIn) {
+              alert("로그인이 필요한 서비스입니다.");
+              navigate("/login");
+              return;
+            }
+            toggle(isScrapped);
+          }}
           disabled={isMutating}
           className={`flex flex-1 w-full items-center justify-center gap-2 sm:gap-4 border rounded-full text-[#AB3130] py-2 px-8 text-xl sm:text-[32px] font-[pretendard] cursor-pointer transition-colors ${
             isScrapped

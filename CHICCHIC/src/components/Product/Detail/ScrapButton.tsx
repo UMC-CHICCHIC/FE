@@ -1,4 +1,4 @@
-import { useUpdateScrap } from "../../hooks/mutations/useUpdateScrap";
+import { useUpdateScrap } from "../../../hooks/mutations/useUpdateScrap";
 import BookmarkIcon from "../../assets/icons/Bookmark.svg";
 import BookmarkFullIcon from "../../assets/icons/BookmarkFull.svg";
 

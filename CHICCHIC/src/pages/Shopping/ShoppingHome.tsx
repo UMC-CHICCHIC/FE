@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import SearchIcon from "../../assets/icons/search.svg";
 import type {
   PAGINATION_ORDER,
@@ -10,8 +10,11 @@ import {
   useGetProductList,
 } from "../../hooks/queries/useGetProduct";
 import { useNavigate } from "react-router-dom";
-import { ProductGrid } from "../../components/Product/ProductList";
+import { ProductGrid } from "../../components/Product/Shopping/ProductList";
 import { PaginationProducts } from "../../components/PaginationProducts";
+import { useDebounce } from "../../hooks/useDebounce";
+import { useProductSearch } from "../../hooks/queries/useGetProductSearch";
+import { ProductSearchComponent } from "../../components/Product/Shopping/ProductSearchComponent";
 
 const sortItems = [
   "인기도순",
@@ -33,12 +36,23 @@ const sortMap: Record<SortLabel, PAGINATION_ORDER> = {
 };
 
 const ShoppingHome = () => {
-  const [productPage, setProductPage] = useState(1);
-  const [search, setSearch] = useState("");
+  const [productPage, setProductPage] = useState(0);
   const navigate = useNavigate();
   const [sort, setSort] = useState<SortLabel>("인기도순");
   const { setPerfumeId } = useProductStore();
   const [catId, setCatId] = useState<number | null>(null);
+
+  // 검색 debounce 적용
+  const [search, setSearch] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const searchTermDebounce = useDebounce(searchTerm, 300);
+  const {
+    data: product,
+    isError: isSearchError,
+    isLoading: isSearchLoading,
+    isPending: isSearchPending,
+    error: searchError,
+  } = useProductSearch(searchTermDebounce);
 
   const {
     data: priceCat,
@@ -52,7 +66,7 @@ const ShoppingHome = () => {
   } = useGetCategories("CONCENTRATION" as PerfumeCategory);
 
   // 상품 리스트 훅 사용
-  const { data, isLoading, isError } = useGetProductList({
+  const { data, isLoading, isError, isFetching } = useGetProductList({
     page: productPage,
     size: 16,
     sort: sortMap[sort],
@@ -61,38 +75,47 @@ const ShoppingHome = () => {
   });
 
   const list = data?.result.content ?? [];
-  const totalPages = data?.result.totalPages ?? 1;
-  const currentPage = data?.result.number ?? productPage - 1;
+  const totalPages = data?.result.totalPages ?? 0;
+  const currentPage = data?.result.number ?? productPage;
+
+  // 검색 플래그 변수
+  const showSearchResult =
+    !isSearchError && !!searchTermDebounce && !!product && !isSearchLoading;
+
+  // 검색 해제
+  // const clearSearch = () => {
+  //   setSearch("");
+  //   setSearchTerm("");
+  // };
 
   const handleCatId = (id: number | null) => {
     setCatId((prev) => (prev === id ? null : id));
-    setProductPage(1);
+    setProductPage(0);
   };
 
   return (
     <div className="flex flex-col min-h-screen items-center p-4 space-y-8 bg-[#F7F4EF]">
-      {/* 상품 검색창 구현 X */}
+      {/* 상품 검색창 */}
       <section className="flex items-center w-full max-w-xl border rounded-full border-[#AB3130] px-4 py-2 my-14">
         <input
           type="text"
           placeholder="Search"
           className="flex-grow bg-transparent outline-none placeholder-[#AB3130] text-[#AB3130] px-2"
           value={search}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setSearch(e.target.value)
-          }
-          onKeyUp={(e) => e.key === "Enter" && setProductPage(1)}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyUp={(e) => e.key === "Enter" && setSearchTerm(search.trim())}
         />
         <img
           src={SearchIcon}
           alt="Search Icon"
           className="cursor-pointer"
           width={20}
+          onClick={() => setSearchTerm(search.trim())}
         />
       </section>
 
       {/* 카테고리 */}
-      <section className="w-full max-w-5xl text-center">
+      <section className="w-full max-w-[1090px] text-center">
         <div className="flex items-center justify-center">
           <div className="flex-1 h-px bg-[#AB3130]" />
           <label className="text-2xl tracking-wide font-black px-4 text-[#AB3130]">
@@ -100,68 +123,79 @@ const ShoppingHome = () => {
           </label>
           <div className="flex-1 h-px bg-[#AB3130]" />
         </div>
-        <div className="items-center text-black border-b border-[#ece3d4] my-4 font-[pretendard]">
-          <div className="grid items-center grid-cols-7 border-t border-[#EAE6DF]">
-            <span className="text-white bg-[#AB3130] py-2">가격대</span>
-            {/* PRICE 카테고리 렌더링 */}
-            {isPriceLoading && (
-              <span className="col-span-2 py-2 text-sm text-gray-500 md:col-span-8">
-                로딩중…
-              </span>
-            )}
-            {isPriceError && (
-              <span className="col-span-2 py-2 text-sm md:col-span-8">
-                가격대 불러오기 실패
-              </span>
-            )}
-            {priceCat
-              ?.sort((a, b) => a.order - b.order)
-              .map((c) => {
-                const active = catId === c.categoryId;
-                return (
-                  <button
-                    key={c.categoryId}
-                    type="button"
-                    onClick={() => handleCatId(c.categoryId)}
-                    className={`m-1 py-2 px-3 text-sm transition cursor-pointer col-span-2
-                    ${active ? "text-[#66191F] font-bold" : "hover:underline"}
+        <div className="items-center text-black border-b border-[#ece3d4] mt-4 font-[pretendard]">
+          <div className="flex">
+            <span className="text-white bg-[#AB3130] w-[181.5px] h-[43px] py-2">
+              가격대
+            </span>
+            <div className="w-full grid items-center grid-cols-3 border-t border-[#EAE6DF]">
+              {/* PRICE 카테고리 렌더링 */}
+              {isPriceLoading && (
+                <span className="py-2 text-sm md:col-span-3">로딩중…</span>
+              )}
+              {isPriceError && (
+                <span className="py-2 text-sm md:col-span-3">
+                  가격대 불러오기 실패
+                </span>
+              )}
+              {priceCat
+                ?.sort((a, b) => a.order - b.order)
+                .map((c) => {
+                  const active = catId === c.categoryId;
+                  return (
+                    <button
+                      key={c.categoryId}
+                      type="button"
+                      onClick={() => handleCatId(c.categoryId)}
+                      className={`m-1 py-2 px-3 text-sm transition cursor-pointer
+                    ${
+                      active
+                        ? "text-[#AB3130] font-semibold"
+                        : "hover:underline"
+                    }
                   `}
-                  >
-                    {c.name}
-                  </button>
-                );
-              })}
+                    >
+                      {c.name}
+                    </button>
+                  );
+                })}
+            </div>
           </div>
-
-          <div className="grid items-center grid-cols-7 border-t border-[#EAE6DF]">
-            <span className="text-white bg-[#AB3130] py-2">발향률</span>
-            {/* CONCENTRATION 카테고리 렌더링 */}
-            {isConcLoading && (
-              <span className="col-span-2 py-2 text-sm text-gray-500 md:col-span-8">
-                로딩중…
-              </span>
-            )}
-            {isConcError && (
-              <span className="col-span-2 py-2 text-sm md:col-span-8">
-                발향률 불러오기 실패
-              </span>
-            )}
-            {concCat
-              ?.sort((a, b) => a.order - b.order)
-              .map((c) => {
-                const active = catId === c.categoryId;
-                return (
-                  <button
-                    key={c.categoryId}
-                    type="button"
-                    onClick={() => handleCatId(c.categoryId)}
-                    className={`py-2 px-3 text-sm transition cursor-pointer
-                  ${active ? "text-[#66191F] font-bold" : "hover:underline"}`}
-                  >
-                    {c.name}
-                  </button>
-                );
-              })}
+          <div className="flex">
+            <span className="text-white bg-[#AB3130] py-2 w-[181.5px] h-[43px]">
+              발향률
+            </span>
+            <div className="grid w-full items-center grid-cols-4 border-t border-[#EAE6DF]">
+              {/* CONCENTRATION 카테고리 렌더링 */}
+              {isConcLoading && (
+                <span className="col-span-1 py-2 text-sm md:col-span-3">
+                  로딩중…
+                </span>
+              )}
+              {isConcError && (
+                <span className="col-span-1 text-sm md:col-span-3">
+                  발향률 불러오기 실패
+                </span>
+              )}
+              {concCat
+                ?.sort((a, b) => a.order - b.order)
+                .map((c) => {
+                  const active = catId === c.categoryId;
+                  return (
+                    <button
+                      key={c.categoryId}
+                      type="button"
+                      onClick={() => handleCatId(c.categoryId)}
+                      className={`py-2 px-3 text-sm transition cursor-pointer
+                  ${
+                    active ? "text-[#AB3130] font-semibold" : "hover:underline"
+                  }`}
+                    >
+                      {c.name}
+                    </button>
+                  );
+                })}
+            </div>
           </div>
         </div>
       </section>
@@ -171,8 +205,8 @@ const ShoppingHome = () => {
         </div>
       )}
       {/* 상품 필터링 */}
-      <section className="w-full max-w-5xl">
-        <div className="flex justify-start space-x-2 text-[#AB3130] mb-4 flex-wrap gap-2 pt-6">
+      <section className="w-full max-w-[1100px]">
+        <div className="flex w-full justify-start space-x-4 text-[#AB3130] mb-4 flex-wrap pt-6">
           {sortItems.map((label) => {
             const active = sort === label;
             return (
@@ -184,7 +218,7 @@ const ShoppingHome = () => {
                 }`}
                 onClick={() => {
                   setSort(label);
-                  setProductPage(1);
+                  setProductPage(0);
                 }}
               >
                 {label}
@@ -192,35 +226,54 @@ const ShoppingHome = () => {
             );
           })}
         </div>
-        <ProductGrid
-          items={list.map((p) => ({
-            id: p.id,
-            name: p.name,
-            price: p.price,
-            brand: p.brand,
-            ml: p.ml,
-            imageUrl: p.imageUrl,
-          }))}
-          isLoading={isLoading}
-          pageSize={16}
+        {/* 검색 결과 */}
+        <ProductSearchComponent
+          name={searchTermDebounce}
+          product={product ?? null}
+          isLoading={isSearchLoading || isSearchPending}
+          isError={isSearchError}
+          error={searchError!}
+          // onClear={clearSearch}
           onItemClick={(id) => {
             setPerfumeId(id);
             navigate(`/shopping/${id}`);
           }}
         />
+        {!showSearchResult && (
+          <section className=" flex flex-col items-center w-full max-w-[1090px]">
+            <ProductGrid
+              items={list.map((p) => ({
+                id: p.id,
+                name: p.name,
+                price: p.price,
+                brand: p.brand,
+                ml: p.ml,
+                isLoading,
+                isFetching,
+                imageUrl: p.imageUrl,
+              }))}
+              isLoading={isLoading}
+              pageSize={16}
+              onItemClick={(id) => {
+                setPerfumeId(id);
+                navigate(`/shopping/${id}`);
+              }}
+            />
+            {/* 페이지 네이션 */}
+            <footer className="flex py-12 space-x-4">
+              <PaginationProducts
+                page={currentPage}
+                totalPages={totalPages}
+                onChange={(n) => {
+                  setProductPage(n);
+                }}
+                windowSize={5}
+                isLoading={isLoading}
+              />
+            </footer>
+          </section>
+        )}
       </section>
-      {/* 페이지 네이션 */}
-      <footer className="flex py-12 space-x-4">
-        <PaginationProducts
-          page={currentPage}
-          totalPages={totalPages}
-          onChange={(n) => {
-            setProductPage(n);
-          }}
-          windowSize={5}
-          isLoading={isLoading}
-        />
-      </footer>
     </div>
   );
 };

@@ -23,13 +23,14 @@ const CommunityHome = () => {
         />
 
         {/* 텍스트 레이어 */}
-        <div className="relative flex flex-col items-start justify-start h-full px-4 pt-16 text-white z-5 sm:px-8 md:px-20">
-          <span className="mb-10 whitespace-pre-line sm:leading-20 leading-12 text-[clamp(3rem,6vw,5rem)]">
+        <div className="relative flex flex-col items-start justify-start h-full px-2 mx-10 my-2 text-white gap-50 z-5 sm:px-8 md:px-20">
+          <span className="mb-10 whitespace-pre-line sm:leading-20 leading-12 text-[clamp(4rem,7vw,6rem)]">
             Perfume{"\n"}Community
           </span>
-          <span className="max-w-2xl font-[pretendard] font-extralight break-keep text-[clamp(1rem,1.75vw,1.25rem)] leading-relaxed">
+          <span className="max-w-5xl font-[pretendard] font-extralight break-keep text-[clamp(1.5rem,2.25vw,1.75rem)] leading-relaxed">
             향수 추천부터 향수에 대한 다양한 이야기, 그리고 향수를 기록하는 향수
-            일기장까지.{"\n"}CHICCHIC의 커뮤니티에서 경험하세요.
+            일기장까지.{"\n"}
+            CHICCHIC의 커뮤니티에서 경험하세요.
           </span>
         </div>
       </section>
@@ -69,11 +70,18 @@ const CommunityHome = () => {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="flex flex-col justify-center border border-[#AB3130] h-64 rounded-md">
             <div className="flex p-8">
-              <img
-                src={data?.result.receivePost.imageUrl}
-                className="mr-4 max-w-[178px] max-h-[172px]"
-                alt=""
-              />
+              {!data?.result.receivePost.imageUrl ? (
+                <div className="flex justify-center items-center mr-4 w-[200px] h-[120px] bg-gray-300">
+                  이미지가 없습니다.
+                </div>
+              ) : (
+                <img
+                  src={data?.result.receivePost.imageUrl}
+                  className="mr-4 max-w-[178px] max-h-[172px]"
+                  alt=""
+                />
+              )}
+
               <div className="flex flex-col text-xl gap-4 text-[#AB3130]">
                 <p className="font-bold">{data?.result.receivePost.title}</p>
                 <p className="font-light">{data?.result.receivePost.content}</p>
@@ -100,12 +108,17 @@ const CommunityHome = () => {
           </div>
           <div className="flex flex-col justify-center border border-[#AB3130] h-64 rounded-md">
             <div className="flex p-8">
-              <img
-                src={data?.result.givePost.imageUrl}
-                width={120}
-                className="mr-4"
-                alt=""
-              />
+              {!data?.result.givePost.imageUrl ? (
+                <div className="flex justify-center items-center mr-4 w-[178px] h-[120px] bg-gray-300">
+                  이미지가 없습니다.
+                </div>
+              ) : (
+                <img
+                  src={data?.result.givePost.imageUrl}
+                  className="mr-4 max-w-[178px] max-h-[172px]"
+                  alt=""
+                />
+              )}
               <div className="flex flex-col gap-4 text-xl text-[#AB3130]">
                 <p className="font-bold">{data?.result.givePost.title}</p>
                 <p className="font-light">{data?.result.givePost.content}</p>
@@ -143,7 +156,7 @@ const CommunityHome = () => {
           </span>
           <a
             onClick={() => navigate("/community/story")}
-            className="flex justify-center gap-3 text-sm sm:text-base font-light text-[#AB3130]"
+            className="flex justify-center gap-3 text-sm sm:text-base font-light text-[#AB3130] cursor-pointer"
           >
             향수 이야기에서 더 다양한 소식 확인하기
             <img src={RightArrow} width={6} alt="" />

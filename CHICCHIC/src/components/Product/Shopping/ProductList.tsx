@@ -6,9 +6,10 @@ type ProductGridItem = Omit<ProductCardProps, "onClick"> & {
   onClick?: (id: number) => void;
 };
 
-interface ProductGridProps {
+export interface ProductGridProps {
   items: ProductGridItem[];
   isLoading?: boolean;
+  isFetching?: boolean;
   pageSize?: number;
   onItemClick?: (id: number) => void;
 }
@@ -17,9 +18,10 @@ export const ProductGrid = memo(function ProductGrid({
   items,
   isLoading = false,
   pageSize = 16,
+  isFetching = false,
   onItemClick,
 }: ProductGridProps) {
-  const gridCols = `grid grid-cols-2 md:grid-cols-4 gap-40 gap-y-24 font-[pretendard]`;
+  const gridCols = `grid grid-cols-2 md:grid-cols-4 gap-20 gap-y-24 font-[pretendard]`;
 
   if (!isLoading && items.length === 0) {
     return (
@@ -46,6 +48,8 @@ export const ProductGrid = memo(function ProductGrid({
               price={p.price}
               brand={p.brand}
               ml={p.ml}
+              isLoading={isLoading}
+              isFetching={isFetching}
               imageUrl={p.imageUrl}
               onClick={onItemClick}
             />

@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
-import type { Rating } from "../../types/perfumes";
-import { computeStar } from "../../utils/ratings";
+import type { Rating } from "../../../types/perfumes";
+import { computeStar } from "../../../utils/ratings";
 
 interface StarRatingProps {
   rating: Rating;

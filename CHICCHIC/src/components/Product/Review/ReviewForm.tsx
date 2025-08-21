@@ -1,10 +1,10 @@
 // import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { useCreateProductReview } from "../../hooks/mutations/useUpdateProduct";
-import { useAuth } from "../../hooks/useAuth";
+import { useCreateProductReview } from "../../../hooks/mutations/useUpdateProduct";
+import { useAuth } from "../../../hooks/useAuth";
 import { useState } from "react";
-import type { Rating } from "../../types/perfumes";
-import { StarRating } from "./StarRating";
+import type { Rating } from "../../../types/perfumes";
+import { StarRating } from "../Detail/StarRating";
 
 interface ProductReviewProps {
   perfumeId: number;

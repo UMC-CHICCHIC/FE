@@ -44,12 +44,6 @@ export function CommentItem({
           <span className={isParent ? "font-medium" : "font-medium"}>
             {item.nickname}
           </span>
-          <span className={!isParent ? "" : "hidden"}>·</span>
-          <time
-            className={!isParent ? "text-gray-500" : "text-[#66191F] text-sm"}
-          >
-            {DateTimeFormat(item.dateTime)} {HoursTimeFormat(item.dateTime)}
-          </time>
         </div>
 
         {/* 내용 */}

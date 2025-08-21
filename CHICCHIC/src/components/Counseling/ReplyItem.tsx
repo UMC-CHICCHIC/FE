@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { Consult } from "../../types/post";
-import { DateTimeFormat, HoursTimeFormat } from "../../utils/dateTimeFormat"; // ← 경로 조정
+import { DateTimeFormat, HoursTimeFormat } from "../../utils/dateTimeFormat";
 import { ReplyFormat } from "./ReplyFormat"; // 기존 컴포저 재사용
 
 type Props = {
@@ -14,26 +14,24 @@ type Props = {
   }) => Promise<void> | void;
 };
 
-export function ReplyItem({
-  item,
-  level = 0,
-  groupId,
-  replies = [],
-  onSubmitReply,
-}: Props) {
+// ...생략(import 동일)
+export function ReplyItem({ item, level = 0, groupId, onSubmitReply }: Props) {
   const isParent = level === 0;
   const [isReplyOpen, setIsReplyOpen] = useState(false);
 
   const avatarSize = isParent ? "w-14 h-14" : "w-10 h-10";
   const containerIndent = isParent ? "" : "ml-5";
   const nameRowText = isParent ? "font-medium" : "text-sm";
+  const timeClass = !isParent ? "text-[#AB3130]" : "text-[#66191F] text-md";
+  const fallback = "/profileImg.png";
 
   return (
     <div className={`flex ${containerIndent}`}>
       <img
         className={`rounded-full ${avatarSize}`}
-        src={item.profile}
+        src={item.profile || fallback}
         alt="profile"
+        onError={(e) => ((e.target as HTMLImageElement).src = fallback)}
       />
       <div className="flex flex-col w-full pl-6 sm:pl-10">
         {/* 작성자/시간 */}
@@ -41,9 +39,9 @@ export function ReplyItem({
           <span className={isParent ? "font-xl" : "font-medium"}>
             {item.nickname}
           </span>
-          <time
-            className={!isParent ? "text-[#AB3130]" : "text-[#66191F] text-md"}
-          ></time>
+          <time className={timeClass}>
+            {DateTimeFormat(item.dateTime)} {HoursTimeFormat(item.dateTime)}
+          </time>
         </div>
 
         {/* 내용 */}
@@ -81,15 +79,6 @@ export function ReplyItem({
                 await onSubmitReply?.({ groupId, content });
               }}
             />
-          </div>
-        )}
-
-        {/* 답글 렌더링 */}
-        {isParent && replies?.length > 0 && (
-          <div className="flex flex-col gap-4 mt-4">
-            {replies.map((child, idx) => (
-              <ReplyItem key={`${groupId}-${idx}`} item={child} level={1} />
-            ))}
           </div>
         )}
       </div>

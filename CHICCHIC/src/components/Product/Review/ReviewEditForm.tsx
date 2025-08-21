@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Rating } from "../../../types/perfumes";
 import { useUpdateProductReview } from "../../../hooks/mutations/useUpdateProduct"; // 경로 예시
-import { StarRating } from ".././StarRating";
+import { StarRating } from "../Detail/StarRating";
 
 interface ReviewEditFormProps {
   perfumeId: number;

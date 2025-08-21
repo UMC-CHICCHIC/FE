@@ -1,5 +1,3 @@
-// import SamplePerfumeImg from "../../assets/images/samplePerfumeImg.png";
-
 export interface ProductCardProps {
   id: number;
   name: string;
@@ -7,7 +5,8 @@ export interface ProductCardProps {
   imageUrl?: string;
   brand: string;
   ml: number;
-  isLoading: boolean;
+  isLoading?: boolean;
+  isFetching?: boolean;
   onClick?: (id: number) => void;
 }
 
@@ -19,6 +18,7 @@ export function ProductCard({
   brand,
   ml,
   isLoading,
+  isFetching,
   onClick,
 }: ProductCardProps) {
   return (
@@ -26,7 +26,7 @@ export function ProductCard({
       className="flex flex-col items-center"
       onClick={() => onClick?.(id)}
     >
-      {isLoading ? (
+      {isLoading || isFetching ? (
         // 이미지 스켈레톤
         <div className="max-w-[260px] max-h-[300px bg-gray-300 animate-pulse"></div>
       ) : (

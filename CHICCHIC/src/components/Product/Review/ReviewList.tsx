@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useGetProductReview } from "../../../hooks/queries/useGetProduct";
 import kebab from "../../../assets/icons/kebab.svg";
-import { GetStarRating } from ".././getStarRating";
+import { GetStarRating } from "../Detail/getStarRating";
 import type { ProductReview, Rating } from "../../../types/perfumes";
 import { ReviewTimeFormat } from "../../../utils/dateTimeFormat";
 import { Pagination } from "../../Pagination";

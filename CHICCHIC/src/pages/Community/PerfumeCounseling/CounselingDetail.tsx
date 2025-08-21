@@ -8,7 +8,6 @@ import { useCreateConsultComment } from "../../../hooks/mutations/useCreateComme
 import ConsultCommentsSection from "../../../components/Counseling/CommentSection";
 import { QUERY_KEY } from "../../../constants/key";
 import { createConsultReply } from "../../../apis/comment";
-import { useImgUploadStore } from "../../../store/useProfileImg";
 
 const CounselingDetail = () => {
   const { category } = usePostFilter();
@@ -17,7 +16,6 @@ const CounselingDetail = () => {
   const { data } = useGetConsultDetail(consultPostId!);
   const qc = useQueryClient();
   const createComment = useCreateConsultComment(consultPostId!);
-  const preivewUrl = useImgUploadStore((s) => s.previewUrl);
 
   return (
     <div className="max-w-6xl px-4 sm:text-xl mx-auto text-[#AB3130] font-[pretendard]">
@@ -35,7 +33,7 @@ const CounselingDetail = () => {
         <div className="flex py-8 border-b">
           <img
             className="w-20 h-20 rounded-full"
-            src={preivewUrl!}
+            src={data?.result.profile}
             alt="profile"
           />
           <div className="flex flex-col items-start justify-center gap-2 pl-4">

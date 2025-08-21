@@ -2,13 +2,36 @@ import { ArrowLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { perfumes } from "../../types/perfumetypes";
-import { checkAuthToken, getPerfumeTestAnswers, getPerfumeRecommendations } from "../../apis/personalPerfumeTest";
-import type { PerfumeTestAnswers, RecommendationItem } from "../../types/personalPerfumeTest";
+import { 
+  checkAuthToken, 
+  getPerfumeRecommendations, 
+} from "../../apis/personalPerfumeTest";
+import type {
+  HomeRecommendItem,
+} from "../../types/personalPerfumeTest";
+import axios from "axios";
+import { axiosInstance } from "../../apis/axiosInstance";
+
+// 추천 상품(보호된 엔드포인트) 조회 헬퍼
+async function fetchHomeRecommendProducts(): Promise<HomeRecommendItem[]> {
+  try {
+    const res = await axiosInstance.get("/home/recommend-products");
+    const data = res?.data;
+    if (data?.isSuccess && Array.isArray(data.result)) {
+      return data.result as HomeRecommendItem[];
+    }
+    console.warn("추천 결과 응답 형식 경고:", data);
+    return [];
+  } catch (e) {
+    console.error("추천 결과 조회 실패:", e);
+    throw e;
+  }
+}
 
 // 모든 필수 문항 ID 상수화
 const REQUIRED_QIDS = [1, 2, 3, 4, 5, 6, 7] as const;
 
-// 공통 로딩 패널 (UI는 그대로 유지)
+// 공통 로딩 패널
 function LoadingPanel({ message }: { message: string }) {
   return (
     <div className="w-full text-center">
@@ -32,36 +55,75 @@ export default function Test() {
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [initLoading, setInitLoading] = useState(true);
-  const [prevAnswers, setPrevAnswers] = useState<PerfumeTestAnswers | null>(null);
   const [selected, setSelected] = useState<Record<number, number>>({});
-  const [reco, setReco] = useState<RecommendationItem[] | null>(null);
+  const [reco, setReco] = useState<HomeRecommendItem[] | null>(null);
   const [recoError, setRecoError] = useState<string | null>(null);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [hasPastRecommendations, setHasPastRecommendations] = useState(false);
+  const [brandMap, setBrandMap] = useState<Record<number, string>>({});
 
-  // 초기 진입 시: 로그인 토큰 체크 -> 과거 답변 조회 -> UI 처리
+  // 초기 진입 시: 로그인 토큰 체크 -> 기존 추천 결과 확인
   useEffect(() => {
     const init = async () => {
       setInitLoading(true);
-      const isValid = await checkAuthToken();
-      if (!isValid) {
-        // 로그인 필요: 로그인 페이지로 이동, 돌아올 경로 전달
-        navigate("/login", { replace: true, state: { from: location.pathname } });
-        return;
-      }
-
-      // 로그인 유효 -> 과거 답변 조회
+      setAuthError(null);
+      
       try {
-        const answers = await getPerfumeTestAnswers();
-        if (answers) {
-          setPrevAnswers(answers);
-          setShowResults(true); // 과거 답변이 있으면 결과 화면으로 진입
+        console.log("토큰 체크 시작...");
+        const isValid = await checkAuthToken();
+        console.log("토큰 유효성:", isValid);
+        
+        if (!isValid) {
+          console.log("토큰 무효 - 로그인 페이지로 이동");
+          navigate("/login", { 
+            replace: true, 
+            state: { 
+              from: location.pathname,
+              message: "로그인이 필요한 서비스입니다."
+            }
+          });
+          return;
         }
-      } catch (e) {
-        // 조회 실패는 테스트 진행으로 계속
-        console.warn("Failed to load previous perfume test answers", e);
+
+        // 기존 추천 결과 확인
+        try {
+          console.log("기존 추천 결과 조회 시작...");
+          const existingRecommendations = await fetchHomeRecommendProducts();
+          console.log("기존 추천 결과:", existingRecommendations);
+          
+          if (existingRecommendations.length > 0) {
+            console.log("기존 추천 결과 발견 - 바로 결과 표시");
+            setReco(existingRecommendations);
+            setHasPastRecommendations(true);
+            setShowResults(true);
+          } else {
+            console.log("기존 추천 결과 없음 - 새 테스트 시작");
+          }
+        } catch (e: any) {
+          console.error("기존 추천 결과 조회 실패:", e);
+          
+          if (axios.isAxiosError(e) && e.response?.status === 401) {
+            console.log("401 에러 - 토큰 만료 또는 무효");
+            navigate("/auth/login", { 
+              replace: true, 
+              state: { 
+                from: location.pathname,
+                message: "로그인이 만료되었습니다. 다시 로그인해주세요."
+              }
+            });
+            return;
+          }
+          
+          setAuthError("이전 추천 데이터를 불러올 수 없지만, 새로운 테스트를 진행할 수 있습니다.");
+        }
+      } catch (error: any) {
+        console.error("초기화 중 에러:", error);
+        setAuthError("초기화 중 오류가 발생했습니다. 새로고침 후 다시 시도해주세요.");
       } finally {
         setInitLoading(false);
       }
     };
+    
     void init();
   }, [navigate, location.pathname]);
 
@@ -86,7 +148,6 @@ export default function Test() {
   };
 
   const handleSelect = (questionId: number, optionId: number) => {
-    // 마지막 문항(7)에서는 비동기 상태 반영 전에 결과 계산이 실행되는 것을 방지
     setSelected((prev) => {
       const updated = { ...prev, [questionId]: optionId };
       if (step === 7) {
@@ -99,6 +160,8 @@ export default function Test() {
   };
 
   const handleStart = () => {
+    setAuthError(null);
+    setHasPastRecommendations(false);
     handleNext();
   };
 
@@ -106,10 +169,11 @@ export default function Test() {
     setIsLoading(false);
     setShowResults(false);
     setInitLoading(false);
-    setPrevAnswers(null);
     setSelected({});
     setReco(null);
     setRecoError(null);
+    setAuthError(null);
+    setHasPastRecommendations(false);
     setStep(0);
     try {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -121,34 +185,90 @@ export default function Test() {
   const handleShowResults = async (selectedOverride?: Record<number, number>) => {
     setIsLoading(true);
     setRecoError(null);
+    
     try {
       const selectedState: Record<number, number> = selectedOverride ?? selected;
-      // 기본값 없이, 모든 문항 선택을 요구
       const requiredQids = REQUIRED_QIDS as readonly number[];
       const unanswered = requiredQids.filter((qid) => selectedState[qid] == null);
+      
       if (unanswered.length > 0) {
         setIsLoading(false);
         setShowResults(false);
-        // 첫 미답변 문항으로 이동
         alert(`문항 ${unanswered[0]}을(를) 선택해 주세요.`);
         setStep(unanswered[0]);
         return;
       }
+      
       const answers = requiredQids.map((qid) => ({
         questionId: qid,
         optionId: selectedState[qid]!,
       }));
-      const data = await getPerfumeRecommendations({ answers });
-      setReco(data.result || []);
+      
+      console.log("새 테스트 실행:", answers);
+      
+      const testResult = await getPerfumeRecommendations({ answers });
+      console.log("테스트 실행 결과:", testResult);
+      
+  const recommendations = await fetchHomeRecommendProducts();
+      console.log("추천 결과 조회:", recommendations);
+      
+      if (recommendations.length > 0) {
+        setReco(recommendations);
+      } else {
+        setReco([]);
+      }
+      
       setShowResults(true);
     } catch (e: any) {
-      console.error("추천 요청 실패", e);
+      console.error("테스트 실행 실패", e);
+      
+      if (axios.isAxiosError(e) && e.response?.status === 401) {
+        navigate("/auth/login", { 
+          replace: true, 
+          state: { 
+            from: location.pathname,
+            message: "로그인이 만료되었습니다. 다시 로그인 후 테스트를 진행해주세요."
+          }
+        });
+        return;
+      }
+      
       setRecoError(e?.message ?? "추천을 불러오지 못했습니다.");
       setShowResults(true);
     } finally {
       setIsLoading(false);
     }
   };
+
+  // 추천 결과의 productId로 상세 정보를 조회해 브랜드만 저장
+  useEffect(() => {
+    const fetchBrands = async () => {
+      if (!showResults || !reco || reco.length === 0) return;
+  // 화면에 보여줄 상위 개수만 조회 (현재 렌더는 최대 4개)
+  const maxCount = Math.min(reco.length, 4);
+      const targets = reco.slice(0, maxCount)
+        .filter((it) => typeof it.productId === "number" && !(it.productId in brandMap));
+      if (targets.length === 0) return;
+      try {
+        await Promise.all(
+          targets.map(async (it) => {
+            try {
+              const res = await axiosInstance.get(`/products/detail/${it.productId}`);
+              const brand = (res.data?.result?.brand ?? "").trim();
+              if (brand) {
+                setBrandMap((prev) => ({ ...prev, [it.productId]: brand }));
+              }
+            } catch (e) {
+              console.warn("브랜드 조회 실패", it.productId, e);
+            }
+          })
+        );
+      } catch {
+        // 개별 실패만 경고 처리
+      }
+    };
+    void fetchBrands();
+  }, [showResults, reco, brandMap]);
 
   const renderStep = () => {
     if (initLoading) return <LoadingPanel message="초기화 중입니다…" />;
@@ -161,8 +281,9 @@ export default function Test() {
             테스트 결과 CHICCHIC이 추천하는 향수들이에요!
           </h2>
 
-          {prevAnswers && (
-            <div className="max-w-2xl mx-auto mb-6 p-3 rounded-lg bg-[#AB3130]/10 text-[#AB3130] text-sm">
+          {/* 이전 테스트 결과일 때만 표시 */}
+          {hasPastRecommendations && (
+           <div className="max-w-2xl mx-auto mb-6 p-3 rounded-lg bg-[#AB3130]/10 text-[#AB3130] text-sm">
               과거 테스트 답변을 불러왔어요. 아래 추천은 이전 응답을 기반으로 합니다.
             </div>
           )}
@@ -173,27 +294,56 @@ export default function Test() {
             </div>
           )}
 
-          {/* 실제 API 데이터를 우선적으로 사용하는 향수 목록 */}
+          {/* 향수 목록 렌더링 */}
           <div className="flex flex-col gap-4 max-w-2xl mx-auto mb-8">
-            {(reco && reco.length > 0 ? reco.slice(0, 5) : perfumes.slice(0, 5)).map((item, index) => {
-              // API 데이터와 fallback 데이터 구조 통합 처리
-              const image = (("imageUrl" in item && (item as any).imageUrl) || "/sample-image.png") as string;
-              const name = ("perfumeName" in item ? (item as any).perfumeName : `${(item as any).brand} ${(item as any).name}`) as string;
-              const notes = ("recommendedNotes" in item
-                ? (item as any).recommendedNotes?.slice(0, 3).join(", ")
-                : (item as any).notes?.slice(0, 3).join(", ") || "notenotenotenotenotenotenote") as string;
-              const to = ("productId" in item ? `/shopping/${(item as any).productId}` : "/shopping/:perfumeId") as string;
+            {(reco && reco.length > 0 ? reco.slice(0, 4) : perfumes.slice(0, 4)).map((item, index) => {
+              let image: string;
+              let name: string;
+              let notes: string;
+              let to: string;
+              let brandText: string | undefined;
+
+              if ('productId' in item && 'topNote' in item) {
+                const homeItem = item as HomeRecommendItem;
+                image = homeItem.imageUrl || "/sample-image.png";
+                name = homeItem.name;
+                brandText = brandMap[homeItem.productId];
+                
+                const topNotes = homeItem.topNote.map(note => note.name).join(", ");
+                const allNotes = [topNotes, homeItem.middleNote, homeItem.baseNote]
+                  .filter(note => note && note.trim() !== "")
+                  .join(", ");
+                notes = allNotes;
+                
+                to = `/shopping/${homeItem.productId}`;
+              } else {
+                const fallbackItem = item as any;
+                image = "/sample-image.png";
+                name = `${fallbackItem.brand} ${fallbackItem.name}`;
+                notes = fallbackItem.notes?.slice(0, 3).join(", ") || "향수 노트";
+                to = "/shopping/:perfumeId";
+              }
               
               return (
-                <div key={index} className="bg-white rounded-2xl p-6 shadow-lg border border-[#AB3130]/10 flex items-center gap-6">
+                <div key={index} className="bg-white rounded-2xl p-6 shadow-lg border border-[#AB3130]/10 flex gap-6">
                   <div className="w-32 h-32 flex-shrink-0 flex items-center justify-center">
-                    <img src={image} alt={name} className="w-full h-full object-contain rounded-xl" />
+                    <img 
+                      src={image} 
+                      alt={name} 
+                      className="w-full h-full object-contain rounded-xl"
+                      onError={(e) => {
+                        e.currentTarget.src = "https://dummyimage.com/300x400/ccc/fff&text=No+Image";
+                      }}
+                    />
                   </div>
-                  <div className="flex-1 text-center">
-                    <h3 className="text-lg font-semibold text-[#AB3130] mb-2">{name}</h3>
-                    <p className="text-sm text-[#AB3130]/80 mb-3">{name}</p>
+                  <div className="flex-1 text-left">
+                    <h3 className="text-lg font-semibold text-[#AB3130] mb-1">{name}</h3>
+                    <p className="text-base text-[#AB3130]/80 mb-3">{brandText ?? (('productId' in item) ? '브랜드 정보 없음' : (item as any).brand)}</p>
                     <p className="text-sm text-[#AB3130]/60 mb-4">{notes}</p>
-                    <Link to={to} className="py-2 px-6 inline-block rounded-full border border-[#AB3130]/50 text-[#AB3130] text-sm hover:bg-[#AB3130]/10 transition-colors">
+                    <Link 
+                      to={to} 
+                      className="py-1 px-5 inline-block rounded-full border border-[#AB3130]/50 text-[#AB3130] font-semibold text-xs hover:bg-[#AB3130]/10 transition-colors"
+                    >
                       상세 페이지 이동
                     </Link>
                   </div>
@@ -231,6 +381,14 @@ export default function Test() {
               퍼스널 향수 추천 테스트
             </p>
             <div className="w-50 h-px bg-[#AB3130] mx-auto mb-10 sm:w-100"></div>
+            
+            {authError && (
+              <div className="max-w-md mx-auto mb-6 p-4 rounded-lg bg-yellow-50 border border-yellow-200 text-yellow-800 text-sm">
+                <p className="font-medium mb-1">로그인 필요함</p>
+                <p>{authError}</p>
+              </div>
+            )}
+            
             <div className="max-w-md mx-auto mb-10 space-y-2">
               <p className="text-[#AB3130]/80">
                 무슨 향수가 나에게 어울리는지 잘 모르겠다면
@@ -504,7 +662,11 @@ export default function Test() {
         );
 
       default:
-        return null;
+        return (
+          <div className="w-full text-center">
+            <p className="text-[#AB3130]">문항을 불러오는 중입니다...</p>
+          </div>
+        );
     }
   };
 

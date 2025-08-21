@@ -5,6 +5,7 @@ import type { PostCategory } from "./enums/category";
 export type ConsultPost = {
   memberId: number;
   nickname: string;
+  profile: string;
   consultPostId: number;
   postType: PostCategory;
   title: string;
@@ -40,6 +41,7 @@ export type RequestCreatePostDto = {
 export type Consult = {
   memberId: number;
   nickname: string;
+  profile: string;
   content: string;
   hierarchy: number;
   order: number;

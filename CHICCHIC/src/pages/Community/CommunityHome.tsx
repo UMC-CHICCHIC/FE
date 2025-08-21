@@ -69,11 +69,18 @@ const CommunityHome = () => {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="flex flex-col justify-center border border-[#AB3130] h-64 rounded-md">
             <div className="flex p-8">
-              <img
-                src={data?.result.receivePost.imageUrl}
-                className="mr-4 max-w-[178px] max-h-[172px]"
-                alt=""
-              />
+              {!data?.result.receivePost.imageUrl ? (
+                <div className="flex justify-center items-center mr-4 w-[200px] h-[120px] bg-gray-300">
+                  이미지가 없습니다.
+                </div>
+              ) : (
+                <img
+                  src={data?.result.receivePost.imageUrl}
+                  className="mr-4 max-w-[178px] max-h-[172px]"
+                  alt=""
+                />
+              )}
+
               <div className="flex flex-col text-xl gap-4 text-[#AB3130]">
                 <p className="font-bold">{data?.result.receivePost.title}</p>
                 <p className="font-light">{data?.result.receivePost.content}</p>
@@ -100,12 +107,17 @@ const CommunityHome = () => {
           </div>
           <div className="flex flex-col justify-center border border-[#AB3130] h-64 rounded-md">
             <div className="flex p-8">
-              <img
-                src={data?.result.givePost.imageUrl}
-                width={120}
-                className="mr-4"
-                alt=""
-              />
+              {!data?.result.givePost.imageUrl ? (
+                <div className="flex justify-center items-center mr-4 w-[178px] h-[120px] bg-gray-300">
+                  이미지가 없습니다.
+                </div>
+              ) : (
+                <img
+                  src={data?.result.givePost.imageUrl}
+                  className="mr-4 max-w-[178px] max-h-[172px]"
+                  alt=""
+                />
+              )}
               <div className="flex flex-col gap-4 text-xl text-[#AB3130]">
                 <p className="font-bold">{data?.result.givePost.title}</p>
                 <p className="font-light">{data?.result.givePost.content}</p>
@@ -143,7 +155,7 @@ const CommunityHome = () => {
           </span>
           <a
             onClick={() => navigate("/community/story")}
-            className="flex justify-center gap-3 text-sm sm:text-base font-light text-[#AB3130]"
+            className="flex justify-center gap-3 text-sm sm:text-base font-light text-[#AB3130] cursor-pointer"
           >
             향수 이야기에서 더 다양한 소식 확인하기
             <img src={RightArrow} width={6} alt="" />

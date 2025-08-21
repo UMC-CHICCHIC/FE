@@ -18,10 +18,8 @@ const OAuthCallback = () => {
         const accessToken = urlParams.get('accessToken');
         const refreshToken = urlParams.get('refreshToken');
 
-        console.log("OAuth 콜백 - 받은 토큰:", { accessToken, refreshToken });
-
         if (!accessToken) {
-          throw new Error('액세스 토큰을 받지 못했습니다.');
+          throw new Error('');
         }
 
         setMessage('로그인 정보 저장 중...');

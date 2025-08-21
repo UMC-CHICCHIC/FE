@@ -65,7 +65,7 @@ const PostSection = ({ category }: PostSectionProps) => {
                     </button>
                     <div className="flex items-center space-x-4">
                       <img
-                        src="/profile.png"
+                        src={post.profile}
                         alt="프로필"
                         className="object-cover w-6 h-6 rounded-full sm:w-12 sm:h-12"
                       />

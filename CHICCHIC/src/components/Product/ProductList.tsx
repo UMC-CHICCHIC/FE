@@ -19,7 +19,7 @@ export const ProductGrid = memo(function ProductGrid({
   pageSize = 16,
   onItemClick,
 }: ProductGridProps) {
-  const gridCols = `grid grid-cols-2 md:grid-cols-4 gap-40 gap-y-24 font-[pretendard]`;
+  const gridCols = `grid grid-cols-2 md:grid-cols-4 gap-20 gap-y-24 font-[pretendard]`;
 
   if (!isLoading && items.length === 0) {
     return (
@@ -46,6 +46,7 @@ export const ProductGrid = memo(function ProductGrid({
               price={p.price}
               brand={p.brand}
               ml={p.ml}
+              isLoading={isLoading}
               imageUrl={p.imageUrl}
               onClick={onItemClick}
             />

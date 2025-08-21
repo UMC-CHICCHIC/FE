@@ -12,6 +12,10 @@ export default function Home() {
   const isAuthenticated = isLoggedIn;
 
   const [isLoading, setIsLoading] = useState(true);
+  // 추천 API 실패/빈 결과 플래그
+  const [recoError, setRecoError] = useState<string | null>(null);
+  const [recoEmpty, setRecoEmpty] = useState(false);
+  const [recoRefreshKey, setRecoRefreshKey] = useState(0);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -273,15 +277,69 @@ export default function Home() {
         {isAuthenticated ? (
           <section id="personal-perfume-list" className="py-16 bg-[#F8F5F2]">
             <div className="container px-4 mx-auto">
-              <div className="mb-8">
-                <h2 className="text-4xl font-headline font-bold text-[#AB3130] mb-2">
-                  Personal perfume List
-                </h2>
-                <p className="text-muted-foreground">
-                  퍼스널 향수 추천 테스트 결과에 따라 추천된 향수입니다.
-                </p>
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h2 className="text-4xl font-headline font-bold text-[#AB3130] mb-2">
+                    Personal perfume List
+                  </h2>
+                  <p className="text-muted-foreground">
+                    퍼스널 향수 추천 테스트 결과에 따라 추천된 향수입니다.
+                  </p>
+                </div>
               </div>
-              <PerfumeGrid />
+              {/* 실패/빈 결과 시 그리드 숨김, 아래 패널 노출 */}
+              <PerfumeGrid
+                endpoint="/home/recommend-products"
+                limit={4}
+                hideOnErrorOrEmpty
+                onError={(e) => setRecoError(e.message)}
+                onEmpty={() => setRecoEmpty(true)}
+                refreshKey={recoRefreshKey}
+              />
+              {(recoError || recoEmpty) && (
+                <div className="mt-6">
+                  <div className="max-w-lg md:max-w-4xl lg:max-w-6xl xl:max-w-7xl 2xl:max-w-full mx-auto bg-white border-2 border-[#AB3130] rounded-lg p-6 md:p-10 lg:p-12 text-center">
+                    <div className="flex items-center justify-center mx-auto mb-4 md:mb-6">
+                      <svg
+                        className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 text-[#AB3130]"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
+                      </svg>
+                    </div>
+
+                    <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-[#AB3130] mb-4 md:mb-6">
+                      {recoError ? "추천 목록을 불러오지 못했어요." : "아직 추천 결과가 없어요."}
+                    </h3>
+                    <p className="max-w-3xl mx-auto mb-6 md:mb-8 text-base md:text-lg text-[#AB3130]/80">
+                      {recoError
+                        ? "퍼스널 향수 추천 테스트를 진행해 보세요! 나에게 어울리는 향수를 추천해 드립니다."
+                        : "퍼스널 향수 추천 테스트를 진행해 보세요! 나에게 어울리는 향수를 추천해 드립니다."}
+                    </p>
+                    <div className="flex items-center justify-center gap-3">
+                      <Link
+                        to="/personal-perfume/test"
+                        className="bg-[#AB3130] text-white px-6 py-3 md:px-8 md:py-4 rounded-full hover:bg-[#8B2829] transition-colors font-semibold text-base md:text-lg"
+                      >
+                        퍼스널 향수 추천 테스트 진행하기
+                      </Link>
+                      <button
+                        onClick={() => { setRecoError(null); setRecoEmpty(false); setRecoRefreshKey((k) => k + 1); }}
+                        className="px-6 py-3 md:px-8 md:py-4 rounded-full border border-[#AB3130] text-[#AB3130] hover:bg-[#AB3130]/10 transition-colors font-semibold text-base md:text-lg"
+                      >
+                        다시 시도
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </section>
         ) : (
@@ -304,7 +362,7 @@ export default function Home() {
                 <div className="mb-6 md:mb-8">
                   <div className="flex items-center justify-center mx-auto mb-4 md:mb-6">
                     <svg
-                      className="w-20 h-16 md:w-22 md:h-22 lg:w-28 lg:h-28 text-[#AB3130]"
+                      className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 text-[#AB3130]"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -318,7 +376,7 @@ export default function Home() {
                     </svg>
                   </div>
 
-                  <h3 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-[#AB3130] mb-100 md:mb-10 px-2 max-w-5xl mx-auto">
+                  <h3 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-[#AB3130] mb-100 md:mb-10 px-2 max-w-5xl mx-auto">
                     퍼스널 향수 추천 테스트를 아직 진행하지 않았어요.
                   </h3>
                   <p className="max-w-4xl px-2 mx-auto mb-6 text-base leading-relaxed text-gray-600 md:text-lg lg:text-xl xl:text-2xl md:mb-8">

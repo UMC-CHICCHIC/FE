@@ -12,6 +12,9 @@ import { useAuthStore } from "../store/useAuthStore";
 export const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SERVER_API_URL,
   withCredentials: true,
+  headers: {
+    Accept: "application/json",
+  },
 });
 
 axiosInstance.interceptors.request.use(
@@ -20,6 +23,8 @@ axiosInstance.interceptors.request.use(
       "/api/v1/auth/login",
       "/api/v1/auth/signup",
       "/member/reissue",
+  // public API: 인기 상품은 토큰 불필요
+  "/home/popular-products",
     ];
     
     if (noAuthPaths.some((path) => config.url?.includes(path))) {

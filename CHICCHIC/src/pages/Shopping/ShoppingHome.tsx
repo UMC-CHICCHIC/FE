@@ -33,7 +33,7 @@ const sortMap: Record<SortLabel, PAGINATION_ORDER> = {
 };
 
 const ShoppingHome = () => {
-  const [productPage, setProductPage] = useState(1);
+  const [productPage, setProductPage] = useState(0);
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
   const [sort, setSort] = useState<SortLabel>("인기도순");
@@ -61,12 +61,12 @@ const ShoppingHome = () => {
   });
 
   const list = data?.result.content ?? [];
-  const totalPages = data?.result.totalPages ?? 1;
-  const currentPage = data?.result.number ?? productPage - 1;
+  const totalPages = data?.result.totalPages ?? 0;
+  const currentPage = data?.result.number ?? productPage;
 
   const handleCatId = (id: number | null) => {
     setCatId((prev) => (prev === id ? null : id));
-    setProductPage(1);
+    setProductPage(0);
   };
 
   return (
@@ -81,7 +81,7 @@ const ShoppingHome = () => {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setSearch(e.target.value)
           }
-          onKeyUp={(e) => e.key === "Enter" && setProductPage(1)}
+          onKeyUp={(e) => e.key === "Enter" && setProductPage(0)}
         />
         <img
           src={SearchIcon}
@@ -92,7 +92,7 @@ const ShoppingHome = () => {
       </section>
 
       {/* 카테고리 */}
-      <section className="w-full max-w-5xl text-center">
+      <section className="w-full max-w-[1090px] text-center">
         <div className="flex items-center justify-center">
           <div className="flex-1 h-px bg-[#AB3130]" />
           <label className="text-2xl tracking-wide font-black px-4 text-[#AB3130]">
@@ -105,12 +105,12 @@ const ShoppingHome = () => {
             <span className="text-white bg-[#AB3130] py-2">가격대</span>
             {/* PRICE 카테고리 렌더링 */}
             {isPriceLoading && (
-              <span className="col-span-2 py-2 text-sm text-gray-500 md:col-span-8">
+              <span className="col-span-2 py-2 text-sm md:col-span-6">
                 로딩중…
               </span>
             )}
             {isPriceError && (
-              <span className="col-span-2 py-2 text-sm md:col-span-8">
+              <span className="col-span-2 py-2 text-sm md:col-span-6">
                 가격대 불러오기 실패
               </span>
             )}
@@ -124,7 +124,7 @@ const ShoppingHome = () => {
                     type="button"
                     onClick={() => handleCatId(c.categoryId)}
                     className={`m-1 py-2 px-3 text-sm transition cursor-pointer col-span-2
-                    ${active ? "text-[#66191F] font-bold" : "hover:underline"}
+                    ${active ? "text-[#AB3130] font-bold" : "hover:underline"}
                   `}
                   >
                     {c.name}
@@ -137,12 +137,12 @@ const ShoppingHome = () => {
             <span className="text-white bg-[#AB3130] py-2">발향률</span>
             {/* CONCENTRATION 카테고리 렌더링 */}
             {isConcLoading && (
-              <span className="col-span-2 py-2 text-sm text-gray-500 md:col-span-8">
+              <span className="col-span-2 py-2 text-sm md:col-span-6">
                 로딩중…
               </span>
             )}
             {isConcError && (
-              <span className="col-span-2 py-2 text-sm md:col-span-8">
+              <span className="col-span-2 text-sm md:col-span-6">
                 발향률 불러오기 실패
               </span>
             )}
@@ -156,7 +156,7 @@ const ShoppingHome = () => {
                     type="button"
                     onClick={() => handleCatId(c.categoryId)}
                     className={`py-2 px-3 text-sm transition cursor-pointer
-                  ${active ? "text-[#66191F] font-bold" : "hover:underline"}`}
+                  ${active ? "text-[#AB3130] font-bold" : "hover:underline"}`}
                   >
                     {c.name}
                   </button>
@@ -171,8 +171,8 @@ const ShoppingHome = () => {
         </div>
       )}
       {/* 상품 필터링 */}
-      <section className="w-full max-w-5xl">
-        <div className="flex justify-start space-x-2 text-[#AB3130] mb-4 flex-wrap gap-2 pt-6">
+      <section className="w-full max-w-[1100px]">
+        <div className="flex w-full justify-start space-x-4 text-[#AB3130] mb-4 flex-wrap pt-6">
           {sortItems.map((label) => {
             const active = sort === label;
             return (
@@ -184,7 +184,7 @@ const ShoppingHome = () => {
                 }`}
                 onClick={() => {
                   setSort(label);
-                  setProductPage(1);
+                  setProductPage(0);
                 }}
               >
                 {label}
@@ -199,6 +199,7 @@ const ShoppingHome = () => {
             price: p.price,
             brand: p.brand,
             ml: p.ml,
+            isLoading,
             imageUrl: p.imageUrl,
           }))}
           isLoading={isLoading}

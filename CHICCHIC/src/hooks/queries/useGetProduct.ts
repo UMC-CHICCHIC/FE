@@ -61,6 +61,7 @@ export function useScrapStatus(perfumeId: number) {
     select: (res) => res.result.some((i) => i.id === perfumeId),
     enabled: !!perfumeId,
     staleTime: 1000 * 60 * 5,
+    refetchOnReconnect: false,
     retry: false,
   });
 }

@@ -23,7 +23,7 @@ const CommunityHome = () => {
         />
 
         {/* 텍스트 레이어 */}
-        <div className="relative flex flex-col items-start justify-start h-full px-2 mx-10 my-2 text-white gap-50 z-5 sm:px-8 md:px-20">
+        <div className="relative flex flex-col items-start justify-start h-full gap-0 px-2 mx-10 text-white md:my-2 lg:gap-20 sm:gap-50 z-5 sm:px-8 md:px-20">
           <span className="mb-10 whitespace-pre-line sm:leading-20 leading-12 text-[clamp(4rem,7vw,6rem)]">
             Perfume{"\n"}Community
           </span>
